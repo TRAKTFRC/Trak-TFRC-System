@@ -1,0 +1,7 @@
+{
+	"makefile.extensionOutputFolder": "./.vscode",
+	"C_Cpp.default.configurationProvider": "ms-vscode.makefile-tools",
+	"files.associations": {
+		"mcu_call_functions.h": "c"
+	}
+}
