@@ -15,11 +15,11 @@
 
 # parameters (change this stuff accordingly)
 # project name
-PRJ = tama_collar
+PRJ = medium_collar
 # avr mcu
 MCU = atmega328p
 # mcu clock frequency
-CLK = 4000000
+CLK = 8000000
 # avr programmer (and port if necessary)
 # e.g. PRG = usbtiny -or- PRG = arduino -P /dev/tty.usbmodem411
 PRGC = avrisp -P COM17
@@ -51,7 +51,7 @@ Src/medium_collar.cpp
 # e.g. EXT = ../../EyeToSee ../../YouSART
 EXT = Inc/
 # Location of Build output
-BUILD_DIR = Build/
+BUILD_DIR = Build_mc/
 
 #################################################################################################
 # \/ stuff nobody needs to worry about until such time that worrying about it is appropriate \/ #
@@ -60,7 +60,7 @@ BUILD_DIR = Build/
 # include path
 INCLUDE := $(foreach dir, $(EXT), -I$(dir))
 # c flags
-CFLAGS    = -Wl,-u,vfprintf -lprintf_flt -Os -DF_CPU=$(CLK) -mmcu=$(MCU) $(INCLUDE)
+CFLAGS    = -Wl,-u,vfprintf -lprintf_flt -Os -DMEDIUM_COLLAR -DF_CPU=$(CLK) -mmcu=$(MCU) $(INCLUDE)
 # any aditional flags for c++
 CPPFLAGS = -std=c++11
 
