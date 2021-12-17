@@ -13,7 +13,7 @@
 #define PKT_TIMEOUT             5000 // mS
 
 // Command detection part
-#define UART_ISR_BUFF_SIZE		100
+#define UART_ISR_BUFF_SIZE		50
 
 class CmdUARTInterface
 {

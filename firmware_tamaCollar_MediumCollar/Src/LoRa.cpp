@@ -15,9 +15,6 @@ void LoRaInit ()
     if (!begin (915E6)) 
 	{
         printf ("Starting LoRa failed!\r\n");
-		printf ("..\r\n");
-		printf ("..\r\n");
-		printf ("..\r\n");
         while (1);
     }
 	printf ("LoRa Init Successfull\r\n");
@@ -27,7 +24,7 @@ void LoRaSendSleep (const char *buffer, uint8_t size)
 {
     LoRaInit ();
     beginPacket (0);
-    write (sen_pkt_buff, temp_pkt_len);
+    write (buffer, size);
     endPacket ();
     LoRaend ();
 }
@@ -42,14 +39,11 @@ uint8_t begin(uint32_t frequency)
     setPinHigh (LORA_RST_PORT, LORA_RST_PIN);
     _delay_ms(10);
 
-    printf ("Before read register in LoRa Begin\r\n");
     uint8_t version = _readRegister(REG_VERSION);           // check the version
     if (version != 0x12)
     {
-        printf ("Read Version: %d\r\n", version);
         return 0;
     }
-    printf ("Read Version: %d\r\n", version);
     sleep();                                                // put in sleep mode
     setFrequency(frequency);                                // set frequency
     _writeRegister(REG_FIFO_TX_BASE_ADDR, 0);               // set base addresses
@@ -80,7 +74,6 @@ uint8_t endPacket() {
     // wait for TX done
     while ((_readRegister(REG_IRQ_FLAGS) & IRQ_TX_DONE_MASK) == 0)
     {
-        //printf ("Value at REG_IRQ_FLAGS: %d", (_readRegister(REG_IRQ_FLAGS) & IRQ_TX_DONE_MASK));
         _delay_ms (10);
     }
     // clear IRQ's

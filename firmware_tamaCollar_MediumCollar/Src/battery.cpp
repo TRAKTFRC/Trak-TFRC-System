@@ -2,6 +2,9 @@
 #include <util/delay.h>
 #include "battery.h"
 
+/*
+Knowledge resource: https://wp.josh.com/2014/11/06/battery-fuel-guage-with-zero-parts-and-zero-pins-on-avr/
+*/
 
 // Returns the current Vcc voltage as a fixed point number with 1 implied decimal places, i.e.
 // 50 = 5 volts, 25 = 2.5 volts,  19 = 1.9 volts

@@ -4,6 +4,7 @@
 #include "rtc.h"
 #include "medium_collar.h"
 #include "common.h"
+#include "LoRa.h"
 
 static struct tm release_time;
 
@@ -35,10 +36,12 @@ uint8_t generateReleasePkt (char * pkt, float vcc_v, struct tm * pkt_time)
 
 void runMotor ()
 {
+	#ifdef MEDIUM_COLLAR
 	setPinModeOutput (MOTOR_PWR_PORT, MOTOR_PWR_PIN);
 	setPinHigh (MOTOR_PWR_PORT, MOTOR_PWR_PIN);
 	_delay_ms (2000);
 	setPinLow (MOTOR_PWR_PORT, MOTOR_PWR_PIN);
+	#endif
 }
 
 void setReleaseTime ()
@@ -97,14 +100,16 @@ void releaseHandler ()
 	if (vcc_v <= RELEASE_VOLT)
 	{
 		runMotor ();
-		temp_pkt_len = generateReleasePkt (temp_pkt, vcc_v, c_time);
+		temp_pkt_len = generateReleasePkt (temp_pkt, vcc_v, &c_time);
+		printf ("Sending: %s", temp_pkt);
 		LoRaSendSleep (temp_pkt, temp_pkt_len);
 		while (1) sleepMode (); // Will stay in Sleep Forever now, untill reset
 	}
-	if (checkIfReleaseTime (c_time))
+	if (checkIfReleaseTime (&c_time))
 	{
 		runMotor ();
-		temp_pkt_len = generateReleasePkt (temp_pkt, vcc_v, c_time);
+		temp_pkt_len = generateReleasePkt (temp_pkt, vcc_v, &c_time);
+		printf ("Sending: %s", temp_pkt);
 		LoRaSendSleep (temp_pkt, temp_pkt_len);
 		while (1) sleepMode (); // Will stay in Sleep Forever now, untill reset
 	}

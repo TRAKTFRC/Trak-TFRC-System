@@ -55,6 +55,7 @@
 #define MAX_PKT_LENGTH              255
 /*@}*/
 
+void LoRaInit ();
 void LoRaSendSleep (const char *buffer, uint8_t size);
 
 uint8_t begin(uint32_t frequency);

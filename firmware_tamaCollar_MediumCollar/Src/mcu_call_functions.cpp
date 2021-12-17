@@ -329,7 +329,6 @@ void sleepMode ()
     sleep_enable ();
     set_sleep_mode (SLEEP_MODE_PWR_DOWN);
     sei ();
-    printf ("Inside function Going to sleep now \r\n");
     sleep_cpu ();
     sleep_disable ();
 }

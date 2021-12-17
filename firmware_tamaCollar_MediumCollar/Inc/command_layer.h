@@ -9,9 +9,9 @@
 // Command exec
 #define PACKET_BUFF_SIZE            20
 
-#define PKT_LEN_TIME                15
+#define PKT_LEN_TIME                17
 
-class CmdProcessPods
+class CmdProcess
 {
 public:
     void init ();
@@ -23,6 +23,7 @@ public:
     bool store (char rec_char);
 
 private:
+    int _read_counter = 0;
     bool _readCountManage (int count);
 };
 

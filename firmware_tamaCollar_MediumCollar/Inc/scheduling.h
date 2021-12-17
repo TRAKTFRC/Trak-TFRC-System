@@ -7,7 +7,7 @@ class SchedulingManage
 {
 private:
 	void _calcNextAlarm (tm * given_time);
-	tm _next_alarm;
+	struct tm _next_alarm;
 
 public:
 	void alarmHandler ();

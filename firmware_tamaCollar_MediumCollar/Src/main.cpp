@@ -9,6 +9,7 @@
 #include <string.h>
 #include "rtc.h"
 #include "twi-lowlevel.h"
+#include "command_layer.h"
 #ifdef MEDIUM_COLLAR
 #include "medium_collar.h"
 #endif
@@ -17,8 +18,9 @@
 static CmdUARTInterface pkt_main;
 static long timer_count = 0;
 static SchedulingManage schedule;
-static char sen_pkt_buff [100];
-static bool rtc_time_set_flag = false;
+static char sen_pkt_buff [50];
+bool rtc_time_set_flag = false;
+static CmdProcess cmd;
 
 // GPS Pasrser setup
 static TinyGPSPlus gps;
@@ -34,7 +36,7 @@ void CmdUARTInterface::packetDetect ()
 {
 	while (this->isr_in != this->isr_out)
 	{
-		/*////printf ("\r\nisr_in : %d, isr_out : %d : %c   Timer Count : %lu",
+		/*//////printf ("\r\nisr_in : %d, isr_out : %d : %c   Timer Count : %lu",
 				this->isr_in, this->isr_out, this->isr_buff[this->isr_out], 
 				this->_timer_count);*/
 		switch (this->_packet_state)
@@ -45,29 +47,29 @@ void CmdUARTInterface::packetDetect ()
 				this->_packet_state = PKT_WAIT_EOH;
 				//cmd.start_storing (this->isr_buff[this->isr_out]);
 				this->_timer_count = PKT_TIMEOUT;
-				//////printf ("\r\ncmd.packetDetect -> Detect Start of Header");
+				////////printf ("\r\ncmd.packetDetect -> Detect Start of Header");
 			}
 			break;
 
 		case PKT_WAIT_EOH:
-			if ((this->isr_buff[this->isr_out]) == PKT_EOH) // Packe deected
+			if ((this->isr_buff[this->isr_out]) == PKT_EOH) // Packet deected
 			{
 				//printf ("\r\ncmd.packetDetect -> Detect end of header");
-				//////printf ("\r\nisr_in : %d, isr_out : %d : %c",this->isr_in, this->isr_out, this->isr_buff[this->isr_out]);
-				//cmd.store (this->isr_buff[this->isr_out]);
-				//cmd.detect ();
+				//printf ("\r\nisr_in : %d, isr_out : %d : %c",this->isr_in, this->isr_out, this->isr_buff[this->isr_out]);
+				cmd.store (this->isr_buff[this->isr_out]);
+				cmd.detect ();
 				this->_packet_state = PKT_WAIT_SOH;
 				break;
 			}
-			/*if ((cmd.store (this->isr_buff[this->isr_out])) == FAILURE) // If buffer reaches it's limit, assume error
+			if ((cmd.store (this->isr_buff[this->isr_out])) == FAILURE) // If buffer reaches it's limit, assume error
 			{
 				//printf ("\r\ncmd.packetDetect -> Buffer overflow");
 				this->_packet_state = PKT_WAIT_SOH;
 				break;
-			}*/
+			}
 			if (!(this->_timer_count)) // Check timeout
 			{
-				//printf ("\r\ncmd.packetDetect -> Packet timeout");
+				////printf ("\r\ncmd.packetDetect -> Packet timeout");
 				this->_packet_state = PKT_WAIT_SOH;
 				break;
 			}
@@ -147,9 +149,9 @@ uint16_t generateLoRaPkt (char * pkt)
 		*(ptr_pkt++) = PKT_EOH; // End of header
 		*(ptr_pkt) = 0; // Adding NULL
 	}
-	printf ("Packet generated: %s \r\n", pkt);
+	//printf ("Packet generated: %s \r\n", pkt);
 	pkt_len = strlen (pkt);
-	printf ("Pkt Length: %d\r\n", pkt_len);
+	//printf ("Pkt Length: %d\r\n", pkt_len);
 	return pkt_len;
 }
 
@@ -168,11 +170,28 @@ void setTempScheduleConfig ()
 	schedule.end_time.hour = 20;
 	schedule.end_time.min = 0;
 	schedule.end_time.sec = 0;
-
-	// Release time for medium collar
-	release_time.hour = 18;
 	
 	rtc_time_set_flag = true;
+}
+
+void LoRaRcvPkts ()
+{
+    LoRaInit ();
+	timer_count = 30000;
+	//printf ("Waiting for packets from LoRa \r\n");
+	while (timer_count)
+	{
+		if (parsePacket (0))
+		{
+			printf ("Recieved Packet\r\n");
+			while (available ())
+			{
+				appRS485RcvCallback (read ());
+			}
+			pkt_main.packetDetect ();
+			if (rtc_time_set_flag) break;
+		}
+	}
 }
 
 int main ()
@@ -181,7 +200,7 @@ int main ()
 
 	// Hardware UART Setup
 	USART_Init ();
-    printf ("Entering main loop\r\n");
+    //printf ("Entering main loop\r\n");
 	#ifndef MEDIUM_COLLAR
     printf ("------- Tama Collar -------\r\n");
 	#endif
@@ -192,21 +211,22 @@ int main ()
 
 	// RTC Init
 	twi_init_master();
-	printf ("Main: TWI Init Done\r\n");
+	//printf ("Main: TWI Init Done\r\n");
 	rtc_init ();
-    printf ("Main: RTC Init\r\n");
+    //printf ("Main: RTC Init\r\n");
 
 	// GPS Software UART setup and Pulse pin mode
 	#ifndef MEDIUM_COLLAR
 	gps.init (GPS_PULSE_POWER_MODE);
-    printf ("Main: GPS Init Tama Collar\r\n");
+    //printf ("Main: GPS Init Tama Collar\r\n");
 	#endif
 
 	#ifdef MEDIUM_COLLAR
 	gps.init (GPS_MOSFET_POWER_MODE);
-    printf ("Main: GPS Init for Medium Collar\r\n");
+    //printf ("Main: GPS Init for Medium Collar\r\n");
 	#endif
 
+	printf ("RTC and GPS Init Done ");
 	// Just testing functions REMOVE THIS
 	setTempScheduleConfig ();
 
@@ -232,9 +252,9 @@ int main ()
 	*/
 
 		twi_init_master();
-		printf ("RTC->Init: TWI Init Done\r\n");
+		//printf ("RTC->Init: TWI Init Done\r\n");
 		rtc_setup_ext_init ();
-  		printf ("Main: RTC Ext Init\r\n");
+  		//printf ("Main: RTC Ext Init\r\n");
 		rtc_get_time_s ((uint8_t *)&schedule.wakeup_time.hour,
 						(uint8_t *)&schedule.wakeup_time.min,
 						(uint8_t *)&schedule.wakeup_time.sec);
@@ -245,13 +265,14 @@ int main ()
 		if (schedule.wakeup_time.hour == 0 && schedule.wakeup_time.min == 0
 			&& schedule.wakeup_time.sec == 0)
 		{
-			printf ("Main: Time not set\r\n");
+			//printf ("Main: Time not set\r\n");
 			rtc_time_set_flag = false;
 		}
 
 		if (!rtc_time_set_flag)
 		{
-			printf ("Main: Waiting for time from LoRa Pkt\r\n");
+			printf ("Main: Time not set, Waiting for time from LoRa Pkt\r\n");
+			LoRaRcvPkts ();
 		}
 
 		// Initialize milliseconds timer used in time 
@@ -263,7 +284,7 @@ int main ()
 		gps.printData ();
 		if (!rtc_time_set_flag)
 		{
-			printf ("Main: Setting time from LoRa failed so checking if it can be done from GPS\r\n");
+			//printf ("Main: Setting time from LoRa failed so checking if it can be done from GPS\r\n");
 			if (gps.time.isValid ())
 			{
 				printf ("Main: Valid time available in GPS, setting.\r\n");
@@ -287,9 +308,9 @@ int main ()
 		rtc_get_time_s ((uint8_t *)&schedule.wakeup_time.hour,
 						(uint8_t *)&schedule.wakeup_time.min,
 						(uint8_t *)&schedule.wakeup_time.sec);
-		printf ("Main: Sleep Time: %d : %d : %d\r\n\r\n\r\n\r\n", schedule.wakeup_time.hour, 
-													   schedule.wakeup_time.min,
-													   schedule.wakeup_time.sec);
+		//printf ("Main: Sleep Time: %d : %d : %d\r\n\r\n\r\n\r\n", schedule.wakeup_time.hour, 
+//													   schedule.wakeup_time.min,
+//													   schedule.wakeup_time.sec);
 
 		// Sleep mode
 		stopmSTimer ();

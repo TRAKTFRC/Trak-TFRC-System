@@ -535,9 +535,7 @@ void TinyGPSPlus::_givePulse ()
 
 void TinyGPSPlus::init (uint8_t power_mode)
 {
-  printf ("GPS->Init: UART Init\r\n");
   this->_UARTInit ();
-  printf ("GPS->Init: Pin Mode set\r\n");
 	setPinModeOutput (GPS_ON_OFF_PULSE_PORT, GPS_ON_OFF_PULSE_PIN);
   this->_power_mode = power_mode;
 }

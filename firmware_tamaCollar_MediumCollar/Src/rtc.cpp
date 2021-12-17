@@ -127,11 +127,9 @@ void rtc_init (void)
 	rtc_write_byte(0xee, 0x11);
 	rtc_write_byte(0xdd, 0x12);
 
-	printf ("rtc_init: Read registers: %d ,%d\r\n", rtc_read_byte(0x11), rtc_read_byte(0x12));
 
 	if (rtc_read_byte(0x11) == 0xee && rtc_read_byte(0x12) == 0xdd) 
 	{
-		printf ("rtc_init: Detected Other\r\n");
 		s_is_ds1307 = true;
 		// restore values
 		rtc_write_byte(temp1, 0x11);
@@ -139,10 +137,8 @@ void rtc_init (void)
 	}
 	else
 	{
-		printf ("rtc_init: Detected DS3231\r\n");
 		s_is_ds3231 = true;
 	}
-	//printf ("RTC->Init: Ext IT Enable\r\n");
 	//rtc_setup_ext_init ();
 }
 

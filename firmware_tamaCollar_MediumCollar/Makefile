@@ -42,7 +42,10 @@ Src/TinyGPS++.cpp \
 Src/rtc.cpp \
 Src/scheduling.cpp \
 Src/twi-lowlevel.cpp \
-Src/twi.cpp
+Src/twi.cpp \
+Src/command_layer.cpp \
+Src/battery.cpp \
+Src/medium_collar.cpp
 
 # where to look for external libraries (consisting of .c/.cpp files and .h files)
 # e.g. EXT = ../../EyeToSee ../../YouSART
