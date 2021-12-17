@@ -13,4 +13,7 @@
 #define COLLAR_NUMBER 			2
 #endif
 
+#define PKT_SOH                 '{'
+#define PKT_EOH                 '}'
+
 #endif

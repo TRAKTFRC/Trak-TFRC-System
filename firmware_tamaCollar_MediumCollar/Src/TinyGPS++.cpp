@@ -533,13 +533,26 @@ void TinyGPSPlus::_givePulse ()
 	printf ("GPS Pulse Given \r\n");
 }
 
-void TinyGPSPlus::init ()
+void TinyGPSPlus::init (uint8_t power_mode)
 {
   printf ("GPS->Init: UART Init\r\n");
   this->_UARTInit ();
   printf ("GPS->Init: Pin Mode set\r\n");
 	setPinModeOutput (GPS_ON_OFF_PULSE_PORT, GPS_ON_OFF_PULSE_PIN);
+  this->_power_mode = power_mode;
 }
+
+void TinyGPSPlus::_enablePwr ()
+{
+	setPinState (GPS_ON_OFF_PULSE_PORT, GPS_ON_OFF_PULSE_PIN, GPIO_PIN_SET);
+}
+
+
+void TinyGPSPlus::_disablePwr ()
+{
+  setPinState (GPS_ON_OFF_PULSE_PORT, GPS_ON_OFF_PULSE_PIN, GPIO_PIN_RESET);
+}
+
 
 void TinyGPSPlus::_UARTInit ()
 {
@@ -560,9 +573,11 @@ bool TinyGPSPlus::handler ()
 {
 	char rcv_u;
 
-  this->_ms_timer_count = 5000;
+  this->_ms_timer_count = 45000;
 
-  this->_givePulse ();
+  if (this->_power_mode == GPS_PULSE_POWER_MODE) this->_givePulse ();
+  else this->_enablePwr ();
+
   while (this->_ms_timer_count)
   {
     if (softuart_kbhit())
@@ -575,12 +590,14 @@ bool TinyGPSPlus::handler ()
     if (this->location.isValid ())
     {
       printf ("GPS->Handler: Return True in mS Timer at: %d\r\n", this->_ms_timer_count);
-      this->_givePulse ();
+      if (this->_power_mode == GPS_PULSE_POWER_MODE) this->_givePulse ();
+      else this->_disablePwr ();
       return true;
     }
   }
   printf ("GPS->Handler: Return Flase in mS Timer at: %d\r\n", this->_ms_timer_count);
-  this->_givePulse ();
+  if (this->_power_mode == GPS_PULSE_POWER_MODE) this->_givePulse ();
+  else this->_disablePwr ();
   return false;
 }
 

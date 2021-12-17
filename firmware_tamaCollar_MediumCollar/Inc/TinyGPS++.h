@@ -36,6 +36,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #define _GPS_FEET_PER_METER 3.2808399
 #define _GPS_MAX_FIELD_SIZE 15
 
+#define GPS_PULSE_POWER_MODE        0
+#define GPS_MOSFET_POWER_MODE       1
+
+
 struct RawDegrees
 {
    uint16_t deg;
@@ -219,7 +223,7 @@ class TinyGPSPlus
 public:
   TinyGPSPlus();
 
-   void init ();
+   void init (uint8_t power_mode);
    bool handler ();
 
    void printData();
@@ -261,6 +265,9 @@ private:
 
    // Power handeling
    void _givePulse ();
+   void _enablePwr ();
+   void _disablePwr ();
+   uint8_t _power_mode = GPS_PULSE_POWER_MODE;
 
    //UART Related funtions
    void _UARTInit ();

@@ -9,6 +9,9 @@
 #include <string.h>
 #include "rtc.h"
 #include "twi-lowlevel.h"
+#ifdef MEDIUM_COLLAR
+#include "medium_collar.h"
+#endif
 
 // Global Variable
 static CmdUARTInterface pkt_main;
@@ -85,21 +88,6 @@ void CmdUARTInterface::timerHandler ()
 	return;
 }
 
-
-void LoRaInit ()
-{
-	spi_init (0, 1, 0, 0, 1);                // MSB, master, mode0, F/4, x2
-    if (!begin (915E6)) 
-	{
-        printf ("Starting LoRa failed!\r\n");
-		printf ("..\r\n");
-		printf ("..\r\n");
-		printf ("..\r\n");
-        while (1);
-    }
-	printf ("LoRa Init Successfull\r\n");
-}
-
 uint16_t generateLoRaPkt (char * pkt)
 {
 	char * ptr_pkt = pkt;
@@ -125,6 +113,13 @@ uint16_t generateLoRaPkt (char * pkt)
 		byte_count = sprintf (ptr_pkt, "%lu", (unsigned long)gps.satellites.value());
 		ptr_pkt += byte_count;
 
+		*(ptr_pkt++) = ','; // Adding seperator
+
+		// Adding Time stamp
+		ptr_pkt += sprintf (ptr_pkt, "%d:%d:%d", schedule.wakeup_time.hour, 
+												schedule.wakeup_time.min,
+												schedule.wakeup_time.sec);
+
 		*(ptr_pkt++) = PKT_EOH; // End of header
 		*(ptr_pkt) = 0; // Adding NULL
 	}
@@ -141,6 +136,13 @@ uint16_t generateLoRaPkt (char * pkt)
 
 		byte_count = sprintf (ptr_pkt, "%s", (uint8_t *)"NO_LOC");
 		ptr_pkt += byte_count;
+
+		*(ptr_pkt++) = ','; // Adding seperator
+
+		// Adding Time stamp
+		ptr_pkt += sprintf (ptr_pkt, "%d:%d:%d", schedule.wakeup_time.hour, 
+												schedule.wakeup_time.min,
+												schedule.wakeup_time.sec);
 
 		*(ptr_pkt++) = PKT_EOH; // End of header
 		*(ptr_pkt) = 0; // Adding NULL
@@ -167,6 +169,9 @@ void setTempScheduleConfig ()
 	schedule.end_time.min = 0;
 	schedule.end_time.sec = 0;
 
+	// Release time for medium collar
+	release_time.hour = 18;
+	
 	rtc_time_set_flag = true;
 }
 
@@ -177,16 +182,30 @@ int main ()
 	// Hardware UART Setup
 	USART_Init ();
     printf ("Entering main loop\r\n");
+	#ifndef MEDIUM_COLLAR
+    printf ("------- Tama Collar -------\r\n");
+	#endif
+
+	#ifdef MEDIUM_COLLAR
+    printf ("------- Medium Collar -------\r\n");
+	#endif
 
 	// RTC Init
 	twi_init_master();
-	printf ("RTC->Init: TWI Init Done\r\n");
+	printf ("Main: TWI Init Done\r\n");
 	rtc_init ();
-    printf ("RTC Init\r\n");
+    printf ("Main: RTC Init\r\n");
 
 	// GPS Software UART setup and Pulse pin mode
-	gps.init ();
-    printf ("GPS Init\r\n");
+	#ifndef MEDIUM_COLLAR
+	gps.init (GPS_PULSE_POWER_MODE);
+    printf ("Main: GPS Init Tama Collar\r\n");
+	#endif
+
+	#ifdef MEDIUM_COLLAR
+	gps.init (GPS_MOSFET_POWER_MODE);
+    printf ("Main: GPS Init for Medium Collar\r\n");
+	#endif
 
 	// Just testing functions REMOVE THIS
 	setTempScheduleConfig ();
@@ -199,11 +218,17 @@ int main ()
 		a. If GPS acquired before time out, get time, location and needed params from it and generate the pkt
 		b. If GPS not acquired before time out, make a failure pkt
 	2. Send the pkt
+	-> If it is a Medium Collar
+		- Function that checks if Power is too low or if time has come for collar to drop
+		- If time to drop than send packet with location of dropping collar and run the motor
+		- Stay if Infinite loop of sleep
 	3. Get the next alarm time and see if it still is in data sending time region
 		a. Yes, set the next alarm time as alarm
 		b. No, set the _start_time as alarm
 	4. Pre sleep
 	5. Sleep
+	Medium Collar notes:
+		- Low power is considered around 3.1 V because below 3 V GPS does not work
 	*/
 
 		twi_init_master();
@@ -242,7 +267,8 @@ int main ()
 			if (gps.time.isValid ())
 			{
 				printf ("Main: Valid time available in GPS, setting.\r\n");
-				//rtc_set_time_s (gps.time.hour (), gps.time.minute (), gps.time.second ());
+				rtc_set_time_s (gps.time.hour (), gps.time.minute (), gps.time.second ());
+				rtc_time_set_flag = true;
 			}
 		}
 
@@ -250,12 +276,12 @@ int main ()
 		temp_pkt_len = generateLoRaPkt (sen_pkt_buff);
 
 		// Send LoRa Packet
-/*		LoRaInit ();
-		beginPacket (0);
-		write (sen_pkt_buff, temp_pkt_len);
-		endPacket ();
-		LoRaend ();
-*/
+		LoRaSendSleep (sen_pkt_buff, temp_pkt_len);
+
+		#ifdef MEDIUM_COLLAR
+		releaseHandler ();
+		#endif
+
 		// Set the next alarm
 		schedule.alarmHandler ();
 		rtc_get_time_s ((uint8_t *)&schedule.wakeup_time.hour,

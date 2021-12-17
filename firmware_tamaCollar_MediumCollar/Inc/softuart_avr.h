@@ -1,9 +1,12 @@
+#ifndef __SOFT_UART_H
+#define __SOFT_UART_H
+
 #if !defined(F_CPU)
     #warning "F_CPU not defined in makefile - now defined in softuart.h"
     #define F_CPU 3686400UL
 #endif
 
-#define SOFTUART_BAUD_RATE      4800
+#include "pin_map.h"
 
 #if defined (__AVR_ATtiny25__) || defined (__AVR_ATtiny45__) || defined (__AVR_ATtiny85__)
     #define SOFTUART_RXPIN   PINB
@@ -127,3 +130,5 @@ void softuart_puts_p( const char *prg_s );
 // Helper-Macro - "automatically" inserts PSTR
 // when used: include avr/pgmspace.h before this include-file
 #define softuart_puts_P(s___) softuart_puts_p(PSTR(s___))
+
+#endif

@@ -2,18 +2,44 @@
 #include <util/delay.h>
 #include "LoRa.h"
 #include "stdio.h"
+#include "mcu_call_functions.h"
+#include "pin_map.h"
 
 uint32_t frequency = 0;
 uint8_t packetIndex = 0;
 uint8_t implicitHeaderMode = 0;
 
-uint8_t begin(uint32_t frequency) {
-    DDR_LORA_SS |= 1<<LORA_SS;                              // enable pins
-    PORT_LORA_SS |= 1<<LORA_SS;
-    DDR_LORA_RESET |= 1<<LORA_RESET;
-    PORT_LORA_RESET &= ~(1<<LORA_RESET);
+void LoRaInit ()
+{
+	spi_init (0, 1, 0, 0, 1);                // MSB, master, mode0, F/4, x2
+    if (!begin (915E6)) 
+	{
+        printf ("Starting LoRa failed!\r\n");
+		printf ("..\r\n");
+		printf ("..\r\n");
+		printf ("..\r\n");
+        while (1);
+    }
+	printf ("LoRa Init Successfull\r\n");
+}
+
+void LoRaSendSleep (const char *buffer, uint8_t size)
+{
+    LoRaInit ();
+    beginPacket (0);
+    write (sen_pkt_buff, temp_pkt_len);
+    endPacket ();
+    LoRaend ();
+}
+
+uint8_t begin(uint32_t frequency) 
+{
+    setPinModeOutput (LORA_SS_PORT, LORA_SS_PIN);
+    setPinHigh (LORA_SS_PORT, LORA_SS_PIN);
+    setPinModeOutput (LORA_RST_PORT, LORA_RST_PIN);
+    setPinLow (LORA_RST_PORT, LORA_RST_PIN);
     _delay_ms(10);
-    PORT_LORA_RESET |= 1<<LORA_RESET;
+    setPinHigh (LORA_RST_PORT, LORA_RST_PIN);
     _delay_ms(10);
 
     printf ("Before read register in LoRa Begin\r\n");
@@ -285,9 +311,9 @@ void _writeRegister(uint8_t address, uint8_t value) {
 
 uint8_t _singleTransfer(uint8_t address, uint8_t value) {
     uint8_t response;
-    PORT_LORA_SS &= ~(1<<LORA_SS);
+    setPinLow (LORA_SS_PORT, LORA_SS_PIN);
     spi_send(address);
     response = spi_send(value);
-    PORT_LORA_SS |= 1<<LORA_SS;
+    setPinHigh (LORA_SS_PORT, LORA_SS_PIN);
     return response;
 }

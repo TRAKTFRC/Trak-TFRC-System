@@ -4,16 +4,9 @@
 #include "spi.h"
 
 /*@{*/ //SETUP
-// SPI & pins
+// SPI
 #define LORA_DEFAULT_SPI_FREQUENCY  8000000UL
-#define LORA_SS                     PD7
-#define DDR_LORA_SS                 DDRD
-#define PIN_LORA_SS                 PIND
-#define PORT_LORA_SS                PORTD
-#define LORA_RESET                  PB2
-#define DDR_LORA_RESET              DDRB
-#define PIN_LORA_RESET              PINB
-#define PORT_LORA_RESET             PORTB
+
 // registers
 #define REG_FIFO                    0x00
 #define REG_OP_MODE                 0x01
@@ -61,6 +54,8 @@
 // package
 #define MAX_PKT_LENGTH              255
 /*@}*/
+
+void LoRaSendSleep (const char *buffer, uint8_t size);
 
 uint8_t begin(uint32_t frequency);
 void LoRaend ();

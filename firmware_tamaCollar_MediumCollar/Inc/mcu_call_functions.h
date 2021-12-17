@@ -25,6 +25,8 @@
 
 // UART
 // Define baud rate
+// Baud rate will be 38400 if FCPU = 4mHz
+// Baud rate will be 76800 if FCPU = 8mHz
 #define USART_BAUDRATE                      38400 	// Changing here won't to anything, 
 												   	// change prescaler manually 
 												   	// or enable calculaion below 
