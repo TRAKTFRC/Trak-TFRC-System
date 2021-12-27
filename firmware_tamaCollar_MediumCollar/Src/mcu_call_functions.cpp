@@ -221,6 +221,10 @@ unsigned int readuSTimer ()
 F Clk 4 Mhz
 Prescaller 128
 Interrupt after 31 count, hence (4000000 / 128) / 31 = 1008 Hz ~ 1 mS
+F Clk 8 Mhz
+Prescaller 128
+Interrupt after 31 count, hence (4000000 / 128) / 62 = 1008 Hz ~ 1 mS
+
 
 TCCR2A
     WGM21 // CTC mode. Gives TOP IT when TCNT0 reach OCR0A 
@@ -239,7 +243,15 @@ void startmSTimer ()
 {
     TCNT2 = 0; // Clear timer
     TCCR2A |= (1<<WGM21);
+    #if F_CPU == 4000000
     OCR2A = 31;
+    #pragma message ("mS Value set to 31 for 4mHz")
+    #elif F_CPU == 8000000
+    OCR2A = 62;
+    #pragma message ("mS Value set to 62 for 8mHz")
+    #else
+    #error No value for mS timer available for given F_CPU
+    #endif
     TIFR2 = 0;
     TIMSK2 |= (1<<OCIE2A);
     TCCR2B |= (1<<CS20) | (1<<CS22); // Start timer

@@ -9,3 +9,5 @@ How to build Tama Collar firmware
 The Hex file for Tama Collar can be found in the Build/ Directly
 
 The Hex file for Medium Collar can be found in the Build_mc/ Directly
+
+Packet format for updating RTC from LoRa: {R,09:33:60,17/12/21}

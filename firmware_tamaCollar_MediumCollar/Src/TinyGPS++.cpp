@@ -536,19 +536,20 @@ void TinyGPSPlus::_givePulse ()
 void TinyGPSPlus::init (uint8_t power_mode)
 {
   this->_UARTInit ();
+  setPinHigh (GPS_ON_OFF_PULSE_PORT, GPS_ON_OFF_PULSE_PIN);
 	setPinModeOutput (GPS_ON_OFF_PULSE_PORT, GPS_ON_OFF_PULSE_PIN);
   this->_power_mode = power_mode;
 }
 
 void TinyGPSPlus::_enablePwr ()
 {
-	setPinState (GPS_ON_OFF_PULSE_PORT, GPS_ON_OFF_PULSE_PIN, GPIO_PIN_SET);
+	setPinState (GPS_ON_OFF_PULSE_PORT, GPS_ON_OFF_PULSE_PIN, GPIO_PIN_RESET);
 }
 
 
 void TinyGPSPlus::_disablePwr ()
 {
-  setPinState (GPS_ON_OFF_PULSE_PORT, GPS_ON_OFF_PULSE_PIN, GPIO_PIN_RESET);
+  setPinState (GPS_ON_OFF_PULSE_PORT, GPS_ON_OFF_PULSE_PIN, GPIO_PIN_SET);
 }
 
 
@@ -573,8 +574,10 @@ bool TinyGPSPlus::handler ()
 
   this->_ms_timer_count = 45000;
 
+  printf ("Handeling GPS Now\r\n");
   if (this->_power_mode == GPS_PULSE_POWER_MODE) this->_givePulse ();
   else this->_enablePwr ();
+  sei ();
 
   while (this->_ms_timer_count)
   {

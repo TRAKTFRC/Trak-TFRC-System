@@ -144,7 +144,7 @@ void rtc_init (void)
 
 void rtc_setup_ext_init ()
 {
-	// Setup mode of pon
+	// Setup mode of pin
 	setPinModeInput ('D', 2);
 	setPinHigh ('D', 2);
 	// Setup Ext Int

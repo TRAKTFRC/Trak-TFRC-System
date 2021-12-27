@@ -1,4 +1,432 @@
-make.exe all -f d:\Projects\TFRC\Trak-TFRC-System\firmware_tamaCollar_MediumCollar\Makefile --print-data-base --no-builtin-variables --no-builtin-rules --question
-'make.exe' is not recognized as an internal or external command,
-operable program or batch file.
+make all -f /mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile --print-data-base --no-builtin-variables --no-builtin-rules --question
+# GNU Make 4.2.1
+# Built for x86_64-pc-linux-gnu
+# Copyright (C) 1988-2016 Free Software Foundation, Inc.
+# License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+# This is free software: you are free to change and redistribute it.
+# There is NO WARRANTY, to the extent permitted by law.
+
+# Make data base, printed on Sat Dec 25 00:10:55 2021
+
+# Variables
+
+# automatic
+<D = $(patsubst %/,%,$(dir $<))
+# automatic
+?F = $(notdir $?)
+# environment
+WSLENV = ELECTRON_RUN_AS_NODE/w:
+# default
+.SHELLFLAGS := -c
+# makefile (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 30)
+LFU = 0xef
+# environment
+VSCODE_AGENT_FOLDER = /home/vk/.vscode-server
+# makefile (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 34)
+SRC = Src/LoRa.cpp Src/spi.cpp Src/main.cpp Src/mcu_call_functions.cpp Src/timer_us.cpp Src/softuart_avr.c Src/TinyGPS++.cpp Src/rtc.cpp Src/scheduling.cpp Src/twi-lowlevel.cpp Src/twi.cpp Src/command_layer.cpp Src/battery.cpp Src/medium_collar.cpp
+# environment
+VSCODE_LOG_NATIVE = false
+# automatic
+?D = $(patsubst %/,%,$(dir $?))
+# makefile (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 65)
+CPPFLAGS = -std=c++11
+# automatic
+@D = $(patsubst %/,%,$(dir $@))
+# automatic
+@F = $(notdir $@)
+# makefile
+CURDIR := /mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar
+# makefile (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 22)
+CLK = 4000000
+# makefile
+SHELL = /bin/sh
+# environment
+VSCODE_NLS_CONFIG = {"locale":"en","availableLanguages":{}}
+# environment
+_ = /mnt/c/Users/ViditK/AppData/Local/Programs/Microsoft VS Code/bin/code
+# makefile (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 63)
+CFLAGS = -Wl,-u,vfprintf -lprintf_flt -Os -DF_CPU=$(CLK) -mmcu=$(MCU) $(INCLUDE)
+# makefile (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 1)
+MAKEFILE_LIST :=  /mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile
+# makefile (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 95)
+CPPFILES = $(filter %.cpp, $(SRC))
+# 'override' directive
+GNUMAKEFLAGS := 
+# environment
+XDG_DATA_DIRS = /usr/local/share:/usr/share:/var/lib/snapd/desktop
+# environment
+VSCODE_VERBOSE_LOGGING = true
+# makefile (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 25)
+PRGC = avrisp -P COM17
+# environment
+LESSOPEN = | /usr/bin/lesspipe %s
+# environment
+VSCODE_CWD = /mnt/c/Users/ViditK/AppData/Local/Programs/Microsoft VS Code
+# default
+MAKE_HOST := x86_64-pc-linux-gnu
+# environment
+PATH = /home/vk/.vscode-server/bin/899d46d82c4c95423fb7e10e68eba52050e30ba3/bin:/home/vk/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/javapath:/mnt/c/Windows/system32:/mnt/c/Windows:/mnt/c/Windows/System32/Wbem:/mnt/c/Windows/System32/WindowsPowerShell/v1.0/:/mnt/c/Windows/System32/OpenSSH/:/mnt/c/Program Files/Git/cmd:/mnt/c/Program Files (x86)/STMicroelectronics/STM32 ST-LINK Utility/ST-LINK Utility:/mnt/c/Program Files/Microsoft SQL Server/120/Tools/Binn/:/mnt/c/Program Files/Docker/Docker/resources/bin:/mnt/c/ProgramData/DockerDesktop/version-bin:/mnt/c/Program Files (x86)/Intel/Intel(R) Management Engine Components/DAL:/mnt/c/Program Files/Intel/Intel(R) Management Engine Components/DAL:/mnt/c/Users/ViditK/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/ViditK/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/avr:/mnt/c/Users/ViditK/AppData/Local/Programs/Python/Python39:/mnt/c/users/viditk/appdata/local/programs/python/python39/Scripts:/snap/bin
+# makefile (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 67)
+GCC_PATH = C:\"Program Files"\avr8-gnu-toolchain\bin
+# makefile (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 87)
+AVRDUDE = avrdude -c $(PRG) -p $(MCU)
+# environment
+VSCODE_LOG_STACK = false
+# environment
+VSCODE_IPC_HOOK_CLI = /tmp/vscode-ipc-7c1d2c0a-93b2-49a1-bac3-d434005e9579.sock
+# makefile (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 94)
+EXTC := $(subst ,, )
+# makefile (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 68)
+AD_PATH = C:\"Program Files"\avrdude
+# default
+.FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
+# environment
+LS_COLORS = rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:
+# makefile (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 86)
+SIZE = avr-size --format=avr --mcu=$(MCU)
+# automatic
+%F = $(notdir $%)
+# makefile (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 18)
+PRJ = tama_collar
+# environment
+VSCODE_PIPE_LOGGING = true
+# environment
+PWD = /mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar
+# default
+.LOADED := 
+# environment
+VSCODE_AMD_ENTRYPOINT = vs/server/remoteExtensionHostProcess
+# environment
+HOME = /home/vk
+# environment
+LESSCLOSE = /usr/bin/lesspipe %s %s
+# environment
+LOGNAME = vk
+# makefile (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 96)
+EXTCPP := $(subst ,, )
+# environment
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = true
+# makefile (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 88)
+ 
+make: *** No rule to make target 'Src/softuart_avr.o', needed by 'tama_collar.elf'.  Stop.
+ 
+CLEAN_CMD = rm -f $(BUILD_DIR)*.hex $(BUILD_DIR)*.elf $(BUILD_DIR)*.o
+# environment
+VSCODE_HANDLES_UNCAUGHT_ERRORS = true
+# automatic
+^D = $(patsubst %/,%,$(dir $^))
+# environment
+MAKELEVEL := 0
+# default
+MAKE = $(MAKE_COMMAND)
+# default
+MAKECMDGOALS := all
+# environment
+SHLVL = 1
+# makefile (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 32)
+EFU = 0xff
+# makefile (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 83)
+CC = avr-gcc
+# makefile (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 54)
+BUILD_DIR = Build/
+# default
+MAKE_VERSION := 4.2.1
+# environment
+USER = vk
+# makefile
+.DEFAULT_GOAL := all
+# makefile (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 61)
+INCLUDE :=  -IInc/
+# environment
+NAME = Code
+# makefile (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 26)
+PRG = arduino -P /dev/ttyACM0
+# makefile (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 93)
+CFILES = $(filter %.c, $(SRC))
+# automatic
+%D = $(patsubst %/,%,$(dir $%))
+# makefile (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 97)
+OBJ = $(CFILES:.c=.o) $(EXTC:.c=.o) $(CPPFILES:.cpp=.o) $(EXTCPP:.cpp=.o)
+# environment
+VSCODE_WSL_EXT_LOCATION = /mnt/c/Users/ViditK/.vscode/extensions/ms-vscode-remote.remote-wsl-0.63.13
+# default
+MAKE_COMMAND := make
+# default
+.VARIABLES := 
+# automatic
+*F = $(notdir $*)
+# makefile (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 52)
+EXT = Inc/
+# makefile
+MAKEFLAGS = pqrR
+# environment
+MFLAGS = -pqrR
+# automatic
+*D = $(patsubst %/,%,$(dir $*))
+# automatic
++D = $(patsubst %/,%,$(dir $+))
+# makefile (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 85)
+OBJDUMP = avr-objdump
+# automatic
++F = $(notdir $+)
+# makefile (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 31)
+HFU = 0xd9
+# makefile (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 20)
+MCU = atmega328p
+# default
+MAKEFILES := 
+# automatic
+<F = $(notdir $<)
+# environment
+LC_ALL = C
+# makefile (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 90)
+AVRDUDEC = avrdude -c $(PRGC) -p $(MCU)
+# environment
+HOSTTYPE = x86_64
+# automatic
+^F = $(notdir $^)
+# makefile (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 84)
+OBJCOPY = avr-objcopy
+# default
+SUFFIXES := 
+# default
+.INCLUDE_DIRS = /usr/include /usr/local/include /usr/include
+# environment
+VSCODE_INJECT_NODE_MODULE_LOOKUP_PATH = /home/vk/.vscode-server/bin/899d46d82c4c95423fb7e10e68eba52050e30ba3/remote/node_modules
+# default
+.RECIPEPREFIX := 
+# environment
+LANG = C
+# environment
+TERM = xterm-256color
+# environment
+VSCODE_EXTHOST_WILL_SEND_SOCKET = true
+# environment
+WSL_DISTRO_NAME = Ubuntu-20.04
+# makefile (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 101)
+OBJELF = $(addprefix $(BUILD_DIR),$(notdir $(CFILES:.c=.o)))  $(addprefix $(BUILD_DIR),$(notdir $(EXTC:.c=.o)))  $(addprefix $(BUILD_DIR),$(notdir $(CPPFILES:.cpp=.o)))  $(addprefix $(BUILD_DIR),$(notdir $(EXTCPP:.cpp=.o)))
+# variable set hash-table stats:
+# Load=96/1024=9%, Rehash=0, Collisions=28/146=19%
+
+# Pattern-specific Variable Values
+
+# No pattern-specific variable values.
+
+# Directories
+
+# Inc/ (device 15, inode 281474976742493): 18 files, no impossibilities.
+
+# 18 files, no impossibilities in 1 directories.
+
+# Implicit Rules
+
+# No implicit rules.
+
+# Files
+
+# Not a target:
+Src/main.o:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile:
+#  Implicit rule search has been done.
+#  Last modified 2021-12-25 00:09:38.7478624
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+Src/scheduling.o:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+Src/battery.o:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+Src/twi.o:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+tama_collar.elf: Src/softuart_avr.o Src/LoRa.o Src/spi.o Src/main.o Src/mcu_call_functions.o Src/timer_us.o Src/TinyGPS++.o Src/rtc.o Src/scheduling.o Src/twi-lowlevel.o Src/twi.o Src/command_layer.o Src/battery.o Src/medium_collar.o
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  recipe to execute (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 148):
+	$(CC) $(CFLAGS) -o $(BUILD_DIR)$(PRJ).elf $(OBJELF)
+
+all: tama_collar.hex
+#  Command line target.
+#  Implicit rule search has been done.
+#  File does not exist.
+#  File has not been updated.
+
+# Not a target:
+Src/rtc.o:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+testc:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 112):
+	$(AVRDUDEC) -v
+
+# Not a target:
+Src/twi-lowlevel.o:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+test:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 109):
+	$(AVRDUDE) -v
+
+.c.o:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 140):
+	$(CC) $(CFLAGS) -c $< -o $(BUILD_DIR)$(notdir $@)
+
+# Not a target:
+Src/command_layer.o:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+fusec:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 126):
+	$(AVRDUDEC) -U lfuse:w:$(LFU):m -U hfuse:w:$(HFU):m -U efuse:w:$(EFU):m
+
+# Not a target:
+.DEFAULT:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+Src/mcu_call_functions.o:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+flashc: all
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 119):
+	$(AVRDUDEC) -U flash:w:$(BUILD_DIR)$(PRJ).hex:i
+
+.cpp.o:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 144):
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $(BUILD_DIR)$(notdir $@)
+
+clean:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 134):
+	$(CLEAN_CMD)
+	$(foreach dir, $(EXT), rm -f $(dir)/*.o;)
+
+# Not a target:
+Src/timer_us.o:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+fuse:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 123):
+	$(AVRDUDE) -U lfuse:w:$(LFU):m -U hfuse:w:$(HFU):m -U efuse:w:$(EFU):m
+
+# Not a target:
+Src/spi.o:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+flash: all
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 116):
+	$(AVRDUDE) -U flash:w:$(BUILD_DIR)$(PRJ).hex:i
+
+# Not a target:
+Src/TinyGPS++.o:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+tama_collar.hex: tama_collar.elf
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  recipe to execute (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 152):
+	$(OBJCOPY) -j .text -j .data -O ihex $(BUILD_DIR)$(PRJ).elf $(BUILD_DIR)$(PRJ).hex
+	$(SIZE) $(BUILD_DIR)$(PRJ).elf
+
+disasm: tama_collar.elf
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 130):
+	$(OBJDUMP) -d $(PRJ).elf
+
+# Not a target:
+Src/LoRa.o:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+Src/medium_collar.o:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+Src/softuart_avr.o:
+#  Implicit rule search has been done.
+#  File does not exist.
+#  File has not been updated.
+
+# files hash-table stats:
+# Load=30/1024=3%, Rehash=0, Collisions=0/62=0%
+# VPATH Search Paths
+
+# No 'vpath' search paths.
+
+# No general ('VPATH' variable) search path.
+
+# strcache buffers: 1 (0) / strings = 51 / storage = 634 B / avg = 12 B
+# current buf: size = 8162 B / used = 634 B / count = 51 / avg = 12 B
+
+# strcache performance: lookups = 73 / hit rate = 30%
+# hash-table stats:
+# Load=51/8192=1%, Rehash=0, Collisions=3/73=4%
+# Finished Make data base on Sat Dec 25 00:10:55 2021
+
  

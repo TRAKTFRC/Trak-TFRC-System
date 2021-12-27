@@ -157,7 +157,14 @@ uint16_t generateLoRaPkt (char * pkt)
 
 void setTempScheduleConfig ()
 {
-	rtc_set_time_s (19, 1, 0);
+	struct tm temp_time;
+
+	temp_time.hour = 19; temp_time.min = 1; temp_time.sec = 0;
+	temp_time.mday = 27; temp_time.mon = 12; temp_time.year = 21;
+
+	rtc_set_time (&temp_time);
+
+//	rtc_set_time_s (19, 1, 0);
 
 	schedule.start_time.hour = 19;
 	schedule.start_time.min = 0;
@@ -226,7 +233,7 @@ int main ()
     //printf ("Main: GPS Init for Medium Collar\r\n");
 	#endif
 
-	printf ("RTC and GPS Init Done ");
+	printf ("RTC and GPS Init Done \r\n");
 	// Just testing functions REMOVE THIS
 	setTempScheduleConfig ();
 
@@ -250,7 +257,10 @@ int main ()
 	Medium Collar notes:
 		- Low power is considered around 3.1 V because below 3 V GPS does not work
 	*/
-
+		// Initialize milliseconds timer used in time 
+		// keeping at many places in the functionality
+		startmSTimer ();
+		
 		twi_init_master();
 		//printf ("RTC->Init: TWI Init Done\r\n");
 		rtc_setup_ext_init ();
@@ -265,39 +275,34 @@ int main ()
 		if (schedule.wakeup_time.hour == 0 && schedule.wakeup_time.min == 0
 			&& schedule.wakeup_time.sec == 0)
 		{
-			//printf ("Main: Time not set\r\n");
 			rtc_time_set_flag = false;
 		}
 
 		if (!rtc_time_set_flag)
 		{
 			printf ("Main: Time not set, Waiting for time from LoRa Pkt\r\n");
-			LoRaRcvPkts ();
+			//LoRaRcvPkts ();
 		}
 
-		// Initialize milliseconds timer used in time 
-		// keeping at many places in the functionality
-		startmSTimer ();
-
 		// GPS routine
-		gps.handler ();
+	/*	gps.handler ();
 		gps.printData ();
 		if (!rtc_time_set_flag)
 		{
 			//printf ("Main: Setting time from LoRa failed so checking if it can be done from GPS\r\n");
-			if (gps.time.isValid ())
+			if (gps.location.isValid ())
 			{
 				printf ("Main: Valid time available in GPS, setting.\r\n");
 				rtc_set_time_s (gps.time.hour (), gps.time.minute (), gps.time.second ());
 				rtc_time_set_flag = true;
 			}
-		}
+		}*/
 
 		// Generate Packet
-		temp_pkt_len = generateLoRaPkt (sen_pkt_buff);
+		//temp_pkt_len = generateLoRaPkt (sen_pkt_buff);
 
 		// Send LoRa Packet
-		LoRaSendSleep (sen_pkt_buff, temp_pkt_len);
+		//LoRaSendSleep (sen_pkt_buff, temp_pkt_len);
 
 		#ifdef MEDIUM_COLLAR
 		releaseHandler ();
@@ -308,13 +313,13 @@ int main ()
 		rtc_get_time_s ((uint8_t *)&schedule.wakeup_time.hour,
 						(uint8_t *)&schedule.wakeup_time.min,
 						(uint8_t *)&schedule.wakeup_time.sec);
-		//printf ("Main: Sleep Time: %d : %d : %d\r\n\r\n\r\n\r\n", schedule.wakeup_time.hour, 
-//													   schedule.wakeup_time.min,
-//													   schedule.wakeup_time.sec);
+		printf ("Main: Sleep Time: %d : %d : %d\r\n\r\n\r\n\r\n", schedule.wakeup_time.hour, 
+													   schedule.wakeup_time.min,
+													   schedule.wakeup_time.sec);
 
 		// Sleep mode
 		stopmSTimer ();
-	    printf ("Main: Going to sleep now \r\n");
+	    printf ("Main: Going to sleep now \r\n\r\n");
 		sleepMode ();
 	}
 }

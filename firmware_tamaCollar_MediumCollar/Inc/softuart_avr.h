@@ -48,14 +48,6 @@
    || defined (__AVR_ATmega328P__) || defined (__AVR_ATmega328PA__) \
    || defined (__AVR_ATmega164P__) || defined (__AVR_ATmega164A__)
 
-    #define SOFTUART_RXPIN   PIND
-    #define SOFTUART_RXDDR   DDRD
-    #define SOFTUART_RXBIT   PD4
-
-    #define SOFTUART_TXPORT  PORTD
-    #define SOFTUART_TXDDR   DDRD
-    #define SOFTUART_TXBIT   PD6
-
     #define SOFTUART_T_COMP_LABEL      TIMER0_COMPA_vect
     #define SOFTUART_T_COMP_REG        OCR0A
     #define SOFTUART_T_CONTR_REGA      TCCR0A

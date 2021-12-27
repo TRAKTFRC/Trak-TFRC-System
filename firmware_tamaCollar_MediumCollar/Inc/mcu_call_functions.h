@@ -25,14 +25,21 @@
 
 // UART
 // Define baud rate
-// Baud rate will be 38400 if FCPU = 4mHz
-// Baud rate will be 76800 if FCPU = 8mHz
-#define USART_BAUDRATE                      38400 	// Changing here won't to anything, 
+#define USART_BAUDRATE                      19200 	// Changing here won't to anything, 
 												   	// change prescaler manually 
 												   	// or enable calculaion below 
 //#define BAUD_PRESCALE                    	(((F_CPU / (USART_BAUDRATE * 16UL))) - 1)
-#define BAUD_PRESCALE						12 // Above calculation was rounding it to and 
-												// giving wrong results, so had to add manually
+
+#if F_CPU == 4000000
+#define BAUD_PRESCALE						25
+#pragma message ("Baud Prescaler Value set to 25 for 4mHz")
+#elif F_CPU == 8000000
+#define BAUD_PRESCALE						51
+#pragma message ("Baud Prescaler Value set to 51 for 8mHz")
+#else
+#error No Baud Prescaler available for given F_CPU
+#endif
+
 #define UART_CLR_STAT						0x02
 
 #define TIMER_MAX_US						(0xFFFF / 2)

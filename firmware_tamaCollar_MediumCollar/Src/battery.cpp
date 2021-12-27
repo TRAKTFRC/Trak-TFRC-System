@@ -76,6 +76,7 @@ float readVccVoltage(void)
 
 	uint16_t adc = (high << 8) | low;		// 0<= result <=1023
 			
+	printf ("ADC: %lu\r\n", (unsigned long) adc);
 	// Compute a fixed point with 1 decimal place (i.e. 5v= 50)
 	//
 	// Vcc   =  (1.1v * 1024) / ADC

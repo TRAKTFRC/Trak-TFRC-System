@@ -10,6 +10,15 @@
 #define	LORA_RST_PORT				'B'
 #define LORA_RST_PIN				2
 #define SOFTUART_BAUD_RATE      	4800
+
+// Soft UART Related stuff
+#define SOFTUART_RXPIN   PIND
+#define SOFTUART_RXDDR   DDRD
+#define SOFTUART_RXBIT   PD4
+
+#define SOFTUART_TXPORT  PORTD
+#define SOFTUART_TXDDR   DDRD
+#define SOFTUART_TXBIT   PD6
 #endif
 
 #ifdef MEDIUM_COLLAR
@@ -22,6 +31,15 @@
 #define SOFTUART_BAUD_RATE      	9600
 #define MOTOR_PWR_PORT				'D'
 #define MOTOR_PWR_PIN				7
+
+// Soft UART Related stuff
+#define SOFTUART_RXPIN   PINB
+#define SOFTUART_RXDDR   DDRB
+#define SOFTUART_RXBIT   PB1
+
+#define SOFTUART_TXPORT  PORTB
+#define SOFTUART_TXDDR   DDRB
+#define SOFTUART_TXBIT   PB0
 #endif
 
 #endif
