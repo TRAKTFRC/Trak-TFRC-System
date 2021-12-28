@@ -145,7 +145,7 @@ clean:
 
 # elf file
 $(PRJ).elf: $(OBJ)
-	$(CC) $(CFLAGS) -o $(BUILD_DIR)$(PRJ).elf $(OBJELF)
+	$(CC) -Wl,-Map,output.map $(CFLAGS) -o $(BUILD_DIR)$(PRJ).elf $(OBJELF)
 
 # hex file
 $(PRJ).hex: $(PRJ).elf

@@ -58,34 +58,26 @@ void setReleaseTime ()
 
 bool checkIfReleaseTime (struct tm * c_time)
 {
-	printf ("checkIfReleaseTime\r\n");
-	printf ("Year :  %d  ----  %d\r\n", c_time->year, release_time.year);
-
 	//if (c_time->year > release_time.year) return true;
 	//else if (c_time->year < release_time.year) return false;
 	//else if (c_time->year == release_time.year)
 	//{
-		printf ("Went past year\r\n");
 		if (c_time->mon > release_time.mon) return true;
 		else if (c_time->mon < release_time.mon) return false;
 		else if (c_time->mon == release_time.mon)
 		{
-			printf ("Went past month\r\n");
 			if (c_time->mday > release_time.mday) return true;
 			else if (c_time->mday < release_time.mday) return false;
 			else if (c_time->mday == release_time.mday)
 			{
-				printf ("Went past m-day\r\n");
 				if (c_time->hour > release_time.hour) return true;
 				else if (c_time->hour < release_time.hour) return false;
 				else if (c_time->hour == release_time.hour)
 				{
-					printf ("Went past hour\r\n");
 					if (c_time->min > release_time.min) return true;
 					else if (c_time->min < release_time.min) return false;
 					else if (c_time->min == release_time.min)
 					{
-						printf ("Went past min\r\n");
 						if (c_time->sec > release_time.sec) return true;
 						else if (c_time->sec < release_time.sec) return false;
 						else if (c_time->sec == release_time.sec) return true;
@@ -104,10 +96,6 @@ void releaseHandler ()
 	struct tm * c_time;
 	setReleaseTime (); // Temp setting REMOVE IT
 	c_time = rtc_get_time ();
-	printf ("Year :  %d  ----  %d\r\n", c_time->year, release_time.year);
-	printf ("Month :  %d  ----  %d\r\n", c_time->mon, release_time.mon);
-	printf ("MDay :  %d  ----  %d\r\n", c_time->mday, release_time.mday);
-	printf ("Hour :  %d  ----  %d\r\n", c_time->hour, release_time.hour);
 /*	if (vcc_v <= RELEASE_VOLT)
 	{
 		printf ("releaseHandler->Voltage Low\r\n");

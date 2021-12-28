@@ -285,9 +285,9 @@ int main ()
 		}
 
 		// GPS routine
-	/*	gps.handler ();
+		gps.handler ();
 		gps.printData ();
-		if (!rtc_time_set_flag)
+	/*	if (!rtc_time_set_flag)
 		{
 			//printf ("Main: Setting time from LoRa failed so checking if it can be done from GPS\r\n");
 			if (gps.location.isValid ())
