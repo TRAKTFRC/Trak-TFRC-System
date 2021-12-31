@@ -20,10 +20,10 @@ uint8_t generateReleasePkt (char * pkt, float vcc_v, struct tm * pkt_time)
 	byte_count = sprintf (ptr_pkt, "%d", COLLAR_NUMBER);
 	ptr_pkt += byte_count;
 	*(ptr_pkt++) = ','; // Adding seperator
-
+/*
 	printf ("Main: Release Time: %d : %d : %d\r\n", pkt_time->hour, 
 													pkt_time->min,
-													pkt_time->sec);
+													pkt_time->sec);*/
 	
 	ptr_pkt += sprintf (ptr_pkt, "%d:%d:%d", pkt_time->hour, 
 												pkt_time->min,
@@ -107,11 +107,11 @@ void releaseHandler ()
 	}*/
 	if (checkIfReleaseTime (c_time))
 	{
-		printf ("releaseHandler->It's release time\r\n");
+		printf ("releaseHandler->Release time\r\n");
 		runMotor ();
 		temp_pkt_len = generateReleasePkt (temp_pkt, vcc_v, c_time);
-		printf ("Sending: %s", temp_pkt);
-		//LoRaSendSleep (temp_pkt, temp_pkt_len);
+		printf ("Sending: %s\r\n", temp_pkt);
+		LoRaSendSleep (temp_pkt, temp_pkt_len);
 		while (1) sleepMode (); // Will stay in Sleep Forever now, untill reset
 	}
 }
