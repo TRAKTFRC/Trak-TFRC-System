@@ -1,6 +1,7 @@
 #include <inttypes.h>
 #include <avr/io.h>
 #include "spi.h"
+#include "mcu_call_functions.h"
 
 #define __SPI_PORT PORTB
 #define __SPI_DDR DDRB

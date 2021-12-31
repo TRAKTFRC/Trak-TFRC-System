@@ -19,12 +19,12 @@ void CmdProcess::init ()
 void CmdProcess::detect ()
 {
 	struct tm rcv_time;
-	printf ("cmd.detect->Processing command\r\n");
+	//printf ("cmd.detect->Processing command\r\n");
 	this->_read_counter = 1;
 
 	if (this->buff_count !=  PKT_LEN_TIME)
 	{
-		printf ("cmd.detect->Wrong command length: %d\r\n", this->buff_count);
+		//printf ("cmd.detect->Wrong command length: %d\r\n", this->buff_count);
 		return;
 	}
 	
@@ -63,11 +63,11 @@ void CmdProcess::detect ()
 
 		rtc_set_time (&rcv_time);
 		rtc_time_set_flag = true;
-		printf ("cmd.detect-RTC Time set\r\n");
+		//printf ("cmd.detect-RTC Time set\r\n");
 
 	}
 
-	printf ("cmd.detect->Exiting\r\n");
+	//printf ("cmd.detect->Exiting\r\n");
 	return;
 }
 

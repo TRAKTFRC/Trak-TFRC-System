@@ -11,13 +11,16 @@ uint8_t implicitHeaderMode = 0;
 
 void LoRaInit ()
 {
-	spi_init (0, 1, 0, 0, 1);                // MSB, master, mode0, F/4, x2
+    #ifdef MEDIUM_COLLAR
+    setPinModeOutput ('B', 2);
+    setPinLow ('B', 2);
+    #endif
+	spi_init (0, 1, 0, 0, 0);                // MSB, master, mode0, F/4, x1
     if (!begin (915E6)) 
 	{
         printf ("Starting LoRa failed!\r\n");
         while (1);
     }
-	printf ("LoRa Init Successfull\r\n");
 }
 
 void LoRaSendSleep (const char *buffer, uint8_t size)

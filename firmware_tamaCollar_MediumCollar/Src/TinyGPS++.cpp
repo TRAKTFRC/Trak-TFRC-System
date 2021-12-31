@@ -571,16 +571,19 @@ void TinyGPSPlus::_UARTInit ()
 bool TinyGPSPlus::handler ()
 {
 	char rcv_u, print_flag = 1;
+  uint32_t next_ms = 0;
 
-  this->_ms_timer_count = 20000;
+  next_ms = this->_ms_timer_count = 10000;
 
-  printf ("Handeling GPS Now\r\n");
-  //if (this->_power_mode == GPS_PULSE_POWER_MODE) this->_givePulse ();
-  //else this->_enablePwr ();
-/*
-  printf ("GPS->Handler: Return Flase in mS Timer at: %lu\r\n", (unsigned long)this->_ms_timer_count);
-  return false;*/
-  this->_enablePwr ();
+  printf ("Handeling GPS Now: %lu\r\n", (unsigned long) next_ms);
+  #ifndef MEDIUM_COLLAR
+    this->_givePulse ();
+  #endif
+	#ifdef MEDIUM_COLLAR
+    this->_enablePwr ();
+  #endif
+
+  this->location.valid = false;
 
   while (this->_ms_timer_count)
   {
@@ -590,22 +593,31 @@ bool TinyGPSPlus::handler ()
       //if (rcv_u) printf ("%c", rcv_u);
       //if (this->encode(rcv_u)) this->printData();
       this->encode (rcv_u);
-      if ((!(this->_ms_timer_count % 2000)) && print_flag)
-        {this->printData(); print_flag = 0;}
-      if ((this->_ms_timer_count % 2000) && !print_flag)
-        print_flag = 1;
     }
+    if ((this->_ms_timer_count < next_ms) && print_flag)
+      {this->printData(); print_flag = 0; next_ms -= 2000;}
+      //{printf ("GPS Going\r\n"); print_flag = 0;}
+    if ((this->_ms_timer_count > next_ms) && !print_flag)
+      print_flag = 1;
     if (this->location.isValid ())
     {
       printf ("GPS->Handler: Return True in mS Timer at: %lu\r\n", (unsigned long)this->_ms_timer_count);
-      if (this->_power_mode == GPS_PULSE_POWER_MODE) this->_givePulse ();
-      else this->_disablePwr ();
+      #ifndef MEDIUM_COLLAR
+        this->_givePulse ();
+      #endif
+      #ifdef MEDIUM_COLLAR
+        this->_disablePwr ();
+      #endif
       return true;
     }
   }
   printf ("GPS->Handler: Return Flase in mS Timer at: %lu\r\n", (unsigned long)this->_ms_timer_count);
-  if (this->_power_mode == GPS_PULSE_POWER_MODE) this->_givePulse ();
-  else this->_disablePwr ();
+  #ifndef MEDIUM_COLLAR
+    this->_givePulse ();
+  #endif
+  #ifdef MEDIUM_COLLAR
+    this->_disablePwr ();
+  #endif
   return false;
 }
 

@@ -149,9 +149,9 @@ uint16_t generateLoRaPkt (char * pkt)
 		*(ptr_pkt++) = PKT_EOH; // End of header
 		*(ptr_pkt) = 0; // Adding NULL
 	}
-	//printf ("Packet generated: %s \r\n", pkt);
+	printf ("Packet generated: %s \r\n", pkt);
 	pkt_len = strlen (pkt);
-	//printf ("Pkt Length: %d\r\n", pkt_len);
+	printf ("Pkt Length: %d\r\n", pkt_len);
 	return pkt_len;
 }
 
@@ -171,7 +171,7 @@ void setTempScheduleConfig ()
 	schedule.start_time.sec = 0;
 
 	schedule.send_interval.hour = 0;
-	schedule.send_interval.min = 1;
+	schedule.send_interval.min = 3;
 	schedule.send_interval.sec = 0;
 
 	schedule.end_time.hour = 20;
@@ -287,22 +287,22 @@ int main ()
 		// GPS routine
 		gps.handler ();
 		gps.printData ();
-	/*	if (!rtc_time_set_flag)
+		if (!rtc_time_set_flag)
 		{
-			//printf ("Main: Setting time from LoRa failed so checking if it can be done from GPS\r\n");
+			printf ("Main: Time from LoRa failed. Checking GPS Time\r\n");
 			if (gps.location.isValid ())
 			{
-				printf ("Main: Valid time available in GPS, setting.\r\n");
+				printf ("Main: Valid time on GPS \r\n");
 				rtc_set_time_s (gps.time.hour (), gps.time.minute (), gps.time.second ());
 				rtc_time_set_flag = true;
 			}
-		}*/
+		}
 
 		// Generate Packet
-		//temp_pkt_len = generateLoRaPkt (sen_pkt_buff);
+		temp_pkt_len = generateLoRaPkt (sen_pkt_buff);
 
 		// Send LoRa Packet
-		//LoRaSendSleep (sen_pkt_buff, temp_pkt_len);
+		LoRaSendSleep (sen_pkt_buff, temp_pkt_len);
 
 		#ifdef MEDIUM_COLLAR
 		releaseHandler ();
@@ -347,6 +347,3 @@ void appRS485RcvCallback (char rcv_char)
 	if (pkt_main.isr_in >= UART_ISR_BUFF_SIZE)
 		pkt_main.isr_in = 0;
 }
-
-
-
