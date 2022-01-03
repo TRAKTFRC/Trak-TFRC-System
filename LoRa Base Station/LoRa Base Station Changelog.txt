@@ -1,16 +1,16 @@
-LoRa Base Station Changelog
-Release 1
-*Initial Release
+### LoRa Base Station Changelog
+#### Release 1
+- Initial Release
 
-PCB Revision 1.1-
-*Added USB port for charging devices
-*Changed both ports to USB-C
+#### PCB Revision 1.1
+- Added USB port for charging devices
+- Changed both ports to USB-C
 
-PCB Revision 1.2-
-*Changed MCU to ESP32
-*Changed GPS to L80-M39
+#### PCB Revision 1.2
+- Changed MCU to ESP32
+- Changed GPS to L80-M39
 
-Hardware Revision 1.2-
+#### Hardware Revision 1.2
 //Synchronized PCB Revision and case revision to avoid confusion.
-*Swapped EPDM Rubber O-Rings for Rubber Washers(nitrile)
-*Swapped TPU plugs for RTV Silicone cast plugs
+- Swapped EPDM Rubber O-Rings for Rubber Washers(nitrile)
+- Swapped TPU plugs for RTV Silicone cast plugs

@@ -1,12 +1,12 @@
-Medium Collar Changelog
-Release 1
-*Initial Release
+### Medium Collar Changelog
+#### Release 1
+- Initial Release
 
-PCB Revision 1.1- 
-*Completely overhauled PCB
-*Swapped GPS PA6H for GPS L80-M39
-*Added motor control
-*Added EEPROM 24LC512
+#### PCB Revision 1.1 
+- Completely overhauled PCB
+- Swapped GPS PA6H for GPS L80-M39
+- Added motor control
+- Added EEPROM 24LC512
 
-Hardware Revision 1.1- 
-*Added motorized release mechanism
+#### Hardware Revision 1.1 
+- Added motorized release mechanism
