@@ -162,7 +162,7 @@ void setTempScheduleConfig ()
 	temp_time.hour = 19; temp_time.min = 1; temp_time.sec = 0;
 	temp_time.mday = 27; temp_time.mon = 12; temp_time.year = 21;
 
-	rtc_set_time (&temp_time);
+//	rtc_set_time (&temp_time);
 
 //	rtc_set_time_s (19, 1, 0);
 
@@ -178,7 +178,7 @@ void setTempScheduleConfig ()
 	schedule.end_time.min = 0;
 	schedule.end_time.sec = 0;
 	
-	rtc_time_set_flag = true;
+	//rtc_time_set_flag = true;
 }
 
 void LoRaRcvPkts ()
@@ -281,7 +281,7 @@ int main ()
 		if (!rtc_time_set_flag)
 		{
 			printf ("Main: Time not set, Waiting for time from LoRa Pkt\r\n");
-			//LoRaRcvPkts ();
+			LoRaRcvPkts ();
 		}
 
 		// GPS routine

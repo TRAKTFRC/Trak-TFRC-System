@@ -30,7 +30,7 @@ void CmdProcess::detect ()
 	
 	switch (this->buff [this->_read_counter])
 	{
-	case 'R': // Packet been read here: {R,09:33:60,17/12/21}
+	case 'R': // Packet been read here: {R,09:33:40,17/12/21}
 		READ_COUNT_HANDLE (2);
 		rcv_time.hour = (this->buff [this->_read_counter] - '0') * 10;
 		READ_COUNT_HANDLE (1);
@@ -63,11 +63,11 @@ void CmdProcess::detect ()
 
 		rtc_set_time (&rcv_time);
 		rtc_time_set_flag = true;
-		//printf ("cmd.detect-RTC Time set\r\n");
+		printf ("cmd.detect-RTC Time set\r\n");
 
 	}
 
-	//printf ("cmd.detect->Exiting\r\n");
+	printf ("cmd.detect->Exiting\r\n");
 	return;
 }
 
