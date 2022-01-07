@@ -573,7 +573,7 @@ bool TinyGPSPlus::handler ()
 	char rcv_u, print_flag = 1;
   uint32_t next_ms = 0;
 
-  next_ms = this->_ms_timer_count = 10000;
+  next_ms = this->_ms_timer_count = 60000;
 
   printf ("Handeling GPS Now: %lu\r\n", (unsigned long) next_ms);
   #ifndef MEDIUM_COLLAR

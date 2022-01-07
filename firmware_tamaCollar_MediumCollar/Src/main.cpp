@@ -159,10 +159,10 @@ void setTempScheduleConfig ()
 {
 	struct tm temp_time;
 
-	temp_time.hour = 19; temp_time.min = 1; temp_time.sec = 0;
+	temp_time.hour = 19; temp_time.min = 0; temp_time.sec = 0;
 	temp_time.mday = 27; temp_time.mon = 12; temp_time.year = 21;
 
-//	rtc_set_time (&temp_time);
+	rtc_set_time (&temp_time);
 
 //	rtc_set_time_s (19, 1, 0);
 
