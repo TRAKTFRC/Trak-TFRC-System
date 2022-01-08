@@ -533,6 +533,46 @@ void TinyGPSPlus::_givePulse ()
 	printf ("GPS Pulse Given \r\n");
 }
 
+int TinyGPSPlus::_checkSerialStreamIn ()
+{
+  char rcv_u, rcv_count;
+  rcv_count = 0;
+  this->_ms_timer_count = 1500;
+  while (this->_ms_timer_count)
+  {
+    if (!(softuart_kbhit())) continue;
+    rcv_u = softuart_getchar();
+    rcv_count ++;
+  }
+  return rcv_count;
+}
+
+bool TinyGPSPlus::gpsPulseWake ()
+{
+  for (int loop_cnt = 0; loop_cnt < 6; loop_cnt++)
+  {    
+    this->_givePulse ();
+    if (this->_checkSerialStreamIn ()) 
+      {printf ("GPS Up\r\n"); return true;}
+    printf ("GPS wake fail\r\n");
+  }
+  printf ("GPS Up Final fail\r\n");
+  return false;
+}
+
+bool TinyGPSPlus::gpsPulseSleep ()
+{
+  for (int loop_cnt = 0; loop_cnt < 6; loop_cnt++)
+  {    
+    this->_givePulse ();
+    if (!(this->_checkSerialStreamIn ()))
+      {printf ("GPS Sleep\r\n"); return true;}
+    printf ("GPS sleep fail\r\n");
+  }
+  printf ("GPS Sleep Final fail\r\n");
+  return false;
+}
+
 void TinyGPSPlus::init (uint8_t power_mode)
 {
   this->_UARTInit ();
@@ -568,7 +608,7 @@ void TinyGPSPlus::_UARTInit ()
 }
 
 
-bool TinyGPSPlus::handler ()
+char TinyGPSPlus::handler ()
 {
 	char rcv_u, print_flag = 1;
   uint32_t next_ms = 0;
@@ -577,7 +617,7 @@ bool TinyGPSPlus::handler ()
 
   printf ("Handeling GPS Now: %lu\r\n", (unsigned long) next_ms);
   #ifndef MEDIUM_COLLAR
-    this->_givePulse ();
+    if (!(this->gpsPulseWake ())) return GPS_RET_WAKE_FAIL;
   #endif
 	#ifdef MEDIUM_COLLAR
     this->_enablePwr ();
@@ -601,24 +641,24 @@ bool TinyGPSPlus::handler ()
       print_flag = 1;
     if (this->location.isValid ())
     {
-      printf ("GPS->Handler: Return True in mS Timer at: %lu\r\n", (unsigned long)this->_ms_timer_count);
+      printf ("GPS->Handler: Ret Loc in mS Timer at: %lu\r\n", (unsigned long)this->_ms_timer_count);
       #ifndef MEDIUM_COLLAR
-        this->_givePulse ();
+        if (!(this->gpsPulseSleep ())) return GPS_RET_SLEEP_FAIL;
       #endif
       #ifdef MEDIUM_COLLAR
         this->_disablePwr ();
       #endif
-      return true;
+      return GPS_RET_HANDLE_SUCCESS;
     }
   }
-  printf ("GPS->Handler: Return Flase in mS Timer at: %lu\r\n", (unsigned long)this->_ms_timer_count);
+  printf ("GPS->Handler: Ret No Loc in mS Timer at: %lu\r\n", (unsigned long)this->_ms_timer_count);
   #ifndef MEDIUM_COLLAR
-    this->_givePulse ();
+    if (!(this->gpsPulseSleep ())) return GPS_RET_SLEEP_FAIL;
   #endif
   #ifdef MEDIUM_COLLAR
     this->_disablePwr ();
   #endif
-  return false;
+  return GPS_RET_HANDLE_SUCCESS;
 }
 
 

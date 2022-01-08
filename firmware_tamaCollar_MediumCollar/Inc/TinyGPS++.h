@@ -40,6 +40,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #define GPS_MOSFET_POWER_MODE       1
 
 
+#define GPS_RET_HANDLE_SUCCESS      0
+#define GPS_RET_WAKE_FAIL           1
+#define GPS_RET_SLEEP_FAIL          2
+
+
 struct RawDegrees
 {
    uint16_t deg;
@@ -224,7 +229,7 @@ public:
   TinyGPSPlus();
 
    void init (uint8_t power_mode);
-   bool handler ();
+   char handler ();
 
    void printData();
 
@@ -232,6 +237,9 @@ public:
 
    // mS Timer
    void mSTimerCallback ();
+   
+   bool gpsPulseWake ();
+   bool gpsPulseSleep ();
    
   bool encode(char c); // process one character received from GPS
   TinyGPSPlus &operator << (char c) {encode(c); return *this;}
@@ -271,6 +279,7 @@ private:
 
    //UART Related funtions
    void _UARTInit ();
+   int _checkSerialStreamIn ();
 
   // parsing state variables
   uint8_t parity;

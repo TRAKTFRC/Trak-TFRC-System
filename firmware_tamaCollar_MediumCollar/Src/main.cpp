@@ -90,10 +90,11 @@ void CmdUARTInterface::timerHandler ()
 	return;
 }
 
-uint16_t generateLoRaPkt (char * pkt)
+uint16_t generateLoRaPkt (char * pkt, char gps_ret)
 {
 	char * ptr_pkt = pkt;
 	uint16_t byte_count = 0, pkt_len;
+	
 	if (gps.location.isValid ())
 	{
 		*(ptr_pkt++) = PKT_SOH; // Start of header
@@ -122,6 +123,14 @@ uint16_t generateLoRaPkt (char * pkt)
 												schedule.wakeup_time.min,
 												schedule.wakeup_time.sec);
 
+		*(ptr_pkt++) = ','; // Adding seperator
+
+		// GPS State
+		if (gps_ret == GPS_RET_SLEEP_FAIL)
+			ptr_pkt += sprintf (ptr_pkt, "GFS");
+		else
+			ptr_pkt += sprintf (ptr_pkt, "GOK");
+
 		*(ptr_pkt++) = PKT_EOH; // End of header
 		*(ptr_pkt) = 0; // Adding NULL
 	}
@@ -146,9 +155,18 @@ uint16_t generateLoRaPkt (char * pkt)
 												schedule.wakeup_time.min,
 												schedule.wakeup_time.sec);
 
+		*(ptr_pkt++) = ','; // Adding seperator
+
+		// GPS State
+		if (gps_ret == GPS_RET_WAKE_FAIL)
+			ptr_pkt += sprintf (ptr_pkt, "GFW");
+		else
+			ptr_pkt += sprintf (ptr_pkt, "GOK");
+
 		*(ptr_pkt++) = PKT_EOH; // End of header
 		*(ptr_pkt) = 0; // Adding NULL
 	}
+
 	printf ("Packet generated: %s \r\n", pkt);
 	pkt_len = strlen (pkt);
 	printf ("Pkt Length: %d\r\n", pkt_len);
@@ -284,8 +302,8 @@ int main ()
 			LoRaRcvPkts ();
 		}
 
-		// GPS routine
-		gps.handler ();
+		// GPS routine and Generate Packet
+		temp_pkt_len = generateLoRaPkt (sen_pkt_buff, gps.handler ());
 		gps.printData ();
 		if (!rtc_time_set_flag)
 		{
@@ -297,9 +315,6 @@ int main ()
 				rtc_time_set_flag = true;
 			}
 		}
-
-		// Generate Packet
-		temp_pkt_len = generateLoRaPkt (sen_pkt_buff);
 
 		// Send LoRa Packet
 		LoRaSendSleep (sen_pkt_buff, temp_pkt_len);
