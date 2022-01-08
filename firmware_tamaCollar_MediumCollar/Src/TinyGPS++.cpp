@@ -538,12 +538,16 @@ int TinyGPSPlus::_checkSerialStreamIn ()
   char rcv_u, rcv_count;
   rcv_count = 0;
   this->_ms_timer_count = 1500;
+  printf ("\r\n");
   while (this->_ms_timer_count)
   {
     if (!(softuart_kbhit())) continue;
     rcv_u = softuart_getchar();
+    if (!rcv_u) continue;
+    printf ("%c", rcv_u);
     rcv_count ++;
   }
+  printf ("\r\n");
   return rcv_count;
 }
 
@@ -613,9 +617,8 @@ char TinyGPSPlus::handler ()
 	char rcv_u, print_flag = 1;
   uint32_t next_ms = 0;
 
-  next_ms = this->_ms_timer_count = 60000;
-
-  printf ("Handeling GPS Now: %lu\r\n", (unsigned long) next_ms);
+  printf ("Handeling GPS Now\r\n");
+  
   #ifndef MEDIUM_COLLAR
     if (!(this->gpsPulseWake ())) return GPS_RET_WAKE_FAIL;
   #endif
@@ -624,6 +627,7 @@ char TinyGPSPlus::handler ()
   #endif
 
   this->location.valid = false;
+  next_ms = this->_ms_timer_count = 60000;
 
   while (this->_ms_timer_count)
   {

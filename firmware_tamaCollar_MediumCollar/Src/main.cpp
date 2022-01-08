@@ -298,8 +298,8 @@ int main ()
 
 		if (!rtc_time_set_flag)
 		{
-			printf ("Main: Time not set, Waiting for time from LoRa Pkt\r\n");
-			LoRaRcvPkts ();
+			//printf ("Main: Time not set, Waiting for time from LoRa Pkt\r\n");
+			//LoRaRcvPkts ();
 		}
 
 		// GPS routine and Generate Packet

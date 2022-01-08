@@ -6,7 +6,7 @@ make all -f /mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumColl
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Sat Jan  8 12:47:25 2022
+# Make data base, printed on Sat Jan  8 20:46:15 2022
 
 # Variables
 
@@ -73,7 +73,7 @@ AVRDUDE = avrdude -c $(PRG) -p $(MCU)
 # environment
 VSCODE_LOG_STACK = false
 # environment
-VSCODE_IPC_HOOK_CLI = /tmp/vscode-ipc-0941e93c-56ac-478b-94f5-74baf47e7c43.sock
+VSCODE_IPC_HOOK_CLI = /tmp/vscode-ipc-6da8533d-70a7-438c-ac40-ee92e34d4223.sock
 # makefile (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 94)
 EXTC := $(subst ,, )
 # makefile (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 68)
@@ -200,12 +200,10 @@ TERM = xterm-256color
 VSCODE_EXTHOST_WILL_SEND_SOCKET = true
 # environment
 WSL_DISTRO_NAME = Ubuntu-20.04
-# environment
-MOTD_SHOWN = update-motd
 # makefile (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 101)
 OBJELF = $(addprefix $(BUILD_DIR),$(notdir $(CFILES:.c=.o)))  $(addprefix $(BUILD_DIR),$(notdir $(EXTC:.c=.o)))  $(addprefix $(BUILD_DIR),$(notdir $(CPPFILES:.cpp=.o)))  $(addprefix $(BUILD_DIR),$(notdir $(EXTCPP:.cpp=.o)))
 # variable set hash-table stats:
-# Load=97/1024=9%, Rehash=0, Collisions=28/147=19%
+# Load=96/1024=9%, Rehash=0, Collisions=28/146=19%
 
 # Pattern-specific Variable Values
 
@@ -426,7 +424,7 @@ Src/softuart_avr.o:
 # strcache performance: lookups = 73 / hit rate = 30%
 # hash-table stats:
 # Load=51/8192=1%, Rehash=0, Collisions=3/73=4%
-# Finished Make data base on Sat Jan  8 12:47:25 2022
+# Finished Make data base on Sat Jan  8 20:46:15 2022
 
  
 make: *** No rule to make target 'Src/softuart_avr.o', needed by 'tama_collar.elf'.  Stop.
