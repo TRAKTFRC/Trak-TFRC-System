@@ -305,16 +305,16 @@ int main ()
 		// GPS routine and Generate Packet
 		temp_pkt_len = generateLoRaPkt (sen_pkt_buff, gps.handler ());
 		gps.printData ();
-		if (!rtc_time_set_flag)
-		{
-			printf ("Main: Time from LoRa failed. Checking GPS Time\r\n");
+//		if (!rtc_time_set_flag)
+//		{
+			//printf ("Main: Time from LoRa failed. Checking GPS Time\r\n");
 			if (gps.location.isValid ())
 			{
 				printf ("Main: Valid time on GPS \r\n");
 				rtc_set_time_s (gps.time.hour (), gps.time.minute (), gps.time.second ());
 				rtc_time_set_flag = true;
 			}
-		}
+//		}
 
 		// Send LoRa Packet
 		LoRaSendSleep (sen_pkt_buff, temp_pkt_len);

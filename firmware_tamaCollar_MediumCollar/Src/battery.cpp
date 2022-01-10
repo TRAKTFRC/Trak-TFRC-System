@@ -22,8 +22,8 @@ float readVccVoltage(void)
 	// REFS = 00       = Vcc used as Vref
 	// MUX  =   100001 = Single ended, 1.1V (Internal Ref) as Vin
 	
-	ADMUX = 0b00100001;
-	
+	ADMUX = 0b01001110;
+			
 	/*
 	By default, the successive approximation circuitry requires an input clock frequency between 50
 	kHz and 200 kHz to get maximum resolution.
@@ -58,8 +58,10 @@ float readVccVoltage(void)
 
 	ADCSRA |= _BV(ADSC);				// Start a conversion
 
-	while( ADCSRA & _BV( ADSC) ) ;		// Wait for 1st conversion to be ready…
-										//..and ignore the result
+	while( ADCSRA & _BV( ADSC) ) ;		// Wait for 2nd conversion
+
+	_delay_ms(10);
+
 
 	/*
 		After the conversion is complete (ADIF is high), the conversion result can be found in the ADC
@@ -70,9 +72,12 @@ float readVccVoltage(void)
 	*/
 	
 	// Note we could have used ADLAR left adjust mode and then only needed to read a single byte here
-		
+
 	uint8_t low  = ADCL;
 	uint8_t high = ADCH;
+
+//	high = 0;
+	printf ("ADCL: %d, ADCH: %d", low, high);
 
 	uint16_t adc = (high << 8) | low;		// 0<= result <=1023
 			
@@ -85,6 +90,7 @@ float readVccVoltage(void)
 				
 	uint8_t vccx10 = (uint8_t) ( (11 * 1024) / adc); 
 	
+	printf ("vccx10: %d\r\n", vccx10);
 	/*	
 		Note that the ADC will not automatically be turned off when entering other sleep modes than Idle
 		mode and ADC Noise Reduction mode. The user is advised to write zero to ADEN before entering such
