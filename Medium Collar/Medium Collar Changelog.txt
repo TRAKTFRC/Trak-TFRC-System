@@ -10,3 +10,6 @@
 
 #### Hardware Revision 1.1 
 - Added motorized release mechanism
+
+#### PCB Revision 1.2
+- Added Resistors to limit inrush current on GPS & Motor Mosfet.

@@ -14,3 +14,8 @@
 //Synchronized PCB Revision and case revision to avoid confusion.
 - Swapped EPDM Rubber O-Rings for Rubber Washers(nitrile)
 - Swapped TPU plugs for RTV Silicone cast plugs
+
+
+#### PCB Revision 1.3
+- Added Resistor to limit inrush current on GPS Mosfet.
+- Fixed RTC crystal footprint
