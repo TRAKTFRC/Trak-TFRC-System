@@ -173,6 +173,19 @@ uint16_t generateLoRaPkt (char * pkt, char gps_ret)
 	return pkt_len;
 }
 
+void setDefaultTime ()
+{
+	struct tm temp_time;
+
+	temp_time.hour = schedule.start_time.hour; 
+	temp_time.min = schedule.start_time.min;
+	temp_time.sec = schedule.start_time.sec;
+	temp_time.mday = 14; temp_time.mon = 1; temp_time.year = 22;
+
+	rtc_set_time (&temp_time);
+	rtc_time_set_flag = true;
+}
+
 void setTempScheduleConfig ()
 {
 	struct tm temp_time;
@@ -183,20 +196,19 @@ void setTempScheduleConfig ()
 	rtc_set_time (&temp_time);
 
 //	rtc_set_time_s (19, 1, 0);
+//	rtc_time_set_flag = true;
 
-	schedule.start_time.hour = 19;
-	schedule.start_time.min = 0;
+	schedule.start_time.hour = 0;
+	schedule.start_time.min = 30;
 	schedule.start_time.sec = 0;
 
 	schedule.send_interval.hour = 0;
-	schedule.send_interval.min = 3;
+	schedule.send_interval.min = 2;
 	schedule.send_interval.sec = 0;
 
-	schedule.end_time.hour = 20;
-	schedule.end_time.min = 0;
-	schedule.end_time.sec = 0;
-	
-	//rtc_time_set_flag = true;
+	schedule.end_time.hour = 12;
+	schedule.end_time.min = 30;
+	schedule.end_time.sec = 0;	
 }
 
 void LoRaRcvPkts ()
@@ -305,16 +317,30 @@ int main ()
 		// GPS routine and Generate Packet
 		temp_pkt_len = generateLoRaPkt (sen_pkt_buff, gps.handler ());
 		gps.printData ();
-//		if (!rtc_time_set_flag)
-//		{
-			//printf ("Main: Time from LoRa failed. Checking GPS Time\r\n");
-			if (gps.location.isValid ())
-			{
-				printf ("Main: Valid time on GPS \r\n");
-				rtc_set_time_s (gps.time.hour (), gps.time.minute (), gps.time.second ());
-				rtc_time_set_flag = true;
-			}
-//		}
+
+		if (gps.location.isValid ())
+		{
+			printf ("Main: Valid time on GPS, setting RTC Time \r\n");
+			struct tm temp_tm;
+			temp_tm.hour = gps.time.hour ();
+			temp_tm.min = gps.time.minute ();
+			temp_tm.sec = gps.time.second ();
+			temp_tm.mday = gps.date.day ();
+			temp_tm.mon = gps.date.month ();
+			temp_tm.year = gps.date.year ();
+			rtc_set_time (&temp_tm);
+			rtc_get_time_s ((uint8_t *)&schedule.wakeup_time.hour,
+							(uint8_t *)&schedule.wakeup_time.min,
+							(uint8_t *)&schedule.wakeup_time.sec);
+			rtc_time_set_flag = true;
+		}
+		else if (!rtc_time_set_flag)
+		{
+			setDefaultTime ();
+			rtc_get_time_s ((uint8_t *)&schedule.wakeup_time.hour,
+					(uint8_t *)&schedule.wakeup_time.min,
+					(uint8_t *)&schedule.wakeup_time.sec);
+		}
 
 		// Send LoRa Packet
 		LoRaSendSleep (sen_pkt_buff, temp_pkt_len);
