@@ -10,6 +10,7 @@
 #include "rtc.h"
 #include "twi-lowlevel.h"
 #include "command_layer.h"
+#include "battery.h"
 #ifdef MEDIUM_COLLAR
 #include "medium_collar.h"
 #endif
@@ -193,20 +194,20 @@ void setTempScheduleConfig ()
 	temp_time.hour = 19; temp_time.min = 0; temp_time.sec = 0;
 	temp_time.mday = 27; temp_time.mon = 12; temp_time.year = 21;
 
-	rtc_set_time (&temp_time);
+//	rtc_set_time (&temp_time);
 
 //	rtc_set_time_s (19, 1, 0);
 //	rtc_time_set_flag = true;
 
-	schedule.start_time.hour = 0;
+	schedule.start_time.hour = 3;
 	schedule.start_time.min = 30;
 	schedule.start_time.sec = 0;
 
 	schedule.send_interval.hour = 0;
-	schedule.send_interval.min = 2;
+	schedule.send_interval.min = 1;
 	schedule.send_interval.sec = 0;
 
-	schedule.end_time.hour = 12;
+	schedule.end_time.hour = 17;
 	schedule.end_time.min = 30;
 	schedule.end_time.sec = 0;	
 }
@@ -267,6 +268,16 @@ int main ()
 	// Just testing functions REMOVE THIS
 	setTempScheduleConfig ();
 
+	// Section to send first tim wakeup packet
+	float temp_bat_volt = readVccVoltage ();
+	temp_bat_volt = readVccVoltage ();
+
+	sprintf (sen_pkt_buff, "{C%d,ON,%.1f}", COLLAR_NUMBER, temp_bat_volt);
+	temp_bat_volt = strlen (sen_pkt_buff);
+	printf ("Sending on Packet: %s \r\n", sen_pkt_buff);
+	LoRaSendSleep (sen_pkt_buff, temp_pkt_len);
+
+
 	while (1)
 	{
 	/*
@@ -302,11 +313,11 @@ int main ()
 													   schedule.wakeup_time.min,
 													   schedule.wakeup_time.sec);
 
-		if (schedule.wakeup_time.hour == 0 && schedule.wakeup_time.min == 0
+		/*if (schedule.wakeup_time.hour == 0 && schedule.wakeup_time.min == 0
 			&& schedule.wakeup_time.sec == 0)
 		{
 			rtc_time_set_flag = false;
-		}
+		}*/
 
 		if (!rtc_time_set_flag)
 		{
