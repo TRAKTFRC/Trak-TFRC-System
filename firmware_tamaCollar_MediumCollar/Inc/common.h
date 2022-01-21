@@ -10,7 +10,7 @@
 #define FAILURE                 1
 
 #ifndef COLLAR_NUMBER
-#define COLLAR_NUMBER 			1
+#define COLLAR_NUMBER 			11
 #endif
 
 #define PKT_SOH                 '{'
