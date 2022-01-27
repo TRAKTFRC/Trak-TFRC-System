@@ -32,7 +32,7 @@ uint8_t SchedulingManage::checkIfInSendTime (tm * given_time)
 	{
 		// Logic to check if in time when end time is next day
 		if ((given_time->hour >= this->start_time.hour) &&
-			(given_time->hour < 0))
+			(given_time->hour <= 23))
 		{
 			// Still in Send time
 			inside_time_flag = 1;
@@ -83,25 +83,15 @@ void SchedulingManage::_calcNextAlarm (tm * given_time)
 	this->_next_alarm.hour = (given_time->hour + this->send_interval.hour) % 24;
 	this->_next_alarm.min = (given_time->min + this->send_interval.min) % 60;
 
-	if ((given_time->min + this->send_interval.min) > 60)
-	{
-		this->_next_alarm.min += 1;
-		if (this->_next_alarm.min >= 60)
-		{
-			this->_next_alarm.min = 0;
-			this->_next_alarm.hour += 1;
-			if (this->_next_alarm.hour >= 24)
-			{
-				this->_next_alarm.hour = 0;
-			}
-		}
-	}
+	if ((given_time->min + this->send_interval.min) >= 60)
+		this->_next_alarm.hour = (1 + this->_next_alarm.hour) % 24;
 }
 
 
 void SchedulingManage::alarmHandler ()
 {
 	this->_calcNextAlarm (&(this->wakeup_time));
+	printf ("schedule->alarmHandler:Next alarm for: %d / %d\r\n", this->_next_alarm.hour, this->_next_alarm.min);
 	if (this->checkIfInSendTime (&(this->_next_alarm)))
 	{
 		rtc_set_alarm_s (this->_next_alarm.hour, this->_next_alarm.min, 0);

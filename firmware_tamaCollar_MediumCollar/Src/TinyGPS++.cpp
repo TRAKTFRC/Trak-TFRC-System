@@ -627,7 +627,7 @@ char TinyGPSPlus::handler ()
   #endif
 
   this->location.valid = false;
-  next_ms = this->_ms_timer_count = 60000;
+  next_ms = this->_ms_timer_count = 30000;
 
   while (this->_ms_timer_count)
   {
@@ -639,7 +639,10 @@ char TinyGPSPlus::handler ()
       this->encode (rcv_u);
     }
     if ((this->_ms_timer_count < next_ms) && print_flag)
-      {this->printData(); print_flag = 0; next_ms -= 2000;}
+      {
+        //this->printData(); print_flag = 0; 
+        next_ms -= 2000;
+      }
       //{printf ("GPS Going\r\n"); print_flag = 0;}
     if ((this->_ms_timer_count > next_ms) && !print_flag)
       print_flag = 1;
