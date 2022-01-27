@@ -1,0 +1,13 @@
+### Tamarin Group Monitor Changelog
+#### Release 1
+- Initial Release
+
+#### PCB Revision 1.1 
+To Do
+Change Screw layout on camera module to 4 screws from 3. 35mm apart
+
+Add keepout around ESP32 antenna
+Rotate the PIR sensor upsidedown.
+Add options for relays/mosfets for Illuminator control.
+
+

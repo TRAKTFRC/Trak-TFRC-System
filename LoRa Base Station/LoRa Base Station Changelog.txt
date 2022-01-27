@@ -19,3 +19,5 @@
 #### PCB Revision 1.3
 - Added Resistor to limit inrush current on GPS Mosfet.
 - Fixed RTC crystal footprint
+- Fixed UART lines
+- Pin change- GPSPower to IO35?
