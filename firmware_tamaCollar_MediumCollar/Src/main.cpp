@@ -95,13 +95,14 @@ uint16_t generateLoRaPkt (char * pkt, char gps_ret)
 {
 	char * ptr_pkt = pkt;
 	uint16_t byte_count = 0, pkt_len;
+	float vcc_v = readVccVoltage ();
 	
 	if (gps.location.isValid ())
 	{
 		*(ptr_pkt++) = PKT_SOH; // Start of header
 		
 		// Name of device
-		*(ptr_pkt++) = 'C';
+		*(ptr_pkt++) = DEVICE_CODE;
 		byte_count = sprintf (ptr_pkt, "%d", COLLAR_NUMBER);
 		ptr_pkt += byte_count;
 
@@ -126,6 +127,9 @@ uint16_t generateLoRaPkt (char * pkt, char gps_ret)
 
 		*(ptr_pkt++) = ','; // Adding seperator
 
+		ptr_pkt += sprintf (ptr_pkt, "%.1f", vcc_v); // Adding the Vcc Voltage
+		*(ptr_pkt++) = ','; // Adding seperator
+
 		// GPS State
 		if (gps_ret == GPS_RET_SLEEP_FAIL)
 			ptr_pkt += sprintf (ptr_pkt, "GFS");
@@ -140,7 +144,7 @@ uint16_t generateLoRaPkt (char * pkt, char gps_ret)
 		*(ptr_pkt++) = PKT_SOH; // Start of header
 
 		// Name of device
-		*(ptr_pkt++) = 'C';
+		*(ptr_pkt++) = DEVICE_CODE;
 		byte_count = sprintf (ptr_pkt, "%d", COLLAR_NUMBER);
 		ptr_pkt += byte_count;
 
@@ -151,11 +155,21 @@ uint16_t generateLoRaPkt (char * pkt, char gps_ret)
 
 		*(ptr_pkt++) = ','; // Adding seperator
 
+		*(ptr_pkt++) = '-'; // Adding empty dash
+		*(ptr_pkt++) = ','; // Adding seperator
+		*(ptr_pkt++) = '-'; // Adding empty dash
+		*(ptr_pkt++) = ','; // Adding seperator
+		*(ptr_pkt++) = '-'; // Adding empty dash
+		*(ptr_pkt++) = ','; // Adding seperator
+
 		// Adding Time stamp
 		ptr_pkt += sprintf (ptr_pkt, "%d:%d:%d", schedule.wakeup_time.hour, 
 												schedule.wakeup_time.min,
 												schedule.wakeup_time.sec);
 
+		*(ptr_pkt++) = ','; // Adding seperator
+
+		ptr_pkt += sprintf (ptr_pkt, "%.1f", vcc_v); // Adding the Vcc Voltage
 		*(ptr_pkt++) = ','; // Adding seperator
 
 		// GPS State
@@ -189,26 +203,26 @@ void setDefaultTime ()
 
 void setTempScheduleConfig ()
 {
-	struct tm temp_time;
+/*	struct tm temp_time;
 
 	temp_time.hour = 19; temp_time.min = 0; temp_time.sec = 0;
 	temp_time.mday = 27; temp_time.mon = 12; temp_time.year = 21;
-
+*/
 //	rtc_set_time (&temp_time);
 
 //	rtc_set_time_s (19, 1, 0);
 //	rtc_time_set_flag = true;
 
-	schedule.start_time.hour = 3;
-	schedule.start_time.min = 30;
+	schedule.start_time.hour = 00;
+	schedule.start_time.min = 2;
 	schedule.start_time.sec = 0;
 
 	schedule.send_interval.hour = 0;
-	schedule.send_interval.min = 1;
+	schedule.send_interval.min = 2;
 	schedule.send_interval.sec = 0;
 
-	schedule.end_time.hour = 17;
-	schedule.end_time.min = 30;
+	schedule.end_time.hour = 23;
+	schedule.end_time.min = 58;
 	schedule.end_time.sec = 0;	
 }
 
@@ -272,9 +286,13 @@ int main ()
 	float temp_bat_volt = readVccVoltage ();
 	temp_bat_volt = readVccVoltage ();
 
+	#ifdef MEDIUM_COLLAR
+	firstTimeMOtorRoutine ();
+	#endif
+
 	sprintf (sen_pkt_buff, "{C%d,ON,%.1f}", COLLAR_NUMBER, temp_bat_volt);
 	temp_bat_volt = strlen (sen_pkt_buff);
-	printf ("Sending on Packet: %s \r\n", sen_pkt_buff);
+	printf ("Sending ON Packet: %s \r\n", sen_pkt_buff);
 	LoRaSendSleep (sen_pkt_buff, temp_pkt_len);
 
 
@@ -312,7 +330,8 @@ int main ()
 		printf ("Main: Wakeup Time: %d : %d : %d\r\n", schedule.wakeup_time.hour, 
 													   schedule.wakeup_time.min,
 													   schedule.wakeup_time.sec);
-
+		temp_bat_volt = readVccVoltage ();
+		
 		/*if (schedule.wakeup_time.hour == 0 && schedule.wakeup_time.min == 0
 			&& schedule.wakeup_time.sec == 0)
 		{
@@ -357,7 +376,7 @@ int main ()
 		LoRaSendSleep (sen_pkt_buff, temp_pkt_len);
 
 		#ifdef MEDIUM_COLLAR
-		releaseHandler ();
+		//releaseHandler (temp_bat_volt);
 		#endif
 
 		// Set the next alarm
@@ -373,6 +392,8 @@ int main ()
 		stopmSTimer ();
 	    printf ("Main: Going to sleep now \r\n\r\n");
 		sleepMode ();
+	    //printf ("Main: Not sleeping but waiting\r\n\r\n");
+		//_delay_ms (300000);
 	}
 }
 

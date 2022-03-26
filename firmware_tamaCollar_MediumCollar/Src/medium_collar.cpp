@@ -5,10 +5,12 @@
 #include "medium_collar.h"
 #include "common.h"
 #include "LoRa.h"
+#include <string.h>
 
 static struct tm release_time;
+bool release_done_flag = false;
 
-uint8_t generateReleasePkt (char * pkt, float vcc_v, struct tm * pkt_time)
+uint16_t generateReleasePkt (char * pkt, float vcc_v, struct tm * pkt_time)
 {
 	char * ptr_pkt = pkt;
 	uint16_t byte_count = 0, pkt_len;
@@ -20,6 +22,9 @@ uint8_t generateReleasePkt (char * pkt, float vcc_v, struct tm * pkt_time)
 	byte_count = sprintf (ptr_pkt, "%d", COLLAR_NUMBER);
 	ptr_pkt += byte_count;
 	*(ptr_pkt++) = ','; // Adding seperator
+
+	byte_count = sprintf (ptr_pkt, "REL,");
+	ptr_pkt += byte_count;
 /*
 	printf ("Main: Release Time: %d : %d : %d\r\n", pkt_time->hour, 
 													pkt_time->min,
@@ -33,27 +38,71 @@ uint8_t generateReleasePkt (char * pkt, float vcc_v, struct tm * pkt_time)
 
 	*(ptr_pkt++) = PKT_EOH; // End of header
 	*(ptr_pkt) = 0; // Adding NULL
+	pkt_len = strlen (pkt);
+	return pkt_len;
+}
+
+void firstTimeMOtorRoutine ()
+{
+	printf ("First time motor run\r\n");
+	#ifdef MEDIUM_COLLAR
+	// Set pin modes
+	setPinModeOutput (MOTOR_PWR_PORT, MOTOR_PWR_PIN);
+	setPinHigh (MOTOR_PWR_PORT, MOTOR_PWR_PIN);
+	setPinModeOutput (MOTOR_IN1_PORT, MOTOR_IN1_PIN);
+	setPinLow (MOTOR_IN1_PORT, MOTOR_IN1_PIN);
+	setPinModeOutput (MOTOR_IN2_PORT, MOTOR_IN2_PIN);
+	setPinLow (MOTOR_IN2_PORT, MOTOR_IN2_PIN);
+	
+	// Enable power for motor driver
+	setPinLow (MOTOR_PWR_PORT, MOTOR_PWR_PIN);
+	// Motor clockwise
+	setPinHigh (MOTOR_IN1_PORT, MOTOR_IN1_PIN);
+	setPinLow (MOTOR_IN2_PORT, MOTOR_IN2_PIN);
+	_delay_ms (MOTOR_RUN_DELAY);
+	setPinLow (MOTOR_IN1_PORT, MOTOR_IN1_PIN);
+	setPinLow (MOTOR_IN2_PORT, MOTOR_IN2_PIN);
+	
+	_delay_ms (500);
+	// Motor counter clockwise
+	setPinLow (MOTOR_IN1_PORT, MOTOR_IN1_PIN);
+	setPinHigh (MOTOR_IN2_PORT, MOTOR_IN2_PIN);
+	_delay_ms (MOTOR_RUN_DELAY);
+	setPinLow (MOTOR_IN1_PORT, MOTOR_IN1_PIN);
+	setPinLow (MOTOR_IN2_PORT, MOTOR_IN2_PIN);
+
+	// Disable power for motor driver
+	setPinHigh (MOTOR_PWR_PORT, MOTOR_PWR_PIN);
+	#endif
 }
 
 void runMotor ()
 {
 	#ifdef MEDIUM_COLLAR
-	setPinModeOutput (MOTOR_PWR_PORT, MOTOR_PWR_PIN);
-	setPinHigh (MOTOR_PWR_PORT, MOTOR_PWR_PIN);
-	_delay_ms (2000);
+
+	// Enable power for motor driver
 	setPinLow (MOTOR_PWR_PORT, MOTOR_PWR_PIN);
+	// Motor clockwise
+	setPinHigh (MOTOR_IN1_PORT, MOTOR_IN1_PIN);
+	setPinLow (MOTOR_IN2_PORT, MOTOR_IN2_PIN);
+	_delay_ms (MOTOR_RUN_DELAY);
+	setPinLow (MOTOR_IN1_PORT, MOTOR_IN1_PIN);
+	setPinLow (MOTOR_IN2_PORT, MOTOR_IN2_PIN);
+	// Disable power for motor driver
+	setPinHigh (MOTOR_PWR_PORT, MOTOR_PWR_PIN);
+
 	#endif
 }
 
 void setReleaseTime ()
 {
-	release_time.hour = 19;
-	release_time.min = 03;
+	release_time.hour = 7;
+	release_time.min = 30;
 	release_time.sec = 00;
 
-	release_time.mday = 27;
-	release_time.mon = 12;
-	release_time.year = 21;
+	release_time.mday = 30;
+	release_time.mon = 1;
+	release_time.year = 22;
 }
 
 bool checkIfReleaseTime (struct tm * c_time)
@@ -88,30 +137,32 @@ bool checkIfReleaseTime (struct tm * c_time)
 	//}
 }
 
-void releaseHandler ()
+void releaseHandler (float wake_batt_volt)
 {
 	char temp_pkt [20];
-	uint8_t temp_pkt_len;
-	float vcc_v = readVccVoltage ();
+	uint16_t temp_pkt_len;
 	struct tm * c_time;
 	setReleaseTime (); // Temp setting REMOVE IT
+	if (release_done_flag) return;
 	c_time = rtc_get_time ();
-/*	if (vcc_v <= RELEASE_VOLT)
+	if (wake_batt_volt <= RELEASE_VOLT)
 	{
 		printf ("releaseHandler->Voltage Low\r\n");
 		runMotor ();
-		temp_pkt_len = generateReleasePkt (temp_pkt, vcc_v, c_time);
+		temp_pkt_len = generateReleasePkt (temp_pkt, wake_batt_volt, c_time);
 		printf ("Sending: %s\r\n", temp_pkt);
-		//LoRaSendSleep (temp_pkt, temp_pkt_len);
-		while (1) sleepMode (); // Will stay in Sleep Forever now, untill reset
-	}*/
+		LoRaSendSleep (temp_pkt, temp_pkt_len);
+		release_done_flag = true;
+		//while (1) sleepMode (); // Will stay in Sleep Forever now, untill reset
+	}
 	if (checkIfReleaseTime (c_time))
 	{
 		printf ("releaseHandler->Release time\r\n");
 		runMotor ();
-		temp_pkt_len = generateReleasePkt (temp_pkt, vcc_v, c_time);
+		temp_pkt_len = generateReleasePkt (temp_pkt, wake_batt_volt, c_time);
 		printf ("Sending: %s\r\n", temp_pkt);
 		LoRaSendSleep (temp_pkt, temp_pkt_len);
-		while (1) sleepMode (); // Will stay in Sleep Forever now, untill reset
+		release_done_flag = true;
+		//while (1) sleepMode (); // Will stay in Sleep Forever now, untill reset
 	}
 }

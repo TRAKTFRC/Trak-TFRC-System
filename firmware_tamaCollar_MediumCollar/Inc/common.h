@@ -9,8 +9,10 @@
 #define SUCCESS                 0
 #define FAILURE                 1
 
+#define DEVICE_CODE				'C'
+
 #ifndef COLLAR_NUMBER
-#define COLLAR_NUMBER 			11
+#define COLLAR_NUMBER 			4
 #endif
 
 #define PKT_SOH                 '{'

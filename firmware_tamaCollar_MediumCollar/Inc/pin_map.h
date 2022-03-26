@@ -29,8 +29,14 @@
 #define	LORA_RST_PORT				'C'
 #define LORA_RST_PIN				1
 #define SOFTUART_BAUD_RATE      	9600
+
+// Motor Section
 #define MOTOR_PWR_PORT				'D'
 #define MOTOR_PWR_PIN				7
+#define MOTOR_IN2_PORT				'D'
+#define MOTOR_IN2_PIN				6
+#define MOTOR_IN1_PORT				'D'
+#define MOTOR_IN1_PIN				5
 
 // Soft UART Related stuff
 #define SOFTUART_RXPIN   PINB

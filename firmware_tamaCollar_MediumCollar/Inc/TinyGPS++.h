@@ -307,7 +307,7 @@ private:
   bool endOfTermHandler();
 
   // mS Timer
-  uint32_t _ms_timer_count = 0;
+  volatile uint32_t _ms_timer_count = 0;
 };
 
 #endif // def(__TinyGPSPlus_h)
