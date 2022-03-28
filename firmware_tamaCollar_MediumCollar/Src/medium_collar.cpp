@@ -19,7 +19,7 @@ uint16_t generateReleasePkt (char * pkt, float vcc_v, struct tm * pkt_time)
 	
 	// Name of device
 	*(ptr_pkt++) = 'C';
-	byte_count = sprintf (ptr_pkt, "%d", COLLAR_NUMBER);
+	byte_count = sprintf (ptr_pkt, "%d", dev_id);
 	ptr_pkt += byte_count;
 	*(ptr_pkt++) = ','; // Adding seperator
 
@@ -135,6 +135,7 @@ bool checkIfReleaseTime (struct tm * c_time)
 			}
 		}
 	//}
+	return false;
 }
 
 void releaseHandler (float wake_batt_volt)
@@ -147,7 +148,7 @@ void releaseHandler (float wake_batt_volt)
 	c_time = rtc_get_time ();
 	if (wake_batt_volt <= RELEASE_VOLT)
 	{
-		printf ("releaseHandler->Voltage Low\r\n");
+		printf ("releaseHandler->Volt Low\r\n");
 		runMotor ();
 		temp_pkt_len = generateReleasePkt (temp_pkt, wake_batt_volt, c_time);
 		printf ("Sending: %s\r\n", temp_pkt);

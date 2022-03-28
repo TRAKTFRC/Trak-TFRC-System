@@ -653,7 +653,7 @@ char TinyGPSPlus::handler ()
       print_flag = 1;
     if ((this->location.isValid ()) && (this->satellites.isValid ()) && ((this->satellites.value ()) >= 3))
     {
-      printf ("GPS->Handler: Ret Loc in mS Timer at: %lu\r\n", (unsigned long)this->_ms_timer_count);
+      printf ("GPS->Handler: Ret Loc, mS Timer at: %lu\r\n", (unsigned long)this->_ms_timer_count);
       #ifndef MEDIUM_COLLAR
         if (!(this->gpsPulseSleep ())) return GPS_RET_SLEEP_FAIL;
       #endif
@@ -664,7 +664,7 @@ char TinyGPSPlus::handler ()
     }
   }
   this->location.valid = false;
-  printf ("GPS->Handler: Ret No Loc in mS Timer at: %lu\r\n", (unsigned long)this->_ms_timer_count);
+  printf ("GPS->Handler: Ret No Loc mS Timer at: %lu\r\n", (unsigned long)this->_ms_timer_count);
   #ifndef MEDIUM_COLLAR
     if (!(this->gpsPulseSleep ())) return GPS_RET_SLEEP_FAIL;
   #endif
