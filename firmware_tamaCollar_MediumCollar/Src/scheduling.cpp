@@ -91,15 +91,15 @@ void SchedulingManage::_calcNextAlarm (tm * given_time)
 void SchedulingManage::alarmHandler ()
 {
 	this->_calcNextAlarm (&(this->wakeup_time));
-	printf ("schedule->alarmHandler:Next alarm for: %d / %d\r\n", this->_next_alarm.hour, this->_next_alarm.min);
+	printf ("alarmHandler:Next alarm : %d / %d\r\n", this->_next_alarm.hour, this->_next_alarm.min);
 	if (this->checkIfInSendTime (&(this->_next_alarm)))
 	{
 		rtc_set_alarm_s (this->_next_alarm.hour, this->_next_alarm.min, 0);
-		printf ("schedule->alarmHandler: True Setting alarm for: %d / %d\r\n", this->_next_alarm.hour, this->_next_alarm.min);
+		printf ("alarmHandler: True Setting alarm : %d / %d\r\n", this->_next_alarm.hour, this->_next_alarm.min);
 	}
 	else
 	{
 		rtc_set_alarm_s (this->start_time.hour, this->start_time.min, 0);
-		printf ("schedule->alarmHandler: False Setting alarm for: %d / %d\r\n", this->start_time.hour, this->start_time.min);
+		printf ("alarmHandler: False Setting alarm : %d / %d\r\n", this->start_time.hour, this->start_time.min);
 	}
 }

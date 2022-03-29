@@ -45,7 +45,8 @@ Src/twi-lowlevel.cpp \
 Src/twi.cpp \
 Src/command_layer.cpp \
 Src/battery.cpp \
-Src/medium_collar.cpp
+Src/medium_collar.cpp \
+Src/eeprom_hal.cpp
 
 # where to look for external libraries (consisting of .c/.cpp files and .h files)
 # e.g. EXT = ../../EyeToSee ../../YouSART

@@ -6,7 +6,7 @@ make all -f /mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumColl
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Wed Jan 19 21:51:04 2022
+# Make data base, printed on Fri Feb 11 10:41:35 2022
 
 # Variables
 
@@ -15,13 +15,11 @@ make all -f /mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumColl
 # automatic
 ?F = $(notdir $?)
 # environment
-WSLENV = ELECTRON_RUN_AS_NODE/w:
+WSLENV = VSCODE_WSL_EXT_LOCATION/up
 # default
 .SHELLFLAGS := -c
 # makefile (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 30)
 LFU = 0xef
-# environment
-VSCODE_AGENT_FOLDER = /home/vk/.vscode-server
 # makefile (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 34)
 SRC = Src/LoRa.cpp Src/spi.cpp Src/main.cpp Src/mcu_call_functions.cpp Src/timer_us.cpp Src/softuart_avr.c Src/TinyGPS++.cpp Src/rtc.cpp Src/scheduling.cpp Src/twi-lowlevel.cpp Src/twi.cpp Src/command_layer.cpp Src/battery.cpp Src/medium_collar.cpp
 # environment
@@ -43,7 +41,7 @@ SHELL = /bin/sh
 # environment
 VSCODE_NLS_CONFIG = {"locale":"en","availableLanguages":{}}
 # environment
-_ = /mnt/c/Users/ViditK/AppData/Local/Programs/Microsoft VS Code/bin/code
+_ = /home/vk/.vscode-server/bin/d6ee99e4c045a6716e5c653d7da8e9ae6f5a8b03/node
 # makefile (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 63)
 CFLAGS = -Wl,-u,vfprintf -lprintf_flt -Os -DF_CPU=$(CLK) -mmcu=$(MCU) $(INCLUDE)
 # makefile (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 1)
@@ -65,7 +63,7 @@ VSCODE_CWD = /mnt/c/Users/ViditK/AppData/Local/Programs/Microsoft VS Code
 # default
 MAKE_HOST := x86_64-pc-linux-gnu
 # environment
-PATH = /home/vk/.vscode-server/bin/899d46d82c4c95423fb7e10e68eba52050e30ba3/bin:/home/vk/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/javapath:/mnt/c/Windows/system32:/mnt/c/Windows:/mnt/c/Windows/System32/Wbem:/mnt/c/Windows/System32/WindowsPowerShell/v1.0/:/mnt/c/Windows/System32/OpenSSH/:/mnt/c/Program Files/Git/cmd:/mnt/c/Program Files (x86)/STMicroelectronics/STM32 ST-LINK Utility/ST-LINK Utility:/mnt/c/Program Files/Microsoft SQL Server/120/Tools/Binn/:/mnt/c/Program Files/Docker/Docker/resources/bin:/mnt/c/ProgramData/DockerDesktop/version-bin:/mnt/c/Program Files (x86)/Intel/Intel(R) Management Engine Components/DAL:/mnt/c/Program Files/Intel/Intel(R) Management Engine Components/DAL:/mnt/c/Users/ViditK/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/ViditK/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/avr:/mnt/c/Users/ViditK/AppData/Local/Programs/Python/Python39:/mnt/c/users/viditk/appdata/local/programs/python/python39/Scripts:/snap/bin
+PATH = /home/vk/.vscode-server/bin/d6ee99e4c045a6716e5c653d7da8e9ae6f5a8b03/bin/remote-cli:/home/vk/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/javapath:/mnt/c/Windows/system32:/mnt/c/Windows:/mnt/c/Windows/System32/Wbem:/mnt/c/Windows/System32/WindowsPowerShell/v1.0/:/mnt/c/Windows/System32/OpenSSH/:/mnt/c/Program Files/Git/cmd:/mnt/c/Program Files (x86)/STMicroelectronics/STM32 ST-LINK Utility/ST-LINK Utility:/mnt/c/Program Files/Microsoft SQL Server/120/Tools/Binn/:/mnt/c/Program Files/Docker/Docker/resources/bin:/mnt/c/ProgramData/DockerDesktop/version-bin:/mnt/c/Program Files (x86)/Intel/Intel(R) Management Engine Components/DAL:/mnt/c/Program Files/Intel/Intel(R) Management Engine Components/DAL:/mnt/c/Users/ViditK/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/ViditK/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/avr:/mnt/c/Users/ViditK/AppData/Local/Programs/Python/Python39:/mnt/c/users/viditk/appdata/local/programs/python/python39/Scripts:/snap/bin
 # makefile (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 67)
 GCC_PATH = C:\"Program Files"\avr8-gnu-toolchain\bin
 # makefile (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 87)
@@ -73,7 +71,7 @@ AVRDUDE = avrdude -c $(PRG) -p $(MCU)
 # environment
 VSCODE_LOG_STACK = false
 # environment
-VSCODE_IPC_HOOK_CLI = /tmp/vscode-ipc-e5ecfe42-d4af-4dfa-adba-040c246b7805.sock
+VSCODE_IPC_HOOK_CLI = /tmp/vscode-ipc-bbfb3e60-20f6-45c4-8051-0760de11ed0a.sock
 # makefile (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 94)
 EXTC := $(subst ,, )
 # makefile (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 68)
@@ -95,7 +93,7 @@ PWD = /mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar
 # default
 .LOADED := 
 # environment
-VSCODE_AMD_ENTRYPOINT = vs/server/remoteExtensionHostProcess
+VSCODE_AMD_ENTRYPOINT = vs/workbench/services/extensions/node/extensionHostProcess
 # environment
 HOME = /home/vk
 # environment
@@ -105,7 +103,7 @@ LOGNAME = vk
 # makefile (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 96)
 EXTCPP := $(subst ,, )
 # environment
-APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = true
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
 # makefile (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 88)
 CLEAN_CMD = rm -f $(BUILD_DIR)*.hex $(BUILD_DIR)*.elf $(BUILD_DIR)*.o
 # environment
@@ -119,7 +117,7 @@ MAKE = $(MAKE_COMMAND)
 # default
 MAKECMDGOALS := all
 # environment
-SHLVL = 1
+SHLVL = 0
 # makefile (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 32)
 EFU = 0xff
 # makefile (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 83)
@@ -135,7 +133,7 @@ USER = vk
 # makefile (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 61)
 INCLUDE :=  -IInc/
 # environment
-NAME = Code
+NAME = DESKTOP-D1SGQT5
 # makefile (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 26)
 PRG = arduino -P /dev/ttyACM0
 # makefile (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 93)
@@ -145,7 +143,7 @@ CFILES = $(filter %.c, $(SRC))
 # makefile (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 97)
 OBJ = $(CFILES:.c=.o) $(EXTC:.c=.o) $(CPPFILES:.cpp=.o) $(EXTCPP:.cpp=.o)
 # environment
-VSCODE_WSL_EXT_LOCATION = /mnt/c/Users/ViditK/.vscode/extensions/ms-vscode-remote.remote-wsl-0.63.13
+VSCODE_WSL_EXT_LOCATION = /mnt/c/Users/ViditK/.vscode/extensions/ms-vscode-remote.remote-wsl-0.64.2
 # default
 MAKE_COMMAND := make
 # default
@@ -188,8 +186,6 @@ OBJCOPY = avr-objcopy
 SUFFIXES := 
 # default
 .INCLUDE_DIRS = /usr/include /usr/local/include /usr/include
-# environment
-VSCODE_INJECT_NODE_MODULE_LOOKUP_PATH = /home/vk/.vscode-server/bin/899d46d82c4c95423fb7e10e68eba52050e30ba3/remote/node_modules
 # default
 .RECIPEPREFIX := 
 # environment
@@ -203,7 +199,7 @@ WSL_DISTRO_NAME = Ubuntu-20.04
 # makefile (from '/mnt/d/Projects/TFRC/Trak-TFRC-System/firmware_tamaCollar_MediumCollar/Makefile', line 101)
 OBJELF = $(addprefix $(BUILD_DIR),$(notdir $(CFILES:.c=.o)))  $(addprefix $(BUILD_DIR),$(notdir $(EXTC:.c=.o)))  $(addprefix $(BUILD_DIR),$(notdir $(CPPFILES:.cpp=.o)))  $(addprefix $(BUILD_DIR),$(notdir $(EXTCPP:.cpp=.o)))
 # variable set hash-table stats:
-# Load=96/1024=9%, Rehash=0, Collisions=28/146=19%
+# Load=94/1024=9%, Rehash=0, Collisions=28/144=19%
 
 # Pattern-specific Variable Values
 
@@ -424,7 +420,7 @@ Src/softuart_avr.o:
 # strcache performance: lookups = 73 / hit rate = 30%
 # hash-table stats:
 # Load=51/8192=1%, Rehash=0, Collisions=3/73=4%
-# Finished Make data base on Wed Jan 19 21:51:04 2022
+# Finished Make data base on Fri Feb 11 10:41:35 2022
 
  
 make: *** No rule to make target 'Src/softuart_avr.o', needed by 'tama_collar.elf'.  Stop.
