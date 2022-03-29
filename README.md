@@ -56,6 +56,17 @@ In most cases, we will be programming the collars and shipping them sealed and r
 Changes to make-  
 - We are expecting to add a GPS antenna if required to help improve the GPS lock, both antennas would need to be as low-profile as possible. 
   
+#### Tamarin Group Monitor
+
+A deployable station to automate data collection from Tamarins and similar species
+- Versatile and reconfigurable for different usecases
+- Collects Weight, RFID readings, & images 
+- flexible wake triggers
+- Transmits data & trigger notifications over LoRa network.
+
+
+
+
 #### SmallCollar
 
 A minute tracker designed to aid in tracking smaller marsupials and rodents under 250g in the Peruvian Amazon.
