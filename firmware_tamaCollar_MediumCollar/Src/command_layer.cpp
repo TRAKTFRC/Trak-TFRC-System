@@ -25,30 +25,35 @@ void CmdProcess::detect ()
 	uint8_t temp_dev_id;
 
 	//printf ("cmd.detect->Processing command\r\n");
-	this->_read_counter = 1;
+	this->_read_counter = 0;
 	
+	printf ("cmdtype : %c\r\n", this->buff [this->_read_counter]);
+
 	switch (this->buff [this->_read_counter])
 	{
 	case 'R': // Packet been read here: {R,09:33:40,17/12/21}
 		READ_COUNT_HANDLE (2);
 		rcv_time.hour = (this->buff [this->_read_counter] - '0') * 10;
-		READ_COUNT_HANDLE (1); rcv_time.hour = this->buff [this->_read_counter] - '0';
+		READ_COUNT_HANDLE (1); rcv_time.hour += this->buff [this->_read_counter] - '0';
 		READ_COUNT_HANDLE (2);
+		printf ("M : %c\r\n", this->buff [this->_read_counter]);
 		rcv_time.min = (this->buff [this->_read_counter] - '0') * 10;
-		READ_COUNT_HANDLE (1); rcv_time.min = this->buff [this->_read_counter] - '0';
+		READ_COUNT_HANDLE (1); 
+		printf ("M : %c\r\n", this->buff [this->_read_counter]);
+		rcv_time.min += this->buff [this->_read_counter] - '0';
 		READ_COUNT_HANDLE (2);
 		rcv_time.sec = (this->buff [this->_read_counter] - '0') * 10;
-		READ_COUNT_HANDLE (1); rcv_time.sec = this->buff [this->_read_counter] - '0';
+		READ_COUNT_HANDLE (1); rcv_time.sec += this->buff [this->_read_counter] - '0';
 
 		READ_COUNT_HANDLE (2);
 		rcv_time.mday = (this->buff [this->_read_counter] - '0') * 10;
-		READ_COUNT_HANDLE (1); rcv_time.mday = this->buff [this->_read_counter] - '0';
+		READ_COUNT_HANDLE (1); rcv_time.mday += this->buff [this->_read_counter] - '0';
 		READ_COUNT_HANDLE (2);
 		rcv_time.mon = (this->buff [this->_read_counter] - '0') * 10;
-		READ_COUNT_HANDLE (1); rcv_time.mon = this->buff [this->_read_counter] - '0';
+		READ_COUNT_HANDLE (1); rcv_time.mon += this->buff [this->_read_counter] - '0';
 		READ_COUNT_HANDLE (2);
 		rcv_time.year = (this->buff [this->_read_counter] - '0') * 10;
-		READ_COUNT_HANDLE (1); rcv_time.year = this->buff [this->_read_counter] - '0';
+		READ_COUNT_HANDLE (1); rcv_time.year += this->buff [this->_read_counter] - '0';
 
 		rtc_set_time (&rcv_time);
 		rtc_time_set_flag = true;
@@ -58,13 +63,13 @@ void CmdProcess::detect ()
 	case 'S': // Packet been read here: {R,09:33:40,20:30:40,00:30:00}
 		READ_COUNT_HANDLE (2);
 		schedule.start_time.hour = (this->buff [this->_read_counter] - '0') * 10;
-		READ_COUNT_HANDLE (1); schedule.start_time.hour = this->buff [this->_read_counter] - '0';
+		READ_COUNT_HANDLE (1); schedule.start_time.hour += this->buff [this->_read_counter] - '0';
 		READ_COUNT_HANDLE (2);
 		schedule.start_time.min = (this->buff [this->_read_counter] - '0') * 10;
-		READ_COUNT_HANDLE (1); schedule.start_time.min = this->buff [this->_read_counter] - '0';
+		READ_COUNT_HANDLE (1); schedule.start_time.min += this->buff [this->_read_counter] - '0';
 		READ_COUNT_HANDLE (2);
 		schedule.start_time.sec = (this->buff [this->_read_counter] - '0') * 10;
-		READ_COUNT_HANDLE (1); schedule.start_time.sec = this->buff [this->_read_counter] - '0';
+		READ_COUNT_HANDLE (1); schedule.start_time.sec += this->buff [this->_read_counter] - '0';
 		storeTimeInEEPROM (&(schedule.start_time), EEPROM_ADDR_START_TIME_HR);
 		redTimeFromEEPROM (&(schedule.start_time), EEPROM_ADDR_START_TIME_HR);
 		printf ("cmd.detect Start Time: %d : %d : %d\r\n", schedule.start_time.hour, 
@@ -73,13 +78,13 @@ void CmdProcess::detect ()
 
 		READ_COUNT_HANDLE (2);
 		schedule.end_time.hour = (this->buff [this->_read_counter] - '0') * 10;
-		READ_COUNT_HANDLE (1); schedule.end_time.hour = this->buff [this->_read_counter] - '0';
+		READ_COUNT_HANDLE (1); schedule.end_time.hour += this->buff [this->_read_counter] - '0';
 		READ_COUNT_HANDLE (2);
 		schedule.end_time.min = (this->buff [this->_read_counter] - '0') * 10;
-		READ_COUNT_HANDLE (1); schedule.end_time.min = this->buff [this->_read_counter] - '0';
+		READ_COUNT_HANDLE (1); schedule.end_time.min += this->buff [this->_read_counter] - '0';
 		READ_COUNT_HANDLE (2);
 		schedule.end_time.sec = (this->buff [this->_read_counter] - '0') * 10;
-		READ_COUNT_HANDLE (1); schedule.end_time.sec = this->buff [this->_read_counter] - '0';
+		READ_COUNT_HANDLE (1); schedule.end_time.sec += this->buff [this->_read_counter] - '0';
 		storeTimeInEEPROM (&(schedule.end_time), EEPROM_ADDR_END_TIME_HR);
 		redTimeFromEEPROM (&(schedule.end_time), EEPROM_ADDR_END_TIME_HR);
 		printf ("cmd.detect End Time: %d : %d : %d\r\n", schedule.end_time.hour, 
@@ -88,13 +93,13 @@ void CmdProcess::detect ()
 
 		READ_COUNT_HANDLE (2);
 		schedule.send_interval.hour = (this->buff [this->_read_counter] - '0') * 10;
-		READ_COUNT_HANDLE (1); schedule.send_interval.hour = this->buff [this->_read_counter] - '0';
+		READ_COUNT_HANDLE (1); schedule.send_interval.hour += this->buff [this->_read_counter] - '0';
 		READ_COUNT_HANDLE (2);
 		schedule.send_interval.min = (this->buff [this->_read_counter] - '0') * 10;
-		READ_COUNT_HANDLE (1); schedule.send_interval.min = this->buff [this->_read_counter] - '0';
+		READ_COUNT_HANDLE (1); schedule.send_interval.min += this->buff [this->_read_counter] - '0';
 		READ_COUNT_HANDLE (2);
 		schedule.send_interval.sec = (this->buff [this->_read_counter] - '0') * 10;
-		READ_COUNT_HANDLE (1); schedule.send_interval.sec = this->buff [this->_read_counter] - '0';
+		READ_COUNT_HANDLE (1); schedule.send_interval.sec += this->buff [this->_read_counter] - '0';
 		storeTimeInEEPROM (&(schedule.send_interval), EEPROM_ADDR_INTRVL_TIME_HR);
 		redTimeFromEEPROM (&(schedule.send_interval), EEPROM_ADDR_INTRVL_TIME_HR);
 		printf ("cmd.detect Intvl Time: %d : %d : %d\r\n", schedule.send_interval.hour, 
@@ -107,9 +112,9 @@ void CmdProcess::detect ()
 	case 'I':
 		READ_COUNT_HANDLE (2);
 		temp_dev_id = (this->buff [this->_read_counter] - '0') * 10;
-		READ_COUNT_HANDLE (1); temp_dev_id = this->buff [this->_read_counter] - '0';
+		READ_COUNT_HANDLE (1); temp_dev_id += this->buff [this->_read_counter] - '0';
 		
-		if ((temp_dev_id > 0) && (temp_dev_id < 128))
+		if ((temp_dev_id > 0) && (temp_dev_id < 99))
 		{
 			EEPROM_write (EEPROM_ADDR_ID, temp_dev_id);
 			EEPROM_read (EEPROM_ADDR_ID, &dev_id);

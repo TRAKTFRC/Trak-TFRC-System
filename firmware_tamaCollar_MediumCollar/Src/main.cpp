@@ -39,7 +39,7 @@ void CmdUARTInterface::packetDetect ()
 {
 	while (this->isr_in != this->isr_out)
 	{
-		/*//////printf ("\r\nisr_in : %d, isr_out : %d : %c   Timer Count : %lu",
+		/*printf ("\r\nisr_in : %d, isr_out : %d : %c   Timer Count : %lu",
 				this->isr_in, this->isr_out, this->isr_buff[this->isr_out], 
 				this->_timer_count);*/
 		switch (this->_packet_state)
@@ -229,14 +229,21 @@ void setTempScheduleConfig ()
 
 void LoRaRcvPkts ()
 {
+	char sent_flag = 0;
     LoRaInit ();
 	timer_count = 30000;
 	//printf ("Waiting for packets from LoRa \r\n");
 	while (timer_count)
 	{
+		/*if ((!(timer_count % 2000)) && !sent_flag)
+		{
+			printf ("%d\r\n", parsePacket (0));
+			sent_flag = 1;
+		}
+		else sent_flag = 0;*/
 		if (parsePacket (0))
 		{
-			printf ("Rcv Pkt\r\n");
+			//printf ("Rcv Pkt\r\n");
 			while (available ())
 			{
 				appRS485RcvCallback (read ());
@@ -297,7 +304,6 @@ int main ()
 
 	// Section to send first tim wakeup packet
 	float temp_bat_volt = readVccVoltage ();
-	temp_bat_volt = readVccVoltage ();
 
 	#ifdef MEDIUM_COLLAR
 	firstTimeMOtorRoutine ();
@@ -305,21 +311,18 @@ int main ()
 
 	sprintf (sen_pkt_buff, "{C%d,ON,%.1f}", dev_id, temp_bat_volt);
 	temp_bat_volt = strlen (sen_pkt_buff);
-	printf ("Sending ON Packet: %s \r\n", sen_pkt_buff);
+	//printf ("Sending ON Packet: %s \r\n", sen_pkt_buff);
 	LoRaSendSleep (sen_pkt_buff, temp_pkt_len);
-
 
 	// Initialize milliseconds timer used in time 
 	// keeping at many places in the functionality
 	startmSTimer ();
 	
 	twi_init_master();
-	//printf ("RTC->Init: TWI Init Done\r\n");
+	printf ("RTC->Init: TWI Init Done\r\n");
 	rtc_setup_ext_init ();
 	//printf ("Main: RTC Ext Init\r\n");
 	loadPrintWakeTime ();
-
-	temp_bat_volt = readVccVoltage ();
 	
 	/*if (schedule.wakeup_time.hour == 0 && schedule.wakeup_time.min == 0
 		&& schedule.wakeup_time.sec == 0)
@@ -327,14 +330,15 @@ int main ()
 		rtc_time_set_flag = false;
 	}*/
 
-	EEPROM_read (EEPROM_ADDR_ID_FLAG, &temp_read);
-	if ((temp_read != ID_SET_FLAG) || (!rtc_time_set_flag))
-	{
-		printf ("Main: Wait for Pkt\r\n");
+//	EEPROM_read (EEPROM_ADDR_ID_FLAG, &temp_read);
+	//if ((temp_read != ID_SET_FLAG) || (!rtc_time_set_flag))
+	//{
+		printf ("Main: Wait for Pkt\r\n\r\n\r\n");
 		LoRaRcvPkts ();
 		loadPrintWakeTime ();
-	}
-
+	//}
+	EEPROM_read (EEPROM_ADDR_ID, &dev_id);
+	printf ("\r\nDev ID: %d\r\n", dev_id);
 	while (1)
 	{
 	/*
@@ -373,7 +377,7 @@ int main ()
 
 		if (gps.location.isValid ())
 		{
-			printf ("Main: Valid GPS, set RTC\r\n");
+			//printf ("Main: Valid GPS, set RTC\r\n");
 			struct tm temp_tm;
 			temp_tm.hour = gps.time.hour ();
 			temp_tm.min = gps.time.minute ();
@@ -404,7 +408,7 @@ int main ()
 		
 		// Sleep mode
 		stopmSTimer ();
-	    printf ("Main: Sleep now \r\n\r\n");
+	    //printf ("Main: Sleep now \r\n\r\n");
 		sleepMode ();
 	    //printf ("Main: Not sleeping but waiting\r\n\r\n");
 		//_delay_ms (300000);

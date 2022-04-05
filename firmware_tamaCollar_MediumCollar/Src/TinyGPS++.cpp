@@ -530,7 +530,7 @@ void TinyGPSPlus::_givePulse ()
 	_delay_ms (35);
 	setPinState (GPS_ON_OFF_PULSE_PORT, GPS_ON_OFF_PULSE_PIN, GPIO_PIN_RESET);
 	_delay_ms (35);
-	printf ("GPS Pulse Given \r\n");
+	//printf ("GPS Pulse Given \r\n");
 }
 
 int TinyGPSPlus::_checkSerialStreamIn ()
@@ -560,7 +560,7 @@ bool TinyGPSPlus::gpsPulseWake ()
       {printf ("GPS Up\r\n"); return true;}
     //printf ("GPS wake fail\r\n");
   }
-  printf ("GPS Up Final fail\r\n");
+  //printf ("GPS Up Final fail\r\n");
   return false;
 }
 
@@ -573,7 +573,7 @@ bool TinyGPSPlus::gpsPulseSleep ()
       {printf ("GPS Sleep\r\n"); return true;}
     //printf ("GPS sleep fail\r\n");
   }
-  printf ("GPS Sleep Final fail\r\n");
+  //printf ("GPS Sleep Final fail\r\n");
   return false;
 }
 
@@ -617,7 +617,7 @@ char TinyGPSPlus::handler ()
 	char rcv_u, print_flag = 1;
   uint32_t next_ms = 0;
 
-  printf ("Handeling GPS Now\r\n");
+ //printf ("Handeling GPS Now\r\n");
   
   #ifndef MEDIUM_COLLAR
     if (!(this->gpsPulseWake ())) return GPS_RET_WAKE_FAIL;
@@ -639,7 +639,7 @@ char TinyGPSPlus::handler ()
     if (softuart_kbhit())
     {
       rcv_u = softuart_getchar();
-      if (rcv_u) printf ("%c", rcv_u);
+      //if (rcv_u) printf ("%c", rcv_u);
       //if (this->encode(rcv_u)) this->printData();
       this->encode (rcv_u);
     }
@@ -653,7 +653,7 @@ char TinyGPSPlus::handler ()
       print_flag = 1;
     if ((this->location.isValid ()) && (this->satellites.isValid ()) && ((this->satellites.value ()) >= 3))
     {
-      printf ("GPS->Handler: Ret Loc, mS Timer at: %lu\r\n", (unsigned long)this->_ms_timer_count);
+      //printf ("GPS->Handler: Ret Loc, mS Timer at: %lu\r\n", (unsigned long)this->_ms_timer_count);
       #ifndef MEDIUM_COLLAR
         if (!(this->gpsPulseSleep ())) return GPS_RET_SLEEP_FAIL;
       #endif
@@ -664,7 +664,7 @@ char TinyGPSPlus::handler ()
     }
   }
   this->location.valid = false;
-  printf ("GPS->Handler: Ret No Loc mS Timer at: %lu\r\n", (unsigned long)this->_ms_timer_count);
+  //printf ("GPS->Handler: Ret No Loc mS Timer at: %lu\r\n", (unsigned long)this->_ms_timer_count);
   #ifndef MEDIUM_COLLAR
     if (!(this->gpsPulseSleep ())) return GPS_RET_SLEEP_FAIL;
   #endif

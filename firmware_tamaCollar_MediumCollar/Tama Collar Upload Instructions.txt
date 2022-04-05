@@ -17,10 +17,13 @@ Step 5 Reset
 
 Step for FTDI
 Step 1 Reset
-".\avrdude" -C avrdude.conf -c arduino -P COM5 -b 19200 -p atmega328p reset
+Win Cmd: ".\avrdude" -C avrdude.conf -c arduino -P COM5 -b 19200 -p atmega328p reset
+Mac Cmd: avrdude -c arduino -P /dev/tty.usbserial-A50285BI -b 19200 -p atmega328p reset
+
 
 Step 2 Upload Firmware
-".\avrdude" -C avrdude.conf -c arduino -P COM5 -b 19200 -p atmega328p -e -U flash:w:Build/tama_collar.hex:i
+Win Cmd: ".\avrdude" -C avrdude.conf -c arduino -P COM5 -b 19200 -p atmega328p -e -U flash:w:Build/tama_collar.hex:i
+Mac Cmd: avrdude -c arduino -P /dev/tty.usbserial-A50285BI -b 19200 -p atmega328p -e -U flash:w:Build/tama_collar.hex:i
 
 Step 3 Reset
 ".\avrdude" -C avrdude.conf -c arduino -P COM5 -b 19200 -p atmega328p reset
