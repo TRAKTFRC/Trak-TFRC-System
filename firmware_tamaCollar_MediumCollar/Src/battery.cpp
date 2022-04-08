@@ -14,7 +14,7 @@ Knowledge resource: https://wp.josh.com/2014/11/06/battery-fuel-guage-with-zero-
 // For faster readings, you could initialize once, and then take multiple fast readings, just make sure to
 // disable the ADC before going to sleep so you don't waste power. 
 
-float readVccVoltage(void)
+uint8_t readVccVoltage (void)
 {
 	
 	// Select ADC inputs
@@ -99,6 +99,10 @@ float readVccVoltage(void)
 	
 	ADCSRA &= ~_BV( ADEN );			// Disable ADC to save power
 	
-	return( vccx10 / 10 );
-	
+	return vccx10;
+}
+
+float readVccVoltageFloat (void)
+{
+	return (readVccVoltage()/10);
 }

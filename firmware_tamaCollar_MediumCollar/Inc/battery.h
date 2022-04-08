@@ -3,6 +3,7 @@
 
 #include "common.h"
 
-float readVccVoltage(void);
+uint8_t readVccVoltage (void);
+float readVccVoltageFloat (void);
 
 #endif

@@ -21,7 +21,7 @@ void LoRaInit ()
         printf ("Starting LoRa failed!\r\n");
         while (1);
     }
-//    setSignalBandwidth (31250);
+    setSignalBandwidth (31250);
 }
 
 void LoRaSendSleep (const char *buffer, uint8_t size)

@@ -97,7 +97,7 @@ uint16_t generateLoRaPkt (char * pkt, char gps_ret)
 {
 	char * ptr_pkt = pkt;
 	uint16_t byte_count = 0, pkt_len;
-	float vcc_v = readVccVoltage ();
+	uint8_t vccx10 = readVccVoltage ();
 	
 	if (gps.location.isValid ())
 	{
@@ -129,7 +129,7 @@ uint16_t generateLoRaPkt (char * pkt, char gps_ret)
 
 		*(ptr_pkt++) = ','; // Adding seperator
 
-		ptr_pkt += sprintf (ptr_pkt, "%.1f", vcc_v); // Adding the Vcc Voltage
+		ptr_pkt += sprintf (ptr_pkt, "%d", vccx10); // Adding the Vcc Voltage
 		*(ptr_pkt++) = ','; // Adding seperator
 
 		// GPS State
@@ -171,7 +171,7 @@ uint16_t generateLoRaPkt (char * pkt, char gps_ret)
 
 		*(ptr_pkt++) = ','; // Adding seperator
 
-		ptr_pkt += sprintf (ptr_pkt, "%.1f", vcc_v); // Adding the Vcc Voltage
+		ptr_pkt += sprintf (ptr_pkt, "%d", vccx10); // Adding the Vcc Voltage
 		*(ptr_pkt++) = ','; // Adding seperator
 
 		// GPS State
@@ -232,18 +232,10 @@ void LoRaRcvPkts ()
 	char sent_flag = 0;
     LoRaInit ();
 	timer_count = 30000;
-	//printf ("Waiting for packets from LoRa \r\n");
 	while (timer_count)
 	{
-		/*if ((!(timer_count % 2000)) && !sent_flag)
-		{
-			printf ("%d\r\n", parsePacket (0));
-			sent_flag = 1;
-		}
-		else sent_flag = 0;*/
 		if (parsePacket (0))
 		{
-			//printf ("Rcv Pkt\r\n");
 			while (available ())
 			{
 				appRS485RcvCallback (read ());
@@ -337,7 +329,11 @@ int main ()
 		LoRaRcvPkts ();
 		loadPrintWakeTime ();
 	//}
+	// Reading device ID and schedule from EEPROM
 	EEPROM_read (EEPROM_ADDR_ID, &dev_id);
+	redTimeFromEEPROM (&(schedule.start_time), EEPROM_ADDR_START_TIME_HR);
+	redTimeFromEEPROM (&(schedule.end_time), EEPROM_ADDR_END_TIME_HR);
+	redTimeFromEEPROM (&(schedule.send_interval), EEPROM_ADDR_INTRVL_TIME_HR);
 	printf ("\r\nDev ID: %d\r\n", dev_id);
 	while (1)
 	{
