@@ -321,7 +321,7 @@ int main ()
 	{
 		rtc_time_set_flag = false;
 	}*/
-
+	
 //	EEPROM_read (EEPROM_ADDR_ID_FLAG, &temp_read);
 	//if ((temp_read != ID_SET_FLAG) || (!rtc_time_set_flag))
 	//{

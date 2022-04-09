@@ -60,7 +60,7 @@ void CmdProcess::detect ()
 		printf ("cmd.detect-RTC set\r\n");
 		break;
 
-	case 'S': // Packet been read here: {R,09:33:40,20:30:40,00:30:00}
+	case 'S': // Packet been read here: {S,09:33:40,20:30:40,00:30:00}
 		READ_COUNT_HANDLE (2);
 		schedule.start_time.hour = (this->buff [this->_read_counter] - '0') * 10;
 		READ_COUNT_HANDLE (1); schedule.start_time.hour += this->buff [this->_read_counter] - '0';
