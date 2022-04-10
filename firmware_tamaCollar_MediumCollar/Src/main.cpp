@@ -48,6 +48,7 @@ void CmdUARTInterface::packetDetect ()
 			if (this->isr_buff[this->isr_out] == PKT_SOH) // Waiting for start of packet
 			{
 				this->_packet_state = PKT_WAIT_EOH;
+				cmd.buff_count = 0;
 				//cmd.start_storing (this->isr_buff[this->isr_out]);
 				this->_timer_count = PKT_TIMEOUT;
 				////////printf ("\r\ncmd.packetDetect -> Detect Start of Header");
