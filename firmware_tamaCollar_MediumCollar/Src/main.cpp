@@ -124,12 +124,12 @@ uint16_t generateLoRaPkt (char * pkt, char gps_ret)
 		*(ptr_pkt++) = ','; // Adding seperator
 
 		// Adding Time stamp
-		ptr_pkt += sprintf (ptr_pkt, "%d:%d:%d", schedule.wakeup_time.hour, 
+/*		ptr_pkt += sprintf (ptr_pkt, "%d:%d:%d", schedule.wakeup_time.hour, 
 												schedule.wakeup_time.min,
 												schedule.wakeup_time.sec);
 
 		*(ptr_pkt++) = ','; // Adding seperator
-
+*/
 		ptr_pkt += sprintf (ptr_pkt, "%d", vccx10); // Adding the Vcc Voltage
 		*(ptr_pkt++) = ','; // Adding seperator
 
