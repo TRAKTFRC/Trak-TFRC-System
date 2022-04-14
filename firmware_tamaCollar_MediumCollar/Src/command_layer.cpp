@@ -129,9 +129,7 @@ void CmdProcess::detect ()
 
 	default:
 		printf ("cmd.detect No Packet\r\n");
-
 	}
-
 	printf ("cmd.detect->Exiting\r\n");
 	return;
 }
