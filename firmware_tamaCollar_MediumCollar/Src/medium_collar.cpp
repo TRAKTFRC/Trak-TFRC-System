@@ -138,7 +138,7 @@ bool checkIfReleaseTime (struct tm * c_time)
 	return false;
 }
 
-void releaseHandler (uint8_t wake_batt_volt)
+void releaseHandler (float wake_batt_volt)
 {
 	char temp_pkt [20];
 	uint16_t temp_pkt_len;
