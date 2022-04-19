@@ -1,19 +1,19 @@
 Tama Collar 
 These are steps for SPI
 Step 1 Reset
-".\avrdude" -C avrdude.conf -c stk500v1 -P COM8 -b 19200 -p atmega328p reset
+".\avrdude" -C avrdude.conf -c stk500v1 -P COM7 -b 19200 -p atmega328p reset
 
 Step 2 Set Fuse Bits
-".\avrdude" -C avrdude.conf -c stk500v1 -P COM8 -b 19200 -p atmega328p -U lfuse:w:0xfd:m -U hfuse:w:0xd8:m -U efuse:w:0xff:m
+".\avrdude" -C avrdude.conf -c stk500v1 -P COM7 -b 19200 -p atmega328p -U lfuse:w:0xfd:m -U hfuse:w:0xd8:m -U efuse:w:0xff:m
 
 Step 3 Reset
-".\avrdude" -C avrdude.conf -c stk500v1 -P COM8 -b 19200 -p atmega328p reset
+".\avrdude" -C avrdude.conf -c stk500v1 -P COM7 -b 19200 -p atmega328p reset
 
 Step 4 Upload Bootloader
-".\avrdude" -C avrdude.conf -c stk500v1 -P COM8 -b 19200 -p atmega328p -e -U flash:w:bootloader/optiboot_atmega328_4.hex:i
+".\avrdude" -C avrdude.conf -c stk500v1 -P COM7 -b 19200 -p atmega328p -e -U flash:w:bootloader/optiboot_atmega328_4.hex:i
 
 Step 5 Reset
-".\avrdude" -C avrdude.conf -c stk500v1 -P COM8 -b 19200 -p atmega328p reset
+".\avrdude" -C avrdude.conf -c stk500v1 -P COM7 -b 19200 -p atmega328p reset
 
 Step for FTDI
 Step 1 Reset
@@ -22,7 +22,7 @@ Mac Cmd: avrdude -c arduino -P /dev/tty.usbserial-A50285BI -b 19200 -p atmega328
 
 
 Step 2 Upload Firmware
-Win Cmd: ".\avrdude" -C avrdude.conf -c arduino -P COM3 -b 19200 -p atmega328p -e -U flash:w:Build/tama_collar.hex:i
+Win Cmd: ".\avrdude" -C avrdude.conf -c arduino -P COM5 -b 19200 -p atmega328p -e -U flash:w:Build/tama_collar.hex:i
 Mac Cmd: avrdude -c arduino -P /dev/tty.usbserial-A50285BI -b 19200 -p atmega328p -e -U flash:w:Build/tama_collar.hex:i
 
 Step 3 Reset

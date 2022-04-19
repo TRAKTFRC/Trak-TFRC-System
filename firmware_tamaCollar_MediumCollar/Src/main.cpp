@@ -164,12 +164,13 @@ uint16_t generateLoRaPkt (char * pkt, char gps_ret)
 		*(ptr_pkt++) = '-'; // Adding empty dash
 		*(ptr_pkt++) = ','; // Adding seperator
 
-		// Adding Time stamp
+/*		// Adding Time stamp
 		ptr_pkt += sprintf (ptr_pkt, "%d:%d:%d", schedule.wakeup_time.hour, 
 												schedule.wakeup_time.min,
 												schedule.wakeup_time.sec);
 
 		*(ptr_pkt++) = ','; // Adding seperator
+*/
 
 		ptr_pkt += sprintf (ptr_pkt, "%d", vccx10); // Adding the Vcc Voltage
 		*(ptr_pkt++) = ','; // Adding seperator
@@ -295,7 +296,7 @@ int main ()
 //	setTempScheduleConfig ();
 
 	// Section to send first tim wakeup packet
-	float temp_bat_volt = readVccVoltage ();
+	uint8_t temp_bat_volt = readVccVoltage ();
 
 	#ifdef MEDIUM_COLLAR
 	firstTimeMOtorRoutine ();
@@ -334,6 +335,16 @@ int main ()
 	redTimeFromEEPROM (&(schedule.start_time), EEPROM_ADDR_START_TIME_HR);
 	redTimeFromEEPROM (&(schedule.end_time), EEPROM_ADDR_END_TIME_HR);
 	redTimeFromEEPROM (&(schedule.send_interval), EEPROM_ADDR_INTRVL_TIME_HR);
+	printf ("Main Start Time: %d : %d : %d\r\n", schedule.start_time.hour, 
+													   schedule.start_time.min,
+													   schedule.start_time.sec);
+	printf ("Main End Time: %d : %d : %d\r\n", schedule.end_time.hour, 
+													   schedule.end_time.min,
+													   schedule.end_time.sec);
+	printf ("Main Intvl Time: %d : %d : %d\r\n", schedule.send_interval.hour, 
+													   schedule.send_interval.min,
+													   schedule.send_interval.sec);
+	
 	printf ("\r\nDev ID: %d\r\n", dev_id);
 	while (1)
 	{
