@@ -14,6 +14,7 @@
 #include "eeprom_hal.h"
 #ifdef MEDIUM_COLLAR
 #include "medium_collar.h"
+#include "ext_mem_eeprom.h"
 #endif
 
 // Global Variable
@@ -275,7 +276,7 @@ int main ()
     printf ("------- Medium Collar -------\r\n");
 	#endif
 
-	// RTC Init
+	// I2C Init
 	twi_init_master();
 	//printf ("Main: TWI Init Done\r\n");
 	rtc_init ();
@@ -396,6 +397,10 @@ int main ()
 			rtc_set_time (&temp_tm);
 			loadPrintWakeTime ();
 			rtc_time_set_flag = true;
+
+			#ifdef MEDIUM_COLLAR
+			storeDataPointInEEPROM (gps, &(schedule.wakeup_time));
+			#endif
 		}
 		else if (!rtc_time_set_flag)
 		{
