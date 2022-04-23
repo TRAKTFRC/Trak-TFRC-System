@@ -49,7 +49,6 @@ void CmdUARTInterface::packetDetect ()
 			if (this->isr_buff[this->isr_out] == PKT_SOH) // Waiting for start of packet
 			{
 				this->_packet_state = PKT_WAIT_EOH;
-				cmd.buff_count = 0;
 				//cmd.start_storing (this->isr_buff[this->isr_out]);
 				this->_timer_count = PKT_TIMEOUT;
 				////////printf ("\r\ncmd.packetDetect -> Detect Start of Header");
@@ -125,12 +124,12 @@ uint16_t generateLoRaPkt (char * pkt, char gps_ret)
 		*(ptr_pkt++) = ','; // Adding seperator
 
 		// Adding Time stamp
-/*		ptr_pkt += sprintf (ptr_pkt, "%d:%d:%d", schedule.wakeup_time.hour, 
+		ptr_pkt += sprintf (ptr_pkt, "%d:%d:%d", schedule.wakeup_time.hour, 
 												schedule.wakeup_time.min,
 												schedule.wakeup_time.sec);
 
 		*(ptr_pkt++) = ','; // Adding seperator
-*/
+
 		ptr_pkt += sprintf (ptr_pkt, "%d", vccx10); // Adding the Vcc Voltage
 		*(ptr_pkt++) = ','; // Adding seperator
 
