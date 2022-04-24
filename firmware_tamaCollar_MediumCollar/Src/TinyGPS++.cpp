@@ -557,7 +557,7 @@ bool TinyGPSPlus::gpsPulseWake ()
   {    
     this->_givePulse ();
     if (this->_checkSerialStreamIn ()) 
-      {printf ("GPS Up\r\n"); return true;}
+      {printf (PSTR("GPS Up\r\n")); return true;}
     //printf ("GPS wake fail\r\n");
   }
   //printf ("GPS Up Final fail\r\n");
@@ -570,7 +570,7 @@ bool TinyGPSPlus::gpsPulseSleep ()
   {    
     this->_givePulse ();
     if (!(this->_checkSerialStreamIn ()))
-      {printf ("GPS Sleep\r\n"); return true;}
+      {printf (PSTR("GPS Sleep\r\n")); return true;}
     //printf ("GPS sleep fail\r\n");
   }
   //printf ("GPS Sleep Final fail\r\n");
@@ -677,42 +677,42 @@ char TinyGPSPlus::handler ()
 
 void TinyGPSPlus::printData()
 {
-  printf ("Location: ");
+  printf (PSTR("Location: "));
   if (this->location.isValid())
   {
-	printf ("%f , %f \r\n", this->location.lat(), this->location.lng());
+	printf (PSTR("%f , %f \r\n"), this->location.lat(), this->location.lng());
   }
   else
   {
-    printf ("INVALID\r\n");
+    printf (PSTR("INVALID\r\n"));
   }
 
-  printf ("Date/Time: ");
+  printf (PSTR("Date/Time: "));
   if (this->date.isValid())
   {
-	printf ("%d / %d / %d   -  ", this->date.day(), this->date.month(), this->date.year());
+	printf (PSTR("%d / %d / %d   -  "), this->date.day(), this->date.month(), this->date.year());
   }
   else
   {
-    printf ("INVALID \r\n");
+    printf (PSTR("INVALID \r\n"));
   }
 
   if (this->time.isValid())
   {
-    if (this->time.hour() < 10) printf ("0");
-    printf ("%d : ", this->time.hour());
-    if (this->time.minute() < 10) printf ("0");
-    printf ("%d : ", this->time.minute());
-    if (this->time.second() < 10) printf ("0");
-    printf ("%d", this->time.second());
-    if (this->time.centisecond() < 10) printf ("0");
-    printf ("%d\r\n", this->time.centisecond());
+    if (this->time.hour() < 10) printf (PSTR("0"));
+    printf (PSTR("%d : "), this->time.hour());
+    if (this->time.minute() < 10) printf (PSTR("0"));
+    printf (PSTR("%d : "), this->time.minute());
+    if (this->time.second() < 10) printf (PSTR("0"));
+    printf (PSTR("%d"), this->time.second());
+    if (this->time.centisecond() < 10) printf (PSTR("0"));
+    printf (PSTR("%d\r\n"), this->time.centisecond());
   }
   else
   {
-    printf ("INVALID\r\n");
+    printf (PSTR("INVALID\r\n"));
   }
-  printf ("\r\n");
+  printf (PSTR("\r\n"));
 }
 
 void TinyGPSPlus::mSTimerCallback ()

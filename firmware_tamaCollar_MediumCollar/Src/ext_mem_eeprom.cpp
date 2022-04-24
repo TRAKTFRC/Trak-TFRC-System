@@ -76,3 +76,17 @@ void storeDataPointInEEPROM (TinyGPSPlus &gps_data, struct tm * time)
     generateStorePacket (gps_data, time, pkt);
     sotreData (pkt);
 }
+
+void dumpEEPROMPkt ()
+{
+    uint16_t nex_addr = getNextAddress ();
+    uint8_t temp_byte;
+    printf (PSTR("Next Address: %d\r\n"), nex_addr);
+    for (uint16_t loop_count = EXT_EROM_PKT_START_ADR; loop_count < EXT_EROM_HIGHEST_ADR; loop_count++)
+    {
+        temp_byte = EEReadByte (loop_count);
+        printf ("%c", temp_byte);
+        if (temp_byte == ';') printf ("\r\n");
+        if (temp_byte == 0) break;
+    }    
+}

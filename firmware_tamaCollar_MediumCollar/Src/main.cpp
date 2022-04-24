@@ -187,7 +187,7 @@ uint16_t generateLoRaPkt (char * pkt, char gps_ret)
 	}
 
 	pkt_len = strlen (pkt);
-	printf ("Pkt gen: %s   %d \r\n", pkt, pkt_len);
+	printf (PSTR("Pkt gen: %s   %d \r\n"), pkt, pkt_len);
 	return pkt_len;
 }
 
@@ -253,7 +253,7 @@ void loadPrintWakeTime ()
 	rtc_get_time_s ((uint8_t *)&schedule.wakeup_time.hour,
 				(uint8_t *)&schedule.wakeup_time.min,
 				(uint8_t *)&schedule.wakeup_time.sec);
-	printf ("Main: RTC Time: %d : %d : %d\r\n", schedule.wakeup_time.hour, 
+	printf (PSTR("Main: RTC Time: %d : %d : %d\r\n"), schedule.wakeup_time.hour, 
 													schedule.wakeup_time.min,
 													schedule.wakeup_time.sec);
 	return;
@@ -264,15 +264,17 @@ int main ()
 	uint16_t temp_pkt_len = 0;
 	uint8_t temp_read = 0;
 
+	uint8_t temp_count = 0;
+
 	// Hardware UART Setup
 	USART_Init ();
     //printf ("Entering main loop\r\n");
 	#ifndef MEDIUM_COLLAR
-    printf ("------- Tama Collar -------\r\n");
+    printf (PSTR("------- Tama Collar -------\r\n"));
 	#endif
 
 	#ifdef MEDIUM_COLLAR
-    printf ("------- Medium Collar -------\r\n");
+    printf (PSTR("------- Medium Collar -------\r\n"));
 	#endif
 
 	// I2C Init
@@ -313,7 +315,7 @@ int main ()
 	startmSTimer ();
 	
 	twi_init_master();
-	printf ("RTC->Init: TWI Init Done\r\n");
+	printf (PSTR("RTC->Init: TWI Init Done\r\n"));
 	rtc_setup_ext_init ();
 	//printf ("Main: RTC Ext Init\r\n");
 	loadPrintWakeTime ();
@@ -327,7 +329,7 @@ int main ()
 //	EEPROM_read (EEPROM_ADDR_ID_FLAG, &temp_read);
 	//if ((temp_read != ID_SET_FLAG) || (!rtc_time_set_flag))
 	//{
-		printf ("Main: Wait for Pkt\r\n\r\n\r\n");
+		printf (PSTR("Main: Wait for Pkt\r\n\r\n\r\n"));
 		LoRaRcvPkts ();
 		loadPrintWakeTime ();
 	//}
@@ -336,17 +338,17 @@ int main ()
 	redTimeFromEEPROM (&(schedule.start_time), EEPROM_ADDR_START_TIME_HR);
 	redTimeFromEEPROM (&(schedule.end_time), EEPROM_ADDR_END_TIME_HR);
 	redTimeFromEEPROM (&(schedule.send_interval), EEPROM_ADDR_INTRVL_TIME_HR);
-	printf ("Main Start Time: %d : %d : %d\r\n", schedule.start_time.hour, 
+	printf (PSTR("Main Start Time: %d : %d : %d\r\n"), schedule.start_time.hour, 
 													   schedule.start_time.min,
 													   schedule.start_time.sec);
-	printf ("Main End Time: %d : %d : %d\r\n", schedule.end_time.hour, 
+	printf (PSTR("Main End Time: %d : %d : %d\r\n"), schedule.end_time.hour, 
 													   schedule.end_time.min,
 													   schedule.end_time.sec);
-	printf ("Main Intvl Time: %d : %d : %d\r\n", schedule.send_interval.hour, 
+	printf (PSTR("Main Intvl Time: %d : %d : %d\r\n"), schedule.send_interval.hour, 
 													   schedule.send_interval.min,
 													   schedule.send_interval.sec);
 	
-	printf ("\r\nDev ID: %d\r\n", dev_id);
+	printf (PSTR("\r\nDev ID: %d\r\n"), dev_id);
 	while (1)
 	{
 	/*
@@ -383,8 +385,8 @@ int main ()
 		temp_pkt_len = generateLoRaPkt (sen_pkt_buff, gps.handler ());
 		gps.printData ();
 
-		if (gps.location.isValid ())
-		{
+//		if (gps.location.isValid ())
+//		{
 			//printf ("Main: Valid GPS, set RTC\r\n");
 			struct tm temp_tm;
 			temp_tm.hour = gps.time.hour ();
@@ -399,13 +401,16 @@ int main ()
 
 			#ifdef MEDIUM_COLLAR
 			storeDataPointInEEPROM (gps, &(schedule.wakeup_time));
+			temp_count ++;
+			if (!(temp_count % 5))
+				dumpEEPROMPkt ();
 			#endif
-		}
-		else if (!rtc_time_set_flag)
+//		}
+/*		else if (!rtc_time_set_flag)
 		{
 			setDefaultTime ();
 			loadPrintWakeTime ();
-		}
+		}*/
 
 		// Send LoRa Packet
 		LoRaSendSleep (sen_pkt_buff, temp_pkt_len);

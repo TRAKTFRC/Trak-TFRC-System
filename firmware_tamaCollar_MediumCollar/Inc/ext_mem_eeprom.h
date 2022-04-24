@@ -14,5 +14,6 @@
 #define MAX_PKT_STORE_LEN           50
 
 void storeDataPointInEEPROM (TinyGPSPlus &gps_data, struct tm * time);
+void dumpEEPROMPkt ();
 
 #endif

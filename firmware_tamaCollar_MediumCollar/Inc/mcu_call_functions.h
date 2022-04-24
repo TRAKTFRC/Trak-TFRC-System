@@ -6,6 +6,7 @@
 #include <avr/cpufunc.h> 
 #include <stdio.h>
 #include <avr/interrupt.h>
+#include <avr/pgmspace.h>
 
 #ifndef F_CPU
 #define F_CPU 4000000UL // 8 MHz clock speed
