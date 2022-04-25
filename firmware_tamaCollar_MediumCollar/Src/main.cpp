@@ -187,7 +187,7 @@ uint16_t generateLoRaPkt (char * pkt, char gps_ret)
 	}
 
 	pkt_len = strlen (pkt);
-	printf (PSTR("Pkt gen: %s   %d \r\n"), pkt, pkt_len);
+	printf (("Pkt gen: %s   %d \r\n"), pkt, pkt_len);
 	return pkt_len;
 }
 
