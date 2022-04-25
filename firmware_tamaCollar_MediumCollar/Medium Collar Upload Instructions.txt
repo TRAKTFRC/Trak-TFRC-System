@@ -22,7 +22,7 @@ Mac Command: avrdude -c arduino -P /dev/tty.usbserial-A50285BI -b 19200 -p atmeg
 
 Step 2 Upload Firmware
 Win Command: ".\avrdude" -C avrdude.conf -c arduino -P COM5 -b 19200 -p atmega328p -e -U flash:w:Build_mc/medium_collar.hex:i
-Mac Command: avrdude -C avrdude.conf -c arduino -P /dev/tty.usbserial-A50285BI -b 19200 -p atmega328p -e -U flash:w:Build_mc/medium_collar.hex:i
+Mac Command: avrdude -c arduino -P /dev/tty.usbserial-A50285BI -b 19200 -p atmega328p -e -U flash:w:Build_mc/medium_collar.hex:i
 
 Step 3 Reset
 ".\avrdude" -C avrdude.conf -c arduino -P COM5 -b 19200 -p atmega328p reset

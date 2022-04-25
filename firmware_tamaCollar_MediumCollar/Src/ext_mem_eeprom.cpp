@@ -87,6 +87,6 @@ void dumpEEPROMPkt ()
         temp_byte = EEReadByte (loop_count);
         printf ("%c", temp_byte);
         if (temp_byte == ';') printf ("\r\n");
-        if (temp_byte == 0) break;
+        if (temp_byte == 255) break;
     }    
 }

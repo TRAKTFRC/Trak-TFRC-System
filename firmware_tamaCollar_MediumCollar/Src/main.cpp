@@ -216,16 +216,16 @@ void setTempScheduleConfig ()
 //	rtc_set_time_s (19, 1, 0);
 //	rtc_time_set_flag = true;
 
-	schedule.start_time.hour = 00;
-	schedule.start_time.min = 2;
+	schedule.start_time.hour = 9;
+	schedule.start_time.min = 0;
 	schedule.start_time.sec = 0;
 
 	schedule.send_interval.hour = 0;
-	schedule.send_interval.min = 2;
+	schedule.send_interval.min = 10;
 	schedule.send_interval.sec = 0;
 
-	schedule.end_time.hour = 23;
-	schedule.end_time.min = 58;
+	schedule.end_time.hour = 18;
+	schedule.end_time.min = 0;
 	schedule.end_time.sec = 0;	
 }
 
@@ -253,9 +253,8 @@ void loadPrintWakeTime ()
 	rtc_get_time_s ((uint8_t *)&schedule.wakeup_time.hour,
 				(uint8_t *)&schedule.wakeup_time.min,
 				(uint8_t *)&schedule.wakeup_time.sec);
-	printf (PSTR("Main: RTC Time: %d : %d : %d\r\n"), schedule.wakeup_time.hour, 
-													schedule.wakeup_time.min,
-													schedule.wakeup_time.sec);
+	printf (PSTR("Main: RTC Time: "));
+	printf ("%d : %d : %d\r\n", schedule.wakeup_time.hour, schedule.wakeup_time.min, schedule.wakeup_time.sec);
 	return;
 }
 
@@ -338,17 +337,24 @@ int main ()
 	redTimeFromEEPROM (&(schedule.start_time), EEPROM_ADDR_START_TIME_HR);
 	redTimeFromEEPROM (&(schedule.end_time), EEPROM_ADDR_END_TIME_HR);
 	redTimeFromEEPROM (&(schedule.send_interval), EEPROM_ADDR_INTRVL_TIME_HR);
-	printf (PSTR("Main Start Time: %d : %d : %d\r\n"), schedule.start_time.hour, 
-													   schedule.start_time.min,
-													   schedule.start_time.sec);
-	printf (PSTR("Main End Time: %d : %d : %d\r\n"), schedule.end_time.hour, 
-													   schedule.end_time.min,
-													   schedule.end_time.sec);
-	printf (PSTR("Main Intvl Time: %d : %d : %d\r\n"), schedule.send_interval.hour, 
-													   schedule.send_interval.min,
-													   schedule.send_interval.sec);
-	
-	printf (PSTR("\r\nDev ID: %d\r\n"), dev_id);
+	printf (PSTR("Main Start Time: "));
+	printf ("%d : %d : %d\r\n", schedule.start_time.hour, schedule.start_time.min, schedule.start_time.sec);
+	printf (PSTR("Main End Time: "));
+	printf ("%d : %d : %d\r\n", schedule.end_time.hour, schedule.end_time.min, schedule.end_time.sec);											   
+	printf (PSTR("Main Intvl Time: "));
+	printf ("%d : %d : %d\r\n", schedule.send_interval.hour, schedule.send_interval.min, schedule.send_interval.sec);
+	if ((schedule.start_time.hour > 23) || (schedule.start_time.min > 59) || (schedule.start_time.sec > 59))
+	{
+		printf (PSTR("Bad Schedule, using a temp schedule to avoid malfuction\r\n"));
+		setTempScheduleConfig ();
+		printf (PSTR("Main Start Time: "));
+		printf ("%d : %d : %d\r\n", schedule.start_time.hour, schedule.start_time.min, schedule.start_time.sec);
+		printf (PSTR("Main End Time: "));
+		printf ("%d : %d : %d\r\n", schedule.end_time.hour, schedule.end_time.min, schedule.end_time.sec);											   
+		printf (PSTR("Main Intvl Time: "));
+		printf ("%d : %d : %d\r\n", schedule.send_interval.hour, schedule.send_interval.min, schedule.send_interval.sec);
+	}
+	printf (("\r\nDev ID: %d\r\n"), dev_id);
 	while (1)
 	{
 	/*

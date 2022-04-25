@@ -680,7 +680,7 @@ void TinyGPSPlus::printData()
   printf (PSTR("Location: "));
   if (this->location.isValid())
   {
-	printf (PSTR("%f , %f \r\n"), this->location.lat(), this->location.lng());
+	printf (("%f , %f \r\n"), this->location.lat(), this->location.lng());
   }
   else
   {
@@ -690,7 +690,7 @@ void TinyGPSPlus::printData()
   printf (PSTR("Date/Time: "));
   if (this->date.isValid())
   {
-	printf (PSTR("%d / %d / %d   -  "), this->date.day(), this->date.month(), this->date.year());
+	printf (("%d / %d / %d   -  "), this->date.day(), this->date.month(), this->date.year());
   }
   else
   {
@@ -700,13 +700,13 @@ void TinyGPSPlus::printData()
   if (this->time.isValid())
   {
     if (this->time.hour() < 10) printf (PSTR("0"));
-    printf (PSTR("%d : "), this->time.hour());
+    printf (("%d : "), this->time.hour());
     if (this->time.minute() < 10) printf (PSTR("0"));
-    printf (PSTR("%d : "), this->time.minute());
+    printf (("%d : "), this->time.minute());
     if (this->time.second() < 10) printf (PSTR("0"));
-    printf (PSTR("%d"), this->time.second());
+    printf (("%d"), this->time.second());
     if (this->time.centisecond() < 10) printf (PSTR("0"));
-    printf (PSTR("%d\r\n"), this->time.centisecond());
+    printf (("%d\r\n"), this->time.centisecond());
   }
   else
   {
