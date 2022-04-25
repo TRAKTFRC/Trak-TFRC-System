@@ -18,7 +18,7 @@ uint16_t generateReleasePkt (char * pkt, float vcc_v, struct tm * pkt_time)
 	*(ptr_pkt++) = PKT_SOH; // Start of header
 	
 	// Name of device
-	*(ptr_pkt++) = 'C';
+	*(ptr_pkt++) = DEVICE_CODE;
 	byte_count = sprintf (ptr_pkt, "%d", dev_id);
 	ptr_pkt += byte_count;
 	*(ptr_pkt++) = ','; // Adding seperator

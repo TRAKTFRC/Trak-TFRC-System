@@ -9,7 +9,15 @@
 #define SUCCESS                 0
 #define FAILURE                 1
 
+
+
+#ifndef MEDIUM_COLLAR
 #define DEVICE_CODE				'C'
+#endif
+
+#ifdef MEDIUM_COLLAR
+#define DEVICE_CODE				'D'
+#endif
 
 #define PKT_SOH                 '{'
 #define PKT_EOH                 '}'
