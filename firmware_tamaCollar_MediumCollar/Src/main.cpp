@@ -385,8 +385,8 @@ int main ()
 		temp_pkt_len = generateLoRaPkt (sen_pkt_buff, gps.handler ());
 		gps.printData ();
 
-//		if (gps.location.isValid ())
-//		{
+		if (gps.location.isValid ())
+		{
 			//printf ("Main: Valid GPS, set RTC\r\n");
 			struct tm temp_tm;
 			temp_tm.hour = gps.time.hour ();
@@ -400,17 +400,17 @@ int main ()
 			rtc_time_set_flag = true;
 
 			#ifdef MEDIUM_COLLAR
-			storeDataPointInEEPROM (gps, &(schedule.wakeup_time));
+			/*storeDataPointInEEPROM (gps, &(schedule.wakeup_time));
 			temp_count ++;
 			if (!(temp_count % 5))
-				dumpEEPROMPkt ();
+				dumpEEPROMPkt ();*/
 			#endif
-//		}
-/*		else if (!rtc_time_set_flag)
+		}
+		else if (!rtc_time_set_flag)
 		{
 			setDefaultTime ();
 			loadPrintWakeTime ();
-		}*/
+		}
 
 		// Send LoRa Packet
 		LoRaSendSleep (sen_pkt_buff, temp_pkt_len);
