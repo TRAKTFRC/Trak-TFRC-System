@@ -175,6 +175,7 @@ uint16_t generateLoRaPkt (char * pkt, char gps_ret)
 
 		ptr_pkt += sprintf (ptr_pkt, "%d", vccx10); // Adding the Vcc Voltage
 		*(ptr_pkt++) = ','; // Adding seperator
+		*(ptr_pkt++) = ','; // Adding seperator
 
 		// GPS State
 		if (gps_ret == GPS_RET_WAKE_FAIL)
