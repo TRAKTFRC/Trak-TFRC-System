@@ -36,7 +36,7 @@ void displayInfo ();
  * @brief ISR scanner
  * @details It's been called in Main loop continuously. It keep reading ISR BUffer and detects the given strings patterns
  */
-void CmdUARTInterface::packetDetect ()
+void CmdUARTInterface::packetDetect (char source)
 {
 	while (this->isr_in != this->isr_out)
 	{
@@ -61,7 +61,7 @@ void CmdUARTInterface::packetDetect ()
 				//printf ("\r\ncmd.packetDetect -> Detect end of header");
 				//printf ("\r\nisr_in : %d, isr_out : %d : %c",this->isr_in, this->isr_out, this->isr_buff[this->isr_out]);
 				cmd.store (this->isr_buff[this->isr_out]);
-				cmd.detect ();
+				cmd.detect (source);
 				this->_packet_state = PKT_WAIT_SOH;
 				break;
 			}
@@ -188,7 +188,7 @@ uint16_t generateLoRaPkt (char * pkt, char gps_ret)
 	}
 
 	pkt_len = strlen (pkt);
-	printf (("Pkt gen: %s   %d \r\n"), pkt, pkt_len);
+	printf ("Pkt gen: %s   %d \r\n", pkt, pkt_len);
 	return pkt_len;
 }
 
@@ -230,6 +230,17 @@ void setTempScheduleConfig ()
 	schedule.end_time.sec = 0;	
 }
 
+void UARTRcvPkts ()
+{
+	char sent_flag = 0;
+    LoRaInit ();
+	timer_count = 10000;
+	while (timer_count)
+	{
+		pkt_main.packetDetect (PKT_SRC_UART);
+	}
+}
+
 void LoRaRcvPkts ()
 {
 	char sent_flag = 0;
@@ -243,7 +254,7 @@ void LoRaRcvPkts ()
 			{
 				appRS485RcvCallback (read ());
 			}
-			pkt_main.packetDetect ();
+			pkt_main.packetDetect (PKT_SRC_LORA);
 			if (rtc_time_set_flag) break;
 		}
 	}
@@ -254,7 +265,7 @@ void loadPrintWakeTime ()
 	rtc_get_time_s ((uint8_t *)&schedule.wakeup_time.hour,
 				(uint8_t *)&schedule.wakeup_time.min,
 				(uint8_t *)&schedule.wakeup_time.sec);
-	printf (PSTR("Main: RTC Time: "));
+	printf (("Main: RTC Time: "));
 	printf ("%d : %d : %d\r\n", schedule.wakeup_time.hour, schedule.wakeup_time.min, schedule.wakeup_time.sec);
 	return;
 }
@@ -302,7 +313,7 @@ int main ()
 	uint8_t temp_bat_volt = readVccVoltage ();
 
 	#ifdef MEDIUM_COLLAR
-	firstTimeMOtorRoutine ();
+	//firstTimeMOtorRoutine ();
 	#endif
 
 	sprintf (sen_pkt_buff, "{C%d,ON,%.1f}", dev_id, temp_bat_volt);
@@ -330,6 +341,7 @@ int main ()
 	//if ((temp_read != ID_SET_FLAG) || (!rtc_time_set_flag))
 	//{
 		printf (PSTR("Main: Wait for Pkt\r\n\r\n\r\n"));
+		UARTRcvPkts ();
 		LoRaRcvPkts ();
 		loadPrintWakeTime ();
 	//}
@@ -392,6 +404,7 @@ int main ()
 		temp_pkt_len = generateLoRaPkt (sen_pkt_buff, gps.handler ());
 		gps.printData ();
 
+		// Check if the GPS location is valid
 		if (gps.location.isValid ())
 		{
 			//printf ("Main: Valid GPS, set RTC\r\n");
@@ -406,11 +419,9 @@ int main ()
 			loadPrintWakeTime ();
 			rtc_time_set_flag = true;
 
+			// Storing the data point in the EEPROM
 			#ifdef MEDIUM_COLLAR
-			/*storeDataPointInEEPROM (gps, &(schedule.wakeup_time));
-			temp_count ++;
-			if (!(temp_count % 5))
-				dumpEEPROMPkt ();*/
+			storeDataPointInEEPROM (gps, &(schedule.wakeup_time));
 			#endif
 		}
 		else if (!rtc_time_set_flag)
@@ -434,8 +445,6 @@ int main ()
 		stopmSTimer ();
 	    //printf ("Main: Sleep now \r\n\r\n");
 		sleepMode ();
-	    //printf ("Main: Not sleeping but waiting\r\n\r\n");
-		//_delay_ms (300000);
 	}
 }
 

@@ -22,6 +22,9 @@
 #define PKT_SOH                 '{'
 #define PKT_EOH                 '}'
 
+#define PKT_SRC_LORA            0
+#define PKT_SRC_UART            1
+
 extern uint8_t dev_id;
 
 // EEPROM Memory Map

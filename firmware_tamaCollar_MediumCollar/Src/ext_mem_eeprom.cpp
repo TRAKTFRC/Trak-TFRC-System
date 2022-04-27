@@ -57,17 +57,19 @@ void sotreData (char * pkt)
 
 void generateStorePacket (TinyGPSPlus &gps_data, struct tm * time, char * ptr_pkt)
 {
-    	ptr_pkt = gps_data.location.getLatStr (ptr_pkt); // Adding Latitude
-		*(ptr_pkt++) = ','; // Adding seperator
-		ptr_pkt = gps_data.location.getLonStr (ptr_pkt); // Adding Longitude
-		*(ptr_pkt++) = ','; // Adding seperator
-		ptr_pkt = gps_data.getHDOPStr (ptr_pkt); // Adding HDOP
-		*(ptr_pkt++) = ','; // Adding seperator
-        // Adding Time stamp
-		ptr_pkt += sprintf (ptr_pkt, "%d:%d:%d", time->hour, time->min, time->sec);
+    char * p_pkt = ptr_pkt;
+    ptr_pkt = gps_data.location.getLatStr (ptr_pkt); // Adding Latitude
+    *(ptr_pkt++) = ','; // Adding seperator
+    ptr_pkt = gps_data.location.getLonStr (ptr_pkt); // Adding Longitude
+    *(ptr_pkt++) = ','; // Adding seperator
+    ptr_pkt = gps_data.getHDOPStr (ptr_pkt); // Adding HDOP
+    *(ptr_pkt++) = ','; // Adding seperator
+    // Adding Time stamp
+    ptr_pkt += sprintf (ptr_pkt, "%d:%d:%d", time->hour, time->min, time->sec);
 
-		*(ptr_pkt++) = ';'; // Adding Packet end
-        *(ptr_pkt) = 0; // Adding Null Character
+    *(ptr_pkt++) = ';'; // Adding Packet end
+    *(ptr_pkt) = 0; // Adding Null Character
+    printf ("EEROM Pkt: %s\r\n", p_pkt);
 }
 
 void storeDataPointInEEPROM (TinyGPSPlus &gps_data, struct tm * time)
@@ -81,7 +83,8 @@ void dumpEEPROMPkt ()
 {
     uint16_t nex_addr = getNextAddress ();
     uint8_t temp_byte;
-    printf (PSTR("Next Address: %d\r\n"), nex_addr);
+    printf (("Next Address: "));
+    printf ("%d\r\n", nex_addr);
     for (uint16_t loop_count = EXT_EROM_PKT_START_ADR; loop_count < EXT_EROM_HIGHEST_ADR; loop_count++)
     {
         temp_byte = EEReadByte (loop_count);

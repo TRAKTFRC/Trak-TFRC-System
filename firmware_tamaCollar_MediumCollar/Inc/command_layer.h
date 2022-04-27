@@ -17,7 +17,7 @@ public:
     void init ();
     char buff [PACKET_BUFF_SIZE];
     int buff_count;
-    void detect ();
+    void detect (char source);
     void start_storing (char rec_char);
     bool incrBuffCount ();
     bool store (char rec_char);

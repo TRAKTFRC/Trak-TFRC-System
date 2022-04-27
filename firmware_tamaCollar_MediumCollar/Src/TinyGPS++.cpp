@@ -632,7 +632,7 @@ char TinyGPSPlus::handler ()
   this->satellites.valid = false; // Invalid the satellite count
   
   // Setting timeout to get the GPS Location
-  next_ms = this->_ms_timer_count = 60000;
+  next_ms = this->_ms_timer_count = 2000;
 
   while (this->_ms_timer_count)
   {

@@ -23,7 +23,7 @@ public:
     int isr_in = 0;
     int isr_out = 0;
     void timerHandler ();
-    void packetDetect ();
+    void packetDetect (char source);
 
 private:
     bool _timer_state = SET;
