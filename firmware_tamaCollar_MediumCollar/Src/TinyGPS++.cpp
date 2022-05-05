@@ -632,7 +632,7 @@ char TinyGPSPlus::handler ()
   this->satellites.valid = false; // Invalid the satellite count
   
   // Setting timeout to get the GPS Location
-  next_ms = this->_ms_timer_count = 2000;
+  next_ms = this->_ms_timer_count = 60000;
 
   while (this->_ms_timer_count)
   {
@@ -677,24 +677,24 @@ char TinyGPSPlus::handler ()
 
 void TinyGPSPlus::printData()
 {
-  printf (PSTR("Location: "));
+  printf (("Location: "));
   if (this->location.isValid())
   {
 	printf (("%f , %f \r\n"), this->location.lat(), this->location.lng());
   }
   else
   {
-    printf (PSTR("INVALID\r\n"));
+    printf (("INVALID\r\n"));
   }
 
-  printf (PSTR("Date/Time: "));
+  printf (("Date/Time: "));
   if (this->date.isValid())
   {
 	printf (("%d / %d / %d   -  "), this->date.day(), this->date.month(), this->date.year());
   }
   else
   {
-    printf (PSTR("INVALID \r\n"));
+    printf (("INVALID \r\n"));
   }
 
   if (this->time.isValid())
@@ -710,9 +710,9 @@ void TinyGPSPlus::printData()
   }
   else
   {
-    printf (PSTR("INVALID\r\n"));
+    printf (("INVALID\r\n"));
   }
-  printf (PSTR("\r\n"));
+  printf (("\r\n"));
 }
 
 void TinyGPSPlus::mSTimerCallback ()

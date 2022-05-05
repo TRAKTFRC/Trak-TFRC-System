@@ -128,7 +128,7 @@ void storeTimeInEEPROM (struct tm * st_t, uint16_t start_addr)
 	EEPROM_write (start_addr++, st_t->hour);
 	EEPROM_write (start_addr++, st_t->min);
 	EEPROM_write (start_addr, st_t->sec);
-	printf ("cmd.storeTimeInEEPROM Time: %d : %d : %d\r\n", st_t->hour, st_t->min, st_t->sec);
+	//printf ("cmd.storeTimeInEEPROM Time: %d : %d : %d\r\n", st_t->hour, st_t->min, st_t->sec);
 }
 
 void redTimeFromEEPROM (struct tm * st_t, uint16_t start_addr)
@@ -136,5 +136,5 @@ void redTimeFromEEPROM (struct tm * st_t, uint16_t start_addr)
 	EEPROM_read (start_addr++, (uint8_t *)&(st_t->hour));
 	EEPROM_read (start_addr++, (uint8_t *)&(st_t->min));
 	EEPROM_read (start_addr, (uint8_t *)&(st_t->sec));
-	printf ("cmd.ReadimeInEEPROM Time: %d : %d : %d\r\n", st_t->hour, st_t->min, st_t->sec);
+	//printf ("cmd.ReadimeInEEPROM Time: %d : %d : %d\r\n", st_t->hour, st_t->min, st_t->sec);
 }

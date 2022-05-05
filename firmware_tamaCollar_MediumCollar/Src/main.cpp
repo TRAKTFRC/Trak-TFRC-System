@@ -273,6 +273,7 @@ void loadPrintWakeTime ()
 int main ()
 {
 	uint16_t temp_pkt_len = 0;
+	char * temp_buff_point;
 	uint8_t temp_read = 0;
 
 	uint8_t temp_count = 0;
@@ -316,11 +317,6 @@ int main ()
 	//firstTimeMOtorRoutine ();
 	#endif
 
-	sprintf (sen_pkt_buff, "{C%d,ON,%.1f}", dev_id, temp_bat_volt);
-	temp_bat_volt = strlen (sen_pkt_buff);
-	//printf ("Sending ON Packet: %s \r\n", sen_pkt_buff);
-	LoRaSendSleep (sen_pkt_buff, temp_pkt_len);
-
 	// Initialize milliseconds timer used in time 
 	// keeping at many places in the functionality
 	startmSTimer ();
@@ -350,24 +346,34 @@ int main ()
 	redTimeFromEEPROM (&(schedule.start_time), EEPROM_ADDR_START_TIME_HR);
 	redTimeFromEEPROM (&(schedule.end_time), EEPROM_ADDR_END_TIME_HR);
 	redTimeFromEEPROM (&(schedule.send_interval), EEPROM_ADDR_INTRVL_TIME_HR);
-	printf (PSTR("Main Start Time: "));
+	printf (("Main Start, end, int Time: \r\n"));
 	printf ("%d : %d : %d\r\n", schedule.start_time.hour, schedule.start_time.min, schedule.start_time.sec);
-	printf (PSTR("Main End Time: "));
 	printf ("%d : %d : %d\r\n", schedule.end_time.hour, schedule.end_time.min, schedule.end_time.sec);											   
-	printf (PSTR("Main Intvl Time: "));
 	printf ("%d : %d : %d\r\n", schedule.send_interval.hour, schedule.send_interval.min, schedule.send_interval.sec);
 	if ((schedule.start_time.hour > 23) || (schedule.start_time.min > 59) || (schedule.start_time.sec > 59))
 	{
-		printf (PSTR("Bad Schedule, using a temp schedule to avoid malfuction\r\n"));
+		printf ("Changing to :\r\n");
 		setTempScheduleConfig ();
-		printf (PSTR("Main Start Time: "));
 		printf ("%d : %d : %d\r\n", schedule.start_time.hour, schedule.start_time.min, schedule.start_time.sec);
-		printf (PSTR("Main End Time: "));
 		printf ("%d : %d : %d\r\n", schedule.end_time.hour, schedule.end_time.min, schedule.end_time.sec);											   
-		printf (PSTR("Main Intvl Time: "));
 		printf ("%d : %d : %d\r\n", schedule.send_interval.hour, schedule.send_interval.min, schedule.send_interval.sec);
 	}
 	printf (("\r\nDev ID: %d\r\n"), dev_id);
+
+	temp_buff_point = sen_pkt_buff;
+	*(temp_buff_point++) = PKT_SOH;
+	*(temp_buff_point++) = DEVICE_CODE;
+	temp_buff_point += sprintf (temp_buff_point, "%d,ON,", dev_id);
+	// Adding Time stamp
+	temp_buff_point += sprintf (temp_buff_point, "%d:%d:%d,", schedule.start_time.hour, schedule.start_time.min, schedule.start_time.sec);
+	temp_buff_point += sprintf (temp_buff_point, "%d:%d:%d,", schedule.send_interval.hour, schedule.send_interval.min, schedule.send_interval.sec);
+	temp_buff_point += sprintf (temp_buff_point, "%d", temp_bat_volt);
+	*(temp_buff_point++) = PKT_EOH;
+	*temp_buff_point = 0;
+	temp_pkt_len = strlen (sen_pkt_buff);
+	printf ("Sending ON Packet: %s \r\n", sen_pkt_buff);
+	LoRaSendSleep (sen_pkt_buff, temp_pkt_len);
+
 	while (1)
 	{
 	/*

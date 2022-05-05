@@ -77,11 +77,11 @@ uint8_t readVccVoltage (void)
 	uint8_t high = ADCH;
 
 //	high = 0;
-	printf ("ADCL: %d, ADCH: %d", low, high);
+	//printf ("ADCL: %d, ADCH: %d", low, high);
 
 	uint16_t adc = (high << 8) | low;		// 0<= result <=1023
 			
-	printf ("ADC: %lu\r\n", (unsigned long) adc);
+	//printf ("ADC: %lu\r\n", (unsigned long) adc);
 	// Compute a fixed point with 1 decimal place (i.e. 5v= 50)
 	//
 	// Vcc   =  (1.1v * 1024) / ADC
