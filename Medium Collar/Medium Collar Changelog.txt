@@ -13,3 +13,4 @@
 
 #### PCB Revision 1.2
 - Added Resistors to limit inrush current on GPS & Motor Mosfet.
+- Changed DS3231MZ power to Vbat instead of VCC to improve current consumption.
