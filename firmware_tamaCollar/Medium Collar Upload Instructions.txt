@@ -1,0 +1,28 @@
+Medium Collar
+These are steps for SPI
+Step 1 Reset
+".\avrdude" -C avrdude.conf -c stk500v1 -P COM7 -b 19200 -p atmega328p reset
+
+Step 2 Set Fuse Bits
+".\avrdude" -C avrdude.conf -c stk500v1 -P COM7 -b 19200 -p atmega328p -U lfuse:w:0xE2:m -U hfuse:w:0xD8:m -U efuse:w:0xFF:m
+
+Step 3 Reset
+".\avrdude" -C avrdude.conf -c stk500v1 -P COM7 -b 19200 -p atmega328p reset
+
+Step 4 Upload Bootloader
+".\avrdude" -C avrdude.conf -c stk500v1 -P COM7 -b 19200 -p atmega328p -e -U flash:w:bootloader/optiboot_atmega328_8.hex:i
+
+Step 5 Reset
+".\avrdude" -C avrdude.conf -c stk500v1 -P COM7 -b 19200 -p atmega328p reset
+
+Step for FTDI
+Step 1 Reset
+Win Command: ".\avrdude" -C avrdude.conf -c arduino -P COM5 -b 19200 -p atmega328p reset
+Mac Command: avrdude -c arduino -P /dev/tty.usbserial-A50285BI -b 19200 -p atmega328p reset
+
+Step 2 Upload Firmware
+Win Command: ".\avrdude" -C avrdude.conf -c arduino -P COM5 -b 19200 -p atmega328p -e -U flash:w:Build_mc/medium_collar.hex:i
+Mac Command: avrdude -c arduino -P /dev/tty.usbserial-A50285BI -b 19200 -p atmega328p -e -U flash:w:Build_mc/medium_collar.hex:i
+
+Step 3 Reset
+".\avrdude" -C avrdude.conf -c arduino -P COM5 -b 19200 -p atmega328p reset

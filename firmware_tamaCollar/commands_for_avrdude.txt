@@ -1,0 +1,48 @@
+Command to reset
+".\avrdude" -c usbasp -p atmega328p reset
+
+Command to upload Hex
+".\avrdude" -c usbasp -p atmega328p -e -U flash:w:Build/tfrc_test.hex:i
+
+Change to 4MHz Ext Crystal
+".\avrdude" -c usbasp -p atmega328p -U lfuse:w:0xfd:m -U hfuse:w:0xd9:m -U efuse:w:0xff:m
+
+Change to 4MHz Ext Clock
+".\avrdude" -c usbasp -p atmega328p -U lfuse:w:0xE0:m -U hfuse:w:0xd9:m -U efuse:w:0xff:m
+
+".\avrdude" -c usbasp -p m8 -U flash:w:usbasp.atmega8.2011-05-28.hex:i
+
+".\avrdude" -c usbasp -p m8 -U flash:w:usbasp.atmega8.2009-02-28.hex:i
+
+
+".\avrdude" -C avrdude.conf -c stk500v1 -P COM7 -b 19200 -p atmega328p reset
+
+Upload bootloader
+".\avrdude" -C avrdude.conf -c stk500v1 -P COM7 -b 19200 -p atmega328p -e -U flash:w:bootloader/optiboot_atmega328_4.hex:i
+
+".\avrdude" -C avrdude.conf -c stk500v1 -P COM7 -b 19200 -p atmega328p -e -U hfuse:w:0xDA:m
+
+Upload using FTDI
+
+".\avrdude" -C avrdude.conf -c arduino -P COM5 -b 19200 -p atmega328p reset
+
+".\avrdude" -C avrdude.conf -c arduino -P COM5 -b 19200 -p atmega328p -e -U flash:w:Build/tama_collar.hex:i
+
+".\avrdude" -C avrdude.conf -c arduino -P COM5 -b 19200 -p atmega328p -e -U flash:w:main.hex:i
+
+".\avrdude" -C avrdude.conf -c arduino -P COM5 -b 19200 -p atmega328p -e -U flash:w:LoRa_tester.ino.eightanaloginputs.hex:i
+
+
+Medium Collar
+Fuse bits using usbasp: Internal 8mHz with no clk divider and Boot reset ventor en
+".\avrdude" -C avrdude.conf -c stk500v1 -P COM7 -b 19200 -p atmega328p -U lfuse:w:0xE2:m -U hfuse:w:0xD8:m -U efuse:w:0xFF:m
+
+".\avrdude" -C avrdude.conf -c stk500v1 -P COM7 -b 19200 -p atmega328p -e -U flash:w:optiboot_atmega328_8.hex:i
+
+Now upload code using FTDI
+".\avrdude" -C avrdude.conf -c arduino -P COM5 -b 19200 -p atmega328p -e -U flash:w:Build_mc/medium_collar.hex:i
+
+".\avrdude" -C avrdude.conf -c arduino -P COM5 -b 19200 -p atmega328p reset
+
+
+

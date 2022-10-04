@@ -1,0 +1,156 @@
+# simple AVR Makefile
+#
+# written by michael cousins (http://github.com/mcous)
+# released to the public domain
+
+# Makefile
+#
+# targets:
+#   all:    compiles the source code
+#   test:   tests the isp connection to the mcu
+#   flash:  writes compiled hex file to the mcu's flash memory
+#   fuse:   writes the fuse bytes to the MCU
+#   disasm: disassembles the code for debugging
+#   clean:  removes all .hex, .elf, and .o files in the source code and library directories
+
+# parameters (change this stuff accordingly)
+# project name
+PRJ = medium_collar
+# avr mcu
+MCU = atmega328p
+# mcu clock frequency
+CLK = 8000000
+# avr programmer (and port if necessary)
+# e.g. PRG = usbtiny -or- PRG = arduino -P /dev/tty.usbmodem411
+PRGC = avrisp -P COM17
+PRG = arduino -P /dev/ttyACM0
+# fuse values for avr: low, high, and extended
+# these values are from an Arduino Uno (ATMega328P)
+# see http://www.engbedded.com/fusecalc/ for other MCUs and options
+LFU = 0xef
+HFU = 0xd9
+EFU = 0xff
+# program source files (not including external libraries)
+SRC = \
+Src/LoRa.cpp \
+Src/spi.cpp \
+Src/main.cpp \
+Src/mcu_call_functions.cpp \
+Src/timer_us.cpp \
+Src/softuart_avr.c \
+Src/TinyGPS++.cpp \
+Src/rtc.cpp \
+Src/scheduling.cpp \
+Src/twi-lowlevel.cpp \
+Src/twi.cpp \
+Src/command_layer.cpp \
+Src/battery.cpp \
+Src/medium_collar.cpp \
+Src/eeprom_hal.cpp \
+Src/ext_mem_eeprom.cpp \
+Src/24c64.cpp
+
+# where to look for external libraries (consisting of .c/.cpp files and .h files)
+# e.g. EXT = ../../EyeToSee ../../YouSART
+EXT = Inc/
+# Location of Build output
+BUILD_DIR = Build_mc/
+
+#################################################################################################
+# \/ stuff nobody needs to worry about until such time that worrying about it is appropriate \/ #
+#################################################################################################
+
+# include path
+INCLUDE := $(foreach dir, $(EXT), -I$(dir))
+# c flags
+CFLAGS    = -Wl,-u,vfprintf -lprintf_flt -Os -DMEDIUM_COLLAR -DF_CPU=$(CLK) -mmcu=$(MCU) $(INCLUDE)
+# any aditional flags for c++
+CPPFLAGS = -std=c++11
+
+GCC_PATH = C:\"Program Files"\avr8-gnu-toolchain\bin
+AD_PATH = C:\"Program Files"\avrdude
+
+# executables
+#AVRDUDEC = avrdude -c $(PRGC) -p $(MCU)
+OBJCOPY = avr-objcopy
+OBJDUMP = avr-objdump
+SIZE    = avr-size --format=avr --mcu=$(MCU)
+ifdef WIN
+CC      = $(GCC_PATH)\avr-gcc
+OBJCOPY = $(GCC_PATH)\avr-objcopy
+OBJDUMP = $(GCC_PATH)\avr-objdump
+SIZE    = $(GCC_PATH)\avr-size --format=avr --mcu=$(MCU)
+AVRDUDE = $(AD_PATH)\avrdude -c $(PRG) -p $(MCU)
+CLEAN_CMD = remove-item '$(BUILD_DIR)*' -recurse
+else
+CC      = avr-gcc
+OBJCOPY = avr-objcopy
+OBJDUMP = avr-objdump
+SIZE    = avr-size --format=avr --mcu=$(MCU)
+AVRDUDE = avrdude -c $(PRG) -p $(MCU)
+CLEAN_CMD = rm -f $(BUILD_DIR)*.hex $(BUILD_DIR)*.elf $(BUILD_DIR)*.o
+endif
+AVRDUDEC = avrdude -c $(PRGC) -p $(MCU)
+
+# generate list of objects
+CFILES    = $(filter %.c, $(SRC))
+EXTC     := $(foreach dir, $(EXT), $(wildcard $(dir)/*.c))
+CPPFILES  = $(filter %.cpp, $(SRC))
+EXTCPP   := $(foreach dir, $(EXT), $(wildcard $(dir)/*.cpp))
+OBJ       = $(CFILES:.c=.o) $(EXTC:.c=.o) $(CPPFILES:.cpp=.o) $(EXTCPP:.cpp=.o)
+OBJELF    = $(addprefix $(BUILD_DIR),$(notdir $(CFILES:.c=.o))) 
+OBJELF	  += $(addprefix $(BUILD_DIR),$(notdir $(EXTC:.c=.o))) 
+OBJELF    += $(addprefix $(BUILD_DIR),$(notdir $(CPPFILES:.cpp=.o))) 
+OBJELF    += $(addprefix $(BUILD_DIR),$(notdir $(EXTCPP:.cpp=.o)))
+
+# user targets
+# compile all files
+all: $(PRJ).hex
+
+# test programmer connectivity
+test:
+	$(AVRDUDE) -v
+
+testc:
+	$(AVRDUDEC) -v
+
+# flash program to mcu
+flash:all
+	$(AVRDUDE) -U flash:w:$(BUILD_DIR)$(PRJ).hex:i
+
+flashc:all
+	$(AVRDUDEC) -U flash:w:$(BUILD_DIR)$(PRJ).hex:i
+
+# write fuses to mcu
+fuse:
+	$(AVRDUDE) -U lfuse:w:$(LFU):m -U hfuse:w:$(HFU):m -U efuse:w:$(EFU):m
+
+fusec:
+	$(AVRDUDEC) -U lfuse:w:$(LFU):m -U hfuse:w:$(HFU):m -U efuse:w:$(EFU):m
+
+# generate disassembly files for debugging
+disasm: $(PRJ).elf
+	$(OBJDUMP) -d $(PRJ).elf
+
+# remove compiled files
+clean:
+	$(CLEAN_CMD)
+	$(foreach dir, $(EXT), rm -f $(dir)/*.o;)
+
+# other targets
+# objects from c files
+.c.o:
+	$(CC) $(CFLAGS) -c $< -o $(BUILD_DIR)$(notdir $@)
+
+# objects from c++ files
+.cpp.o:
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $(BUILD_DIR)$(notdir $@)
+
+# elf file
+$(PRJ).elf: $(OBJ)
+	$(CC) -Wl,-Map,output.map $(CFLAGS) -o $(BUILD_DIR)$(PRJ).elf $(OBJELF)
+
+# hex file
+$(PRJ).hex: $(PRJ).elf
+	$(OBJCOPY) -j .text -j .data -O ihex $(BUILD_DIR)$(PRJ).elf $(BUILD_DIR)$(PRJ).hex
+	$(SIZE) $(BUILD_DIR)$(PRJ).elf
