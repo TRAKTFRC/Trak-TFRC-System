@@ -16,7 +16,7 @@ void LoRaInit ()
 	spi_init (0, 1, 0, 0, 0);                // MSB, master, mode0, F/4, x1
     if (!begin (915E6)) 
 	{
-        printf ("Starting LoRa failed!\r\n");
+        //printf ("Starting LoRa failed!\r\n");
         while (1);
     }
     setSignalBandwidth (31250);

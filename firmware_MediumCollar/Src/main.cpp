@@ -16,6 +16,7 @@
 #include "medium_collar.h"
 #include "ext_mem_eeprom.h"
 #include "ext_mem_eeprom.h"
+#include "24c64.h"
 
 // Global Variable
 static CmdUARTInterface pkt_main;
@@ -147,7 +148,7 @@ void LoRaRcvPkts (uint8_t purpose)
 {
 	char sent_flag = 0;
     LoRaInit ();
-	pkt_wait_count = 30000;
+	pkt_wait_count = 3000;
 	while (pkt_wait_count)
 	{
 		if (parsePacket (0))
@@ -187,7 +188,7 @@ int main ()
 	USART_Init ();
     //printf ("Entering main loop\r\n");
 
-    printf (PSTR("------- Medium Collar -------\r\n"));
+    //printf (PSTR("------- Medium Collar -------\r\n"));
 
 	// I2C Init
 	twi_init_master();
@@ -236,18 +237,19 @@ int main ()
 	redTimeFromEEPROM (&(schedule.start_time), EEPROM_ADDR_START_TIME_HR);
 	redTimeFromEEPROM (&(schedule.end_time), EEPROM_ADDR_END_TIME_HR);
 	redTimeFromEEPROM (&(schedule.send_interval), EEPROM_ADDR_INTRVL_TIME_HR);
-	printf (("Main Start, end, int Time: \r\n"));
+	//printf (("Main Start, end, int Time: \r\n"));
 	printf ("%d : %d : %d\r\n", schedule.start_time.hour, schedule.start_time.min, schedule.start_time.sec);
 	printf ("%d : %d : %d\r\n", schedule.end_time.hour, schedule.end_time.min, schedule.end_time.sec);											   
 	printf ("%d : %d : %d\r\n", schedule.send_interval.hour, schedule.send_interval.min, schedule.send_interval.sec);
 	if ((schedule.start_time.hour > 23) || (schedule.start_time.min > 59) || (schedule.start_time.sec > 59))
 	{
-		printf ("Changing to :\r\n");
+		//printf ("Changing to :\r\n");
 		setTempScheduleConfig ();
 		printf ("%d : %d : %d\r\n", schedule.start_time.hour, schedule.start_time.min, schedule.start_time.sec);
 		printf ("%d : %d : %d\r\n", schedule.end_time.hour, schedule.end_time.min, schedule.end_time.sec);											   
 		printf ("%d : %d : %d\r\n", schedule.send_interval.hour, schedule.send_interval.min, schedule.send_interval.sec);
 	}
+	dev_id = dev_id % 99;
 	printf (("\r\nDev ID: %d\r\n"), dev_id);
 
 	temp_buff_point = sen_pkt_buff;
@@ -261,8 +263,10 @@ int main ()
 	*(temp_buff_point++) = PKT_EOH;
 	*temp_buff_point = 0;
 	temp_pkt_len = strlen (sen_pkt_buff);
-	printf ("Sending ON Packet: %s \r\n", sen_pkt_buff);
+	//printf ("Sending ON Packet: %s \r\n", sen_pkt_buff);
 	LoRaSendSleep (sen_pkt_buff, temp_pkt_len);
+
+	checkEEROMInit ();
 
 	while (1)
 	{
@@ -311,7 +315,8 @@ int main ()
 				endPacket ();
 				LoRaRcvPkts (PKT_RCV_PURPOSE_ACK);
 			}
-			if (!(pkt_state || gps.gps_done)) break;
+			if (!pkt_state)
+				if (gps.gps_done) break;
 		}
 		
 		// Check if the GPS location is valid

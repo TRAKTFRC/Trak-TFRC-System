@@ -8,7 +8,7 @@ uint16_t getNextAddress ()
 {
     uint16_t in_cntr, nex_adr;
     in_cntr = EEReadByte (EXT_EROM_DATA_IN_CNTR_ADR);
-    in_cntr |= (EEReadByte (EXT_EROM_DATA_IN_CNTR_ADR) << 8);
+    in_cntr |= (EEReadByte (EXT_EROM_DATA_IN_CNTR_ADR + 1) << 8);
     nex_adr = (in_cntr * PKT_STORE_LEN)+ EXT_EROM_PKT_START_ADR;
     return nex_adr;
 }
@@ -19,14 +19,14 @@ void incrInCntr ()
     uint16_t in_cntr, nex_adr;
     // Get existing In Counter from EEPROM
     in_cntr = EEReadByte (EXT_EROM_DATA_IN_CNTR_ADR);
-    in_cntr |= (EEReadByte (EXT_EROM_DATA_IN_CNTR_ADR) << 8);
+    in_cntr |= (EEReadByte (EXT_EROM_DATA_IN_CNTR_ADR + 1) << 8);
     // Increament the counter such that is does not exceed PKT_MAX_COUNT
     in_cntr = (in_cntr + 1) % PKT_MAX_COUNT;
     // Break the value into 2 8 bits and write to EEPROM
     temp_byte = in_cntr & 0xFF;
     EEWriteByte (EXT_EROM_DATA_IN_CNTR_ADR, temp_byte);
     temp_byte = (in_cntr >> 8) & 0xFF;
-    EEWriteByte (EXT_EROM_DATA_IN_CNTR_ADR, temp_byte);
+    EEWriteByte (EXT_EROM_DATA_IN_CNTR_ADR + 1, temp_byte);
 }
 
 void incrOutCntr ()
@@ -35,10 +35,10 @@ void incrOutCntr ()
     uint16_t out_cntr, in_cntr, nex_adr;
     // Get existing In Counter from EEPROM
     in_cntr = EEReadByte (EXT_EROM_DATA_IN_CNTR_ADR);
-    in_cntr |= (EEReadByte (EXT_EROM_DATA_IN_CNTR_ADR) << 8);
+    in_cntr |= (EEReadByte (EXT_EROM_DATA_IN_CNTR_ADR + 1) << 8);
     // Get existing Out Counter from EEPROM
     out_cntr = EEReadByte (EXT_EROM_DATA_OUT_CNTR_ADR);
-    out_cntr |= (EEReadByte (EXT_EROM_DATA_OUT_CNTR_ADR) << 8);
+    out_cntr |= (EEReadByte (EXT_EROM_DATA_OUT_CNTR_ADR + 1) << 8);
     // Increament the counter such that is does not exceed PKT_MAX_COUNT
     if (in_cntr > out_cntr) out_cntr = (out_cntr + 1) % PKT_MAX_COUNT;
     else if (in_cntr < out_cntr) out_cntr = out_cntr + 1;
@@ -46,7 +46,7 @@ void incrOutCntr ()
     temp_byte = out_cntr & 0xFF;
     EEWriteByte (EXT_EROM_DATA_OUT_CNTR_ADR, temp_byte);
     temp_byte = (out_cntr >> 8) & 0xFF;
-    EEWriteByte (EXT_EROM_DATA_OUT_CNTR_ADR, temp_byte);
+    EEWriteByte (EXT_EROM_DATA_OUT_CNTR_ADR + 1, temp_byte);
 }
 
 void sotreData (char * pkt)
@@ -71,7 +71,7 @@ void generateStorePacket (TinyGPSPlus * gps_data, char * ptr_pkt)
     ptr_pkt = gps_data->getHDOPStr (ptr_pkt); // Adding HDOP
     *(ptr_pkt++) = ','; // Adding seperator
     // Adding Time stamp
-    ptr_pkt += sprintf (ptr_pkt, "%2d:%2d:%2d",  gps_data->time.hour(), gps_data->time.minute(), gps_data->time.second());
+    ptr_pkt += sprintf (ptr_pkt, "%02d:%02d:%02d",  gps_data->time.hour(), gps_data->time.minute(), gps_data->time.second());
     *(ptr_pkt++) = ','; // Adding seperator
 
     ptr_pkt += sprintf (ptr_pkt, "%2d", vccx10); // Adding the Vcc Voltage
@@ -115,9 +115,9 @@ bool checkGetNextPkt (char * ret_pkt)
 	uint16_t byte_count = 0, pkt_len;
 
     in_cntr = EEReadByte (EXT_EROM_DATA_IN_CNTR_ADR);
-    in_cntr |= (EEReadByte (EXT_EROM_DATA_IN_CNTR_ADR) << 8);
+    in_cntr |= (EEReadByte (EXT_EROM_DATA_IN_CNTR_ADR + 1) << 8);
     out_cntr = EEReadByte (EXT_EROM_DATA_OUT_CNTR_ADR);
-    out_cntr |= (EEReadByte (EXT_EROM_DATA_OUT_CNTR_ADR) << 8);
+    out_cntr |= (EEReadByte (EXT_EROM_DATA_OUT_CNTR_ADR + 1) << 8);
     if (in_cntr != out_cntr)
     {
         *(ptr_pkt++) = PKT_SOH; // Start of header
@@ -129,19 +129,33 @@ bool checkGetNextPkt (char * ret_pkt)
         *(ptr_pkt++) = ','; // Adding seperator
 
         // Loading data from EEPROM
-        pkt_adr = (in_cntr * PKT_STORE_LEN) + EXT_EROM_PKT_START_ADR;
+        pkt_adr = (out_cntr * PKT_STORE_LEN) + EXT_EROM_PKT_START_ADR;
         for (uint16_t loop_count = 0; loop_count < PKT_STORE_LEN; loop_count++)
         {
             uint8_t temp_byte = EEReadByte (pkt_adr + loop_count);
-            *(ptr_pkt + loop_count) = temp_byte;
+            *(ptr_pkt++) = temp_byte;
         }
-
         *(ptr_pkt++) = PKT_EOH; // End of header
         *(ptr_pkt) = 0; // Adding NULL
 
         pkt_len = strlen (ret_pkt);
+        printf ("In count: %d, Out count: %d\r\n", in_cntr, out_cntr);
         printf ("Pkt gen: %s   %d \r\n", ret_pkt, pkt_len);
         return true;
     }
     return false;
+}
+
+void checkEEROMInit ()
+{
+    uint8_t init_flag = EEReadByte (EXT_EROM_INIT_FLAG_ADR);
+    
+    if (init_flag == EXT_EROM_INIT_DONE_VAL) return;
+
+    EEWriteByte (EXT_EROM_DATA_OUT_CNTR_ADR, 0);
+    EEWriteByte (EXT_EROM_DATA_OUT_CNTR_ADR + 1, 0);
+    EEWriteByte (EXT_EROM_DATA_IN_CNTR_ADR, 0);
+    EEWriteByte (EXT_EROM_DATA_IN_CNTR_ADR + 1, 0);
+
+    EEWriteByte (EXT_EROM_INIT_FLAG_ADR, EXT_EROM_INIT_DONE_VAL);
 }

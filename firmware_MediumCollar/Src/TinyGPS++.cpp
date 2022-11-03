@@ -373,14 +373,14 @@ double TinyGPSLocation::lng()
 char * TinyGPSLocation::getLatStr (char * str)
 {
   unsigned int byte_count;
-  byte_count = sprintf (str, "%3.6f", this->lat());  
+  byte_count = sprintf (str, "%010.6f", this->lat());  
   return (str + byte_count);
 }
 
 char * TinyGPSLocation::getLonStr (char * str)
 {
   unsigned int byte_count;
-  byte_count = sprintf (str, "%3.6f", this->lng());
+  byte_count = sprintf (str, "%010.6f", this->lng());
   return (str + byte_count);
 }
 
@@ -578,8 +578,8 @@ void TinyGPSPlus::_processUART ()
 {
   char rcv_u;
   static uint8_t print_flag = 1;
-  this->_ms_timer_count = 1500;
-  while (this->_ms_timer_count)
+  this->_ms_uart_count = 1500;
+  while (this->_ms_uart_count)
   {
     if (softuart_kbhit())
     {
@@ -591,7 +591,7 @@ void TinyGPSPlus::_processUART ()
   }
 }
 
-char TinyGPSPlus::handler ()
+void TinyGPSPlus::handler ()
 {
   switch (this->gps_handler_state)
   {
@@ -610,7 +610,9 @@ char TinyGPSPlus::handler ()
     // This condition checks if location is acquired or not
     if ((this->location.isValid ()) && (this->satellites.isValid ()) && ((this->satellites.value ()) >= 3))
     {
+        printf ("Location acq\r\n");
         this->_ms_timer_count = GPS_EXTENDED_WAIT;
+        this->gps_handler_state = GPS_STATE_DATA_ACQ_EXTENDED;
     }
     break;
 
@@ -676,6 +678,6 @@ void TinyGPSPlus::mSTimerCallback ()
 char * TinyGPSPlus::getHDOPStr (char * str)
 {
   unsigned int byte_count;
-  byte_count = sprintf (str, "%3.2f", (double)this->hdop.value());
+  byte_count = sprintf (str, "%06.2f", (double)this->hdop.value());
   return (str + byte_count);
 }

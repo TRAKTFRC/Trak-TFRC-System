@@ -233,7 +233,7 @@ public:
    TinyGPSPlus();
 
    void init (uint8_t power_mode);
-   char handler ();
+   void handler ();
 
    void printData();
 
