@@ -7,9 +7,7 @@
 #define __COMMAND_LAYER_H
 
 // Command exec
-#define PACKET_BUFF_SIZE            50
-
-#define PKT_LEN_TIME                17
+#define PACKET_BUFF_SIZE            59
 
 class CmdProcess
 {

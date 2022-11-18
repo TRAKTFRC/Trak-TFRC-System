@@ -5,8 +5,8 @@
 #include "TinyGPS++.h"
 
 
-#define PKT_STORE_LEN                   44
-#define PKT_MAX_COUNT                   450
+#define PKT_STORE_LEN                   53
+#define PKT_MAX_COUNT                   305
 
 #define EXT_EROM_INIT_DONE_VAL          42
 
@@ -18,7 +18,7 @@
 #define EXT_EROM_HIGHEST_ADR            16383
 #define EXT_EROM_SLAVE_ADR              0b10100000
 
-#define MAX_PKT_STORE_LEN               50
+#define MAX_PKT_STORE_LEN               55
 
 void storeDataPointInEEPROM (TinyGPSPlus &gps_data);
 void dumpEEPROMPkt ();

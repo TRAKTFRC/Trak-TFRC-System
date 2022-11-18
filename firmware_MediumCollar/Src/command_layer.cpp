@@ -148,13 +148,16 @@ void CmdProcess::detect (char source)
 			{
 				incrOutCntr ();
 				ack_flag = true;
+				printf ("Acked\r\n");
 			}
+			else printf (("Wrong id: %d\r\n"), rcv_dev_id);
 		}
+		else printf (("Wrong dev code: %c\r\n"), this->_read_counter);
+		break;
 
 	default:
-		printf (PSTR("cmd.detect No Packet\r\n"));
+		break;
 	}
-	printf (PSTR("cmd.detect->Exiting\r\n"));
 	return;
 }
 

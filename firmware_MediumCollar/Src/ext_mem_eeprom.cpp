@@ -74,7 +74,11 @@ void generateStorePacket (TinyGPSPlus * gps_data, char * ptr_pkt)
     ptr_pkt += sprintf (ptr_pkt, "%02d:%02d:%02d",  gps_data->time.hour(), gps_data->time.minute(), gps_data->time.second());
     *(ptr_pkt++) = ','; // Adding seperator
 
-    ptr_pkt += sprintf (ptr_pkt, "%2d", vccx10); // Adding the Vcc Voltage
+    // Adding Date stamp
+    ptr_pkt += sprintf (ptr_pkt, "%02d:%02d:%02d",  gps_data->date.day(), gps_data->date.month(), gps_data->date.year());
+    *(ptr_pkt++) = ','; // Adding seperator
+
+    ptr_pkt += sprintf (ptr_pkt, "%02d", vccx10); // Adding the Vcc Voltage
     *(ptr_pkt++) = ','; // Adding seperator
 
     // GPS State
@@ -124,7 +128,7 @@ bool checkGetNextPkt (char * ret_pkt)
 
         // Name of device
         *(ptr_pkt++) = DEVICE_CODE;
-        byte_count = sprintf (ptr_pkt, "%2d", dev_id);
+        byte_count = sprintf (ptr_pkt, "%02d", dev_id);
         ptr_pkt += byte_count;
         *(ptr_pkt++) = ','; // Adding seperator
 
