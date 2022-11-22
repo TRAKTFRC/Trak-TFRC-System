@@ -5,8 +5,8 @@
 #include "TinyGPS++.h"
 
 
-#define PKT_STORE_LEN                   53
-#define PKT_MAX_COUNT                   305
+#define PKT_STORE_LEN                   55
+#define PKT_MAX_COUNT                   290
 
 #define EXT_EROM_INIT_DONE_VAL          42
 

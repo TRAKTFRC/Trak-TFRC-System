@@ -21,7 +21,7 @@
 #define PKT_SRC_LORA            0
 #define PKT_SRC_UART            1
 
-#define SEN_PKT_BUFF_LEN        51 // Packet length is 50, + 1 for NULL Character
+#define SEN_PKT_BUFF_LEN        62 // Packet length is 61, + 1 for NULL Character
 
 // Purpose for Rcv LoRa Pkt
 #define PKT_RCV_PURPOSE_NONE    0
