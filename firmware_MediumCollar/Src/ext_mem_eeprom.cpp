@@ -85,7 +85,7 @@ void generateStorePacket (TinyGPSPlus * gps_data, char * ptr_pkt)
     ptr_pkt += sprintf (ptr_pkt, "GOK");
 
     *(ptr_pkt) = 0; // Adding Null Character
-    printf ("EEROM Pkt: %s\r\n", p_pkt);
+    printf ("Pkt gen, store: %s\r\n", p_pkt);
 }
 
 void storeDataPointInEEPROM (TinyGPSPlus &gps_data)
@@ -144,7 +144,7 @@ bool checkGetNextPkt (char * ret_pkt)
 
         pkt_len = strlen (ret_pkt);
         printf ("In count: %d, Out count: %d\r\n", in_cntr, out_cntr);
-        printf ("Pkt gen: %s   %d \r\n", ret_pkt, pkt_len);
+        printf ("Pkt from mem: %s   %d \r\n", ret_pkt, pkt_len);
         return true;
     }
     return false;
