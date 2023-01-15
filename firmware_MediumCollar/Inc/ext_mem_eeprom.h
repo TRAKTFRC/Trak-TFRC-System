@@ -25,6 +25,6 @@ void dumpEEPROMPkt ();
 void incrOutCntr ();
 bool checkGetNextPkt (char * ret_pkt);
 void checkEEROMInit ();
-
+void deleteEEROMPkt ();
 
 #endif

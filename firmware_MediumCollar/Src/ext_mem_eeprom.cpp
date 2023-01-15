@@ -163,3 +163,11 @@ void checkEEROMInit ()
 
     EEWriteByte (EXT_EROM_INIT_FLAG_ADR, EXT_EROM_INIT_DONE_VAL);
 }
+
+void deleteEEROMPkt ()
+{
+    EEWriteByte (EXT_EROM_DATA_OUT_CNTR_ADR, 0);
+    EEWriteByte (EXT_EROM_DATA_OUT_CNTR_ADR + 1, 0);
+    EEWriteByte (EXT_EROM_DATA_IN_CNTR_ADR, 0);
+    EEWriteByte (EXT_EROM_DATA_IN_CNTR_ADR + 1, 0);
+}

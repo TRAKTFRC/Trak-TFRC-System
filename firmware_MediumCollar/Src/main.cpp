@@ -224,6 +224,10 @@ int main ()
 		rtc_time_set_flag = false;
 	}*/
 	
+	// Delete the packets from memory and wait here
+/*	deleteEEROMPkt ();
+	while (1){}*/
+
 //	EEPROM_read (EEPROM_ADDR_ID_FLAG, &temp_read);
 	//if ((temp_read != ID_SET_FLAG) || (!rtc_time_set_flag))
 	//{
