@@ -18,7 +18,7 @@
 #define EXT_EROM_HIGHEST_ADR            16383
 #define EXT_EROM_SLAVE_ADR              0b10100000
 
-#define MAX_PKT_STORE_LEN               55
+#define MAX_PKT_STORE_LEN               56 // PKT_STORE_LEN + 1 for NULL
 
 void storeDataPointInEEPROM (TinyGPSPlus &gps_data);
 void dumpEEPROMPkt ();

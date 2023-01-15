@@ -71,11 +71,11 @@ void generateStorePacket (TinyGPSPlus * gps_data, char * ptr_pkt)
     ptr_pkt = gps_data->getHDOPStr (ptr_pkt); // Adding HDOP
     *(ptr_pkt++) = ','; // Adding seperator
     // Adding Time stamp
-    ptr_pkt += sprintf (ptr_pkt, "%02d:%02d:%04d",  gps_data->time.hour(), gps_data->time.minute(), gps_data->time.second());
+    ptr_pkt += sprintf (ptr_pkt, "%02d:%02d:%02d",  gps_data->time.hour(), gps_data->time.minute(), gps_data->time.second());
     *(ptr_pkt++) = ','; // Adding seperator
 
     // Adding Date stamp
-    ptr_pkt += sprintf (ptr_pkt, "%02d:%02d:%02d",  gps_data->date.day(), gps_data->date.month(), gps_data->date.year());
+    ptr_pkt += sprintf (ptr_pkt, "%02d:%02d:%04d",  gps_data->date.day(), gps_data->date.month(), gps_data->date.year());
     *(ptr_pkt++) = ','; // Adding seperator
 
     ptr_pkt += sprintf (ptr_pkt, "%02d", vccx10); // Adding the Vcc Voltage
