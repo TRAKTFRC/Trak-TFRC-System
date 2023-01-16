@@ -148,7 +148,7 @@ void LoRaRcvPkts (uint8_t purpose)
 {
 	char sent_flag = 0;
     LoRaInit ();
-	pkt_wait_count = 3000;
+	pkt_wait_count = 10000;
 	while (pkt_wait_count)
 	{
 		if (parsePacket (0))
