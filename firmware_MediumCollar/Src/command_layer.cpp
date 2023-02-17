@@ -27,7 +27,7 @@ void CmdProcess::detect (char source)
 	uint8_t temp_dev_id;
 
 	//printf ("cmd.detect->Processing command\r\n");
-	this->_read_counter = 0;
+	this->_read_counter = 1;
 	
 	printf ("cmdtype : %c\r\n", this->buff [this->_read_counter]);
 
@@ -112,7 +112,8 @@ void CmdProcess::detect (char source)
 	case 'I': // Set device ID
 		READ_COUNT_HANDLE (2);
 		temp_dev_id = (this->buff [this->_read_counter] - '0') * 10;
-		READ_COUNT_HANDLE (1); temp_dev_id += this->buff [this->_read_counter] - '0';
+		READ_COUNT_HANDLE (1); 
+		temp_dev_id += this->buff [this->_read_counter] - '0';
 		
 		if ((temp_dev_id > 0) && (temp_dev_id < 99))
 		{
